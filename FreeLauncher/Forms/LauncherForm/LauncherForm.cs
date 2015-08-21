@@ -243,7 +243,7 @@ namespace FreeLauncher.Forms
                 return;
             }
             _profileManager.Profiles.Remove(_profileManager.LastUsedProfile);
-            _profileManager.LastUsedProfile = profilesDropDownBox.Items[0].Text;
+            _profileManager.LastUsedProfile = _profileManager.Profiles.FirstOrDefault().Key;
             SaveProfiles();
             UpdateProfileList();
         }
@@ -283,9 +283,12 @@ namespace FreeLauncher.Forms
                             CreateNoWindow = true,
                             FileName = _selectedProfile.JavaExecutable ?? Java.JavaExecutable,
                             StandardErrorEncoding = Encoding.UTF8,
-                            WorkingDirectory = Variables.McDirectory,
+                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? Variables.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.BuildArguments(new Dictionary<string, string> {{"auth_player_name", NicknameDropDownList.Text}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", "test"}, {"auth_access_token", "test"}, {"auth_uuid", "test"}, {"user_properties", properties.ToString(Formatting.None)}, {"user_type", "mojang"}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.BuildArguments(new Dictionary<string, string> {{"auth_player_name", NicknameDropDownList.Text}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", "test"}, {"auth_access_token", "test"}, {"auth_uuid", "test"}, {"user_properties", properties.ToString(Formatting.None)}, {"user_type", "mojang"}})}" +
+                                (_selectedProfile.FastConnectionSettigs != null
+                                    ? $" --server {_selectedProfile.FastConnectionSettigs.ServerIP} --port {_selectedProfile.FastConnectionSettigs.ServerPort}"
+                                    : string.Empty)
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Игра запущена. Версия: {0}.\nНачат вывод игры в другую вкладку.",
