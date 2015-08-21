@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.WinControls.SpellChecker</name>
+    </assembly>
+    <members>
+        <member name="M:Telerik.WinControls.UI.IControlSpellChecker.ChangeCurrentWord(System.String)">
+            <summary>
+            Changes the current word.
+            </summary>
+            <param name="suggestion">The suggestion.</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.IControlSpellChecker.MoveToNextError">
+            <summary>
+            Moves to next spell check error.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.WinControls.UI.IControlSpellChecker.GetContentAsDocument">
+            <summary>
+            Gets the content as <see cref="T:Telerik.WinControls.RichTextBox.Model.RadDocument"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.WinControls.UI.IControlSpellChecker.SetContentFromDocument(Telerik.WinControls.RichTextBox.Model.RadDocument)">
+            <summary>
+            Sets the content from <see cref="T:Telerik.WinControls.RichTextBox.Model.RadDocument"/>.
+            </summary>
+            <param name="document">The document.</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.IControlSpellChecker.ResetFields">
+            <summary>
+            Resets the fields.
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.IControlSpellChecker.CurrentControl">
+            <summary>
+            Gets or sets the control that is spell checked
+            </summary>
+            <value>The current control.</value>
+        </member>
+        <member name="P:Telerik.WinControls.UI.IControlSpellChecker.IgnoredWords">
+            <summary>
+            Gets or sets the words ignored by the spell checker
+            </summary>
+            <value>The ignored words.</value>
+        </member>
+        <member name="P:Telerik.WinControls.UI.IControlSpellChecker.SpellChecker">
+            <summary>
+            Gets the spell checker.
+            </summary>
+            <value>The spell checker.</value>
+        </member>
+        <member name="M:Telerik.WinControls.UI.ControlSpellCheckerBase.ChangeCurrentWord(System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.ControlSpellCheckerBase.MoveToNextError">
+            <summary>
+            <seealso cref="M:Telerik.WinControls.UI.IControlSpellChecker.MoveToNextError"/>
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.ControlSpellCheckerBase.GetContentAsDocument">
+            <summary>
+            <seealso cref="M:Telerik.WinControls.UI.IControlSpellChecker.GetContentAsDocument"/>
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.ControlSpellCheckerBase.SetContentFromDocument(Telerik.WinControls.RichTextBox.Model.RadDocument)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.ControlSpellCheckerBase.ResetFields">
+            <summary>
+            <seealso cref="M:Telerik.WinControls.UI.IControlSpellChecker.ResetFields"/>
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.ControlSpellCheckerBase.IgnoredWords">
+            <summary>
+            <seealso cref="P:Telerik.WinControls.UI.IControlSpellChecker.IgnoredWords"/>
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.ControlSpellCheckerBase.SpellChecker">
+            <summary>
+            <seealso cref="P:Telerik.WinControls.UI.IControlSpellChecker.SpellChecker"/>
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.ControlSpellCheckerBase.CurrentControl">
+            <summary>
+            <seealso cref="P:Telerik.WinControls.UI.IControlSpellChecker.CurrentControl"/>
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.ControlSpellCheckerBase.ShowAllCapitalLettersWord">
+            <summary>
+            Get or set the words with all capital letters
+            </summary>
+        </member>
+        <member name="T:Telerik.WinControls.UI.SpellingFormShowingEventHandler">
+            <summary>
+            Represents a method that will handle the SpellingFormShowing event.
+            </summary>
+            <param name="sender"></param>
+            <param name="e">An instance of <see cref="T:Telerik.WinControls.UI.SpellingFormShowingEventArgs"/> arguments.</param>
+        </member>
+        <member name="T:Telerik.WinControls.UI.SpellingFormShowingEventArgs">
+            <summary>
+            Provides data for the SpellingFormShowing event.
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.SpellingFormShowingEventArgs.SpellingForm">
+            <summary>
+            Gets or sets the spelling form.
+            </summary>
+            <value>The spelling form.</value>
+        </member>
+        <member name="P:Telerik.WinControls.UI.SpellingFormShowingEventArgs.SpellChecker">
+            <summary>
+            Gets an instance of <see cref="T:Telerik.WinControls.UI.IControlSpellChecker"/>
+            </summary>
+            <value>The spell checker.</value>
+        </member>
+        <member name="T:Telerik.WinControls.UI.RadSpellCheckerLocalizationProvider">
+            <summary>
+            RadSpellChecker localization provider.
+            </summary>
+        </member>
+        <member name="T:Telerik.WinControls.UI.RadSpellCheckerStringId">
+            <summary>
+            RadSpellChecker localization strings.
+            </summary>
+        </member>
+        <member name="T:Telerik.WinControls.UI.RadSpellChecker">
+            <summary>
+            Represents the spell checker component
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.RadSpellChecker.Check(System.Windows.Forms.Control)">
+            <summary>
+            Checks the specified edit control for spelling mistakes.
+            </summary>
+            <param name="editControl">The edit control.</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.RadSpellChecker.RegisterControlSpellChecker(System.Type,Telerik.WinControls.UI.IControlSpellChecker)">
+            <summary>
+            Registers an instance of <see cref="T:Telerik.WinControls.UI.IControlSpellChecker"/> that is responsible for
+            managing the spell checking of concrete type control
+            </summary>
+            <param name="controlType">The type of control.</param>
+            <param name="spellChecker">The spell checker.</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.RadSpellChecker.GetControlSpellChecker(System.Type)">
+            <summary>
+            Gets the control spell checker.
+            </summary>
+            <param name="editControlType">Type of the edit control.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.AutoSpellCheckControl">
+            <summary>
+            Checks as you type the specified TextBox control for spelling mistakes.
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.EnableCompleteMessageBox">
+            <summary>
+            Gets or set a value that determine wheather the Complete Dialog Message Box is enabled
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.FormSettings">
+            <summary>
+            Gets the form settings.
+            </summary>
+            <value>The form settings.</value>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.SpellCheckMode">
+            <summary>
+            Gets or set the spell checking mode
+            </summary>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.ThemeName">
+            <summary>
+                Gets or sets control's preffered theme name. Themes are stored and retrieved using
+                APIs of <see cref="T:Telerik.WinControls.ThemeResolutionService"/>.
+            </summary>
+            <remarks>
+            If <strong>ThemeResolutionService.ApplicatonThemeName</strong> refers to a
+            non-empty string, the theme of a RadControl can differ from the one set using
+            <strong>RadControls.ThemeName</strong> property. If the themes differ, the
+            <strong>RadControls.ThemeName</strong> property will be overridden by
+            <strong>ThemeResolutionService.ApplicatonThemeName</strong>. If no theme is registered
+            with a name as <strong>ThemeResolutionService.ApplicatonThemeName</strong>, then
+            control will revert to the theme specified by its <strong>ThemeName</strong> property.
+            If <strong>ThemeName</strong> is assigned to a non-existing theme name, the control may
+            have no visual properties assigned, which will cause it look and behave in unexpected
+            manner. If <strong>ThemeName</strong> equals empty string, control's theme is set to a
+            theme that is registered within <strong>ThemeResolutionService</strong> with the name
+            "ControlDefault".
+            </remarks>
+        </member>
+        <member name="P:Telerik.WinControls.UI.RadSpellChecker.SpellingFormStartPosition">
+            <summary>
+            Gets or sets the start position of the spelling form.
+            </summary>
+        </member>
+        <member name="E:Telerik.WinControls.UI.RadSpellChecker.SpellingFormShowing">
+            <summary>
+            Occurs when the spelling form is about to be displayed.
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.TextBoxSpellChecker.PaintLinesTextBox">
+            <summary>
+            Draws the red lines.
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.TextBoxSpellChecker.DrawLine(System.Drawing.Graphics,System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            Draws a red  line at the given from and to 
+            </summary>
+            <param name="g">the graphics context</param>
+            <param name="from">the from point</param>
+            <param name="to">the to point</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.TextBoxSpellChecker.PerformAsYouTypeSpellChecking(System.Windows.Forms.TextBoxBase)">
+            <summary>
+            Performs the spell checking on the control.
+            </summary>
+            <param name="control">the control</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.TextBoxSpellChecker.WaitForIdleTimeToElapse(System.Object)">
+            <summary>
+            A thread start method that waits for the specified idle time to elapse.
+            </summary>
+            <param name="param">the parameter</param>
+        </member>
+        <member name="F:Telerik.WinControls.UI.SpellCheckAllAtOnceForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.SpellCheckAllAtOnceForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Telerik.WinControls.UI.SpellCheckAllAtOnceForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Telerik.WinControls.UI.SpellCheckWordByWordForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Telerik.WinControls.UI.SpellCheckWordByWordForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+    </members>
+</doc>
