@@ -166,6 +166,10 @@ namespace FreeLauncher.Forms
             if (!Variables.ProgramArguments.NotAStandalone) {
                 UpdateVersions();
             }
+            // TODO: Make this thing work with Mojang accounts
+            if (File.Exists(Path.Combine(Variables.McDirectory, "username"))) {
+                NicknameDropDownList.Text = File.ReadAllText(Path.Combine(Variables.McDirectory, "username"));
+            }
             UpdateProfileList();
             UpdateVersionListView();
         }
@@ -254,6 +258,8 @@ namespace FreeLauncher.Forms
             if (string.IsNullOrWhiteSpace(NicknameDropDownList.Text)) {
                 NicknameDropDownList.Text = $"Player{DateTime.Now.ToString("hhmmss")}";
             }
+            // TODO: Make this thing work with Mojang accounts
+            File.WriteAllText(Path.Combine(Variables.McDirectory, "username"), NicknameDropDownList.Text);
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 CheckVersionAvailability();
