@@ -94,13 +94,15 @@ namespace FreeLauncher.Forms
                 CurrentProfile.WindowSize = null;
             }
             if (fastConnectCheckBox.Checked && ipTextBox.Text != null) {
-                CurrentProfile.FastConnectionSettigs = new ConnectionSettings()
-                {
+                CurrentProfile.FastConnectionSettigs = new ConnectionSettings() {
                     ServerIP = ipTextBox.Text,
                     ServerPort = Convert.ToInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text
                         : "25565"))
                 };
+            }
+            else {
+                CurrentProfile.FastConnectionSettigs = null;
             }
             switch (stateBox.SelectedItem.Tag.ToString()) {
                 case "hide launcher and re-open when game closes":

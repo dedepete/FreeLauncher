@@ -278,6 +278,10 @@ namespace FreeLauncher.Forms
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
                         };
+                        if (_selectedProfile.FastConnectionSettigs != null) {
+                            selectedVersion.ArgumentCollection.Add("server", _selectedProfile.FastConnectionSettigs.ServerIP);
+                            selectedVersion.ArgumentCollection.Add("port", _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
+                        }
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
                             ? ""
                             : _selectedProfile.JavaArguments + " ";
@@ -291,10 +295,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? Variables.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.BuildArguments(new Dictionary<string, string> {{"auth_player_name", NicknameDropDownList.Text}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", "test"}, {"auth_access_token", "test"}, {"auth_uuid", "test"}, {"user_properties", properties.ToString(Formatting.None)}, {"user_type", "mojang"}})}" +
-                                (_selectedProfile.FastConnectionSettigs != null
-                                    ? $" --server {_selectedProfile.FastConnectionSettigs.ServerIP} --port {_selectedProfile.FastConnectionSettigs.ServerPort}"
-                                    : string.Empty)
+                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", NicknameDropDownList.Text}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", "test"}, {"auth_access_token", "test"}, {"auth_uuid", "test"}, {"user_properties", properties.ToString(Formatting.None)}, {"user_type", "mojang"}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Игра запущена. Версия: {0}.\nНачат вывод игры в другую вкладку.",
