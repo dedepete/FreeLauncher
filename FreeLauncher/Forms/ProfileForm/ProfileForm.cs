@@ -35,6 +35,21 @@ namespace FreeLauncher.Forms
                         case "other":
                             otherCheckBox.Checked = true;
                             break;
+                        case "forge":
+                            forgeCheckBox.Checked = true;
+                            goto case "modified";
+                        case "liteloader":
+                            liteCheckBox.Checked = true;
+                            goto case "modified";
+                        case "optifine":
+                            optifineCheckBox.Checked = true;
+                            goto case "modified";
+                        case "combined":
+                            combinedCheckBox.Checked = true;
+                            goto case "modified";
+                        case "modified":
+                            VersionSelector.SelectedPage = modVersionsPage;
+                            break;
                     }
                 }
             }
@@ -131,6 +146,21 @@ namespace FreeLauncher.Forms
             if (otherCheckBox.Checked) {
                 types.Add("other");
             }
+            if (VersionSelector.SelectedPage == modVersionsPage) {
+                if (forgeCheckBox.Checked) {
+                    types.Add("forge");
+                }
+                if (liteCheckBox.Checked) {
+                    types.Add("liteloader");
+                }
+                if (optifineCheckBox.Checked) {
+                    types.Add("optifine");
+                }
+                if (combinedCheckBox.Checked) {
+                    types.Add("combined");
+                }
+                types.Add("modified");
+            }
             CurrentProfile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
             CurrentProfile.AllowedReleaseTypes = types.ToArray();
             if (javaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
@@ -184,19 +214,20 @@ namespace FreeLauncher.Forms
                         break;
                 }
             }
-            foreach (Version version in from b in Directory.GetDirectories(Variables.McVersions)
-                where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
-                    new DirectoryInfo(b).Name))
-                let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
-                where add
-                select
-                    new Version().ParseVersion(
-                        new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
-                            new DirectoryInfo(b).Name)), false)) {
-                versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId)
-                {
-                    Tag = version.VersionId
-                });
+            if (otherCheckBox.Checked) {
+                foreach (Version version in from b in Directory.GetDirectories(Variables.McVersions)
+                    where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
+                        new DirectoryInfo(b).Name))
+                    let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
+                    where add
+                    select
+                        new Version().ParseVersion(
+                            new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
+                                new DirectoryInfo(b).Name)), false)) {
+                    versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
+                        Tag = version.VersionId
+                    });
+                }
             }
             if (CurrentProfile.SelectedVersion != null) {
                 foreach (

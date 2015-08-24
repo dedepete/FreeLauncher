@@ -283,8 +283,8 @@ namespace FreeLauncher.Forms
                             selectedVersion.ArgumentCollection.Add("port", _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
                         }
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
-                            ? ""
-                            : _selectedProfile.JavaArguments + " ";
+                            ? string.Empty
+                            :_selectedProfile.JavaArguments + " ";
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,

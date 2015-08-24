@@ -40,11 +40,19 @@ namespace FreeLauncher.Forms
             this.javaArgumentsBox = new Telerik.WinControls.UI.RadTextBox();
             this.javaArgumentsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.radGroupBox2 = new Telerik.WinControls.UI.RadGroupBox();
+            this.VersionSelector = new Telerik.WinControls.UI.RadPageView();
+            this.officialVersionsPage = new Telerik.WinControls.UI.RadPageViewPage();
+            this.snapshotsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.otherCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.betaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.versionsDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.alphaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.betaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.snapshotsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.modVersionsPage = new Telerik.WinControls.UI.RadPageViewPage();
+            this.combinedCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.forgeCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.liteCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.optifineCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.modVersionsDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
             this.radButton1 = new Telerik.WinControls.UI.RadButton();
             this.portTextBox = new Telerik.WinControls.UI.RadTextBox();
@@ -71,11 +79,20 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).BeginInit();
             this.radGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VersionSelector)).BeginInit();
+            this.VersionSelector.SuspendLayout();
+            this.officialVersionsPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).BeginInit();
+            this.modVersionsPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.combinedCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.forgeCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.liteCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.optifineCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modVersionsDropDownList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
             this.radGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radButton1)).BeginInit();
@@ -107,7 +124,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox3.Controls.Add(this.javaArgumentsBox);
             this.radGroupBox3.Controls.Add(this.javaArgumentsCheckBox);
             this.radGroupBox3.HeaderText = "Настройки Java";
-            this.radGroupBox3.Location = new System.Drawing.Point(5, 308);
+            this.radGroupBox3.Location = new System.Drawing.Point(5, 347);
             this.radGroupBox3.Name = "radGroupBox3";
             // 
             // 
@@ -214,12 +231,8 @@ namespace FreeLauncher.Forms
             // radGroupBox2
             // 
             this.radGroupBox2.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-            this.radGroupBox2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.radGroupBox2.Controls.Add(this.otherCheckBox);
-            this.radGroupBox2.Controls.Add(this.versionsDropDownList);
-            this.radGroupBox2.Controls.Add(this.alphaCheckBox);
-            this.radGroupBox2.Controls.Add(this.betaCheckBox);
-            this.radGroupBox2.Controls.Add(this.snapshotsCheckBox);
+            this.radGroupBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.radGroupBox2.Controls.Add(this.VersionSelector);
             this.radGroupBox2.HeaderText = "Выбор версии";
             this.radGroupBox2.Location = new System.Drawing.Point(5, 164);
             this.radGroupBox2.Name = "radGroupBox2";
@@ -234,105 +247,44 @@ namespace FreeLauncher.Forms
             this.radGroupBox2.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.radGroupBox2.RootElement.Text = null;
             this.radGroupBox2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radGroupBox2.Size = new System.Drawing.Size(330, 143);
+            this.radGroupBox2.Size = new System.Drawing.Size(330, 177);
             this.radGroupBox2.TabIndex = 6;
             this.radGroupBox2.Text = "Выбор версии";
             this.radGroupBox2.ThemeName = "VisualStudio2012Dark";
             // 
-            // otherCheckBox
+            // VersionSelector
             // 
-            this.otherCheckBox.Location = new System.Drawing.Point(3, 93);
-            this.otherCheckBox.Name = "otherCheckBox";
+            this.VersionSelector.Controls.Add(this.officialVersionsPage);
+            this.VersionSelector.Controls.Add(this.modVersionsPage);
+            this.VersionSelector.DefaultPage = this.officialVersionsPage;
+            this.VersionSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VersionSelector.Location = new System.Drawing.Point(2, 18);
+            this.VersionSelector.Name = "VersionSelector";
+            this.VersionSelector.SelectedPage = this.officialVersionsPage;
+            this.VersionSelector.Size = new System.Drawing.Size(326, 157);
+            this.VersionSelector.TabIndex = 8;
+            this.VersionSelector.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.VersionSelector.GetChildAt(0))).StripButtons = Telerik.WinControls.UI.StripViewButtons.None;
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.VersionSelector.GetChildAt(0))).ItemAlignment = Telerik.WinControls.UI.StripViewItemAlignment.Near;
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.VersionSelector.GetChildAt(0))).ItemFitMode = ((Telerik.WinControls.UI.StripViewItemFitMode)((Telerik.WinControls.UI.StripViewItemFitMode.Shrink | Telerik.WinControls.UI.StripViewItemFitMode.Fill)));
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.VersionSelector.GetChildAt(0))).ItemContentOrientation = Telerik.WinControls.UI.PageViewContentOrientation.Auto;
             // 
+            // officialVersionsPage
             // 
-            // 
-            this.otherCheckBox.RootElement.AccessibleDescription = null;
-            this.otherCheckBox.RootElement.AccessibleName = null;
-            this.otherCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.otherCheckBox.RootElement.AngleTransform = 0F;
-            this.otherCheckBox.RootElement.FlipText = false;
-            this.otherCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.otherCheckBox.RootElement.Text = null;
-            this.otherCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.otherCheckBox.Size = new System.Drawing.Size(156, 18);
-            this.otherCheckBox.TabIndex = 7;
-            this.otherCheckBox.Text = "Включить прочие версии";
-            this.otherCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.otherCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Включить прочие версии";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.otherCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // versionsDropDownList
-            // 
-            this.versionsDropDownList.AutoCompleteDisplayMember = null;
-            this.versionsDropDownList.AutoCompleteValueMember = null;
-            this.versionsDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            this.versionsDropDownList.Location = new System.Drawing.Point(3, 114);
-            this.versionsDropDownList.Name = "versionsDropDownList";
-            // 
-            // 
-            // 
-            this.versionsDropDownList.RootElement.AccessibleDescription = null;
-            this.versionsDropDownList.RootElement.AccessibleName = null;
-            this.versionsDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.versionsDropDownList.RootElement.AngleTransform = 0F;
-            this.versionsDropDownList.RootElement.FlipText = false;
-            this.versionsDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.versionsDropDownList.RootElement.Text = null;
-            this.versionsDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.versionsDropDownList.Size = new System.Drawing.Size(319, 24);
-            this.versionsDropDownList.TabIndex = 6;
-            this.versionsDropDownList.ThemeName = "VisualStudio2012Dark";
-            // 
-            // alphaCheckBox
-            // 
-            this.alphaCheckBox.Location = new System.Drawing.Point(3, 69);
-            this.alphaCheckBox.Name = "alphaCheckBox";
-            // 
-            // 
-            // 
-            this.alphaCheckBox.RootElement.AccessibleDescription = null;
-            this.alphaCheckBox.RootElement.AccessibleName = null;
-            this.alphaCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.alphaCheckBox.RootElement.AngleTransform = 0F;
-            this.alphaCheckBox.RootElement.FlipText = false;
-            this.alphaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.alphaCheckBox.RootElement.Text = null;
-            this.alphaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.alphaCheckBox.Size = new System.Drawing.Size(240, 18);
-            this.alphaCheckBox.TabIndex = 5;
-            this.alphaCheckBox.Text = "Включить старые \"Alpha\" сборки(от 2010)";
-            this.alphaCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.alphaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.alphaCheckBox.GetChildAt(0))).Text = "Включить старые \"Alpha\" сборки(от 2010)";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.alphaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // betaCheckBox
-            // 
-            this.betaCheckBox.Location = new System.Drawing.Point(3, 45);
-            this.betaCheckBox.Name = "betaCheckBox";
-            // 
-            // 
-            // 
-            this.betaCheckBox.RootElement.AccessibleDescription = null;
-            this.betaCheckBox.RootElement.AccessibleName = null;
-            this.betaCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.betaCheckBox.RootElement.AngleTransform = 0F;
-            this.betaCheckBox.RootElement.FlipText = false;
-            this.betaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.betaCheckBox.RootElement.Text = null;
-            this.betaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.betaCheckBox.Size = new System.Drawing.Size(248, 18);
-            this.betaCheckBox.TabIndex = 4;
-            this.betaCheckBox.Text = "Включить старые \"Beta\" сборки(2010-2011)";
-            this.betaCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.betaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.betaCheckBox.GetChildAt(0))).Text = "Включить старые \"Beta\" сборки(2010-2011)";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.betaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.officialVersionsPage.Controls.Add(this.snapshotsCheckBox);
+            this.officialVersionsPage.Controls.Add(this.otherCheckBox);
+            this.officialVersionsPage.Controls.Add(this.betaCheckBox);
+            this.officialVersionsPage.Controls.Add(this.versionsDropDownList);
+            this.officialVersionsPage.Controls.Add(this.alphaCheckBox);
+            this.officialVersionsPage.ItemSize = new System.Drawing.SizeF(145F, 24F);
+            this.officialVersionsPage.Location = new System.Drawing.Point(5, 30);
+            this.officialVersionsPage.Name = "officialVersionsPage";
+            this.officialVersionsPage.Size = new System.Drawing.Size(316, 122);
+            this.officialVersionsPage.Text = "Официальные";
             // 
             // snapshotsCheckBox
             // 
-            this.snapshotsCheckBox.Location = new System.Drawing.Point(3, 21);
+            this.snapshotsCheckBox.Location = new System.Drawing.Point(3, 3);
             this.snapshotsCheckBox.Name = "snapshotsCheckBox";
             // 
             // 
@@ -345,13 +297,227 @@ namespace FreeLauncher.Forms
             this.snapshotsCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.snapshotsCheckBox.RootElement.Text = null;
             this.snapshotsCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.snapshotsCheckBox.Size = new System.Drawing.Size(291, 18);
+            this.snapshotsCheckBox.Size = new System.Drawing.Size(304, 18);
             this.snapshotsCheckBox.TabIndex = 3;
-            this.snapshotsCheckBox.Text = "Включить экспериментальные сборки (\"snapshots\")";
+            this.snapshotsCheckBox.Text = "Отображать экспериментальные сборки (\"snapshots\")";
             this.snapshotsCheckBox.ThemeName = "VisualStudio2012Dark";
             this.snapshotsCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.snapshotsCheckBox.GetChildAt(0))).Text = "Включить экспериментальные сборки (\"snapshots\")";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.snapshotsCheckBox.GetChildAt(0))).Text = "Отображать экспериментальные сборки (\"snapshots\")";
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.snapshotsCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // otherCheckBox
+            // 
+            this.otherCheckBox.Location = new System.Drawing.Point(3, 75);
+            this.otherCheckBox.Name = "otherCheckBox";
+            // 
+            // 
+            // 
+            this.otherCheckBox.RootElement.AccessibleDescription = null;
+            this.otherCheckBox.RootElement.AccessibleName = null;
+            this.otherCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.otherCheckBox.RootElement.AngleTransform = 0F;
+            this.otherCheckBox.RootElement.FlipText = false;
+            this.otherCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.otherCheckBox.RootElement.Text = null;
+            this.otherCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.otherCheckBox.Size = new System.Drawing.Size(168, 18);
+            this.otherCheckBox.TabIndex = 7;
+            this.otherCheckBox.Text = "Отображать прочие версии";
+            this.otherCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.otherCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Отображать прочие версии";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.otherCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // betaCheckBox
+            // 
+            this.betaCheckBox.Location = new System.Drawing.Point(3, 27);
+            this.betaCheckBox.Name = "betaCheckBox";
+            // 
+            // 
+            // 
+            this.betaCheckBox.RootElement.AccessibleDescription = null;
+            this.betaCheckBox.RootElement.AccessibleName = null;
+            this.betaCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.betaCheckBox.RootElement.AngleTransform = 0F;
+            this.betaCheckBox.RootElement.FlipText = false;
+            this.betaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.betaCheckBox.RootElement.Text = null;
+            this.betaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.betaCheckBox.Size = new System.Drawing.Size(261, 18);
+            this.betaCheckBox.TabIndex = 4;
+            this.betaCheckBox.Text = "Отображать старые \"Beta\" сборки(2010-2011)";
+            this.betaCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.betaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.betaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Beta\" сборки(2010-2011)";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.betaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // versionsDropDownList
+            // 
+            this.versionsDropDownList.AutoCompleteDisplayMember = null;
+            this.versionsDropDownList.AutoCompleteValueMember = null;
+            this.versionsDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
+            this.versionsDropDownList.Location = new System.Drawing.Point(3, 96);
+            this.versionsDropDownList.Name = "versionsDropDownList";
+            // 
+            // 
+            // 
+            this.versionsDropDownList.RootElement.AccessibleDescription = null;
+            this.versionsDropDownList.RootElement.AccessibleName = null;
+            this.versionsDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.versionsDropDownList.RootElement.AngleTransform = 0F;
+            this.versionsDropDownList.RootElement.FlipText = false;
+            this.versionsDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.versionsDropDownList.RootElement.Text = null;
+            this.versionsDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.versionsDropDownList.Size = new System.Drawing.Size(310, 24);
+            this.versionsDropDownList.TabIndex = 6;
+            this.versionsDropDownList.ThemeName = "VisualStudio2012Dark";
+            // 
+            // alphaCheckBox
+            // 
+            this.alphaCheckBox.Location = new System.Drawing.Point(3, 51);
+            this.alphaCheckBox.Name = "alphaCheckBox";
+            // 
+            // 
+            // 
+            this.alphaCheckBox.RootElement.AccessibleDescription = null;
+            this.alphaCheckBox.RootElement.AccessibleName = null;
+            this.alphaCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.alphaCheckBox.RootElement.AngleTransform = 0F;
+            this.alphaCheckBox.RootElement.FlipText = false;
+            this.alphaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.alphaCheckBox.RootElement.Text = null;
+            this.alphaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.alphaCheckBox.Size = new System.Drawing.Size(253, 18);
+            this.alphaCheckBox.TabIndex = 5;
+            this.alphaCheckBox.Text = "Отображать старые \"Alpha\" сборки(от 2010)";
+            this.alphaCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.alphaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.alphaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Alpha\" сборки(от 2010)";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.alphaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // modVersionsPage
+            // 
+            this.modVersionsPage.Controls.Add(this.combinedCheckBox);
+            this.modVersionsPage.Controls.Add(this.forgeCheckBox);
+            this.modVersionsPage.Controls.Add(this.liteCheckBox);
+            this.modVersionsPage.Controls.Add(this.optifineCheckBox);
+            this.modVersionsPage.Controls.Add(this.modVersionsDropDownList);
+            this.modVersionsPage.ItemSize = new System.Drawing.SizeF(181F, 24F);
+            this.modVersionsPage.Location = new System.Drawing.Point(5, 30);
+            this.modVersionsPage.Name = "modVersionsPage";
+            this.modVersionsPage.Size = new System.Drawing.Size(316, 122);
+            this.modVersionsPage.Text = "Модифицированные";
+            // 
+            // combinedCheckBox
+            // 
+            this.combinedCheckBox.Location = new System.Drawing.Point(3, 75);
+            this.combinedCheckBox.Name = "combinedCheckBox";
+            // 
+            // 
+            // 
+            this.combinedCheckBox.RootElement.AccessibleDescription = null;
+            this.combinedCheckBox.RootElement.AccessibleName = null;
+            this.combinedCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.combinedCheckBox.RootElement.AngleTransform = 0F;
+            this.combinedCheckBox.RootElement.FlipText = false;
+            this.combinedCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.combinedCheckBox.RootElement.Text = null;
+            this.combinedCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.combinedCheckBox.Size = new System.Drawing.Size(229, 18);
+            this.combinedCheckBox.TabIndex = 13;
+            this.combinedCheckBox.Text = "Отображать комбинированные сборки";
+            this.combinedCheckBox.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.combinedCheckBox.GetChildAt(0))).Text = "Отображать комбинированные сборки";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.combinedCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // forgeCheckBox
+            // 
+            this.forgeCheckBox.Location = new System.Drawing.Point(3, 3);
+            this.forgeCheckBox.Name = "forgeCheckBox";
+            // 
+            // 
+            // 
+            this.forgeCheckBox.RootElement.AccessibleDescription = null;
+            this.forgeCheckBox.RootElement.AccessibleName = null;
+            this.forgeCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.forgeCheckBox.RootElement.AngleTransform = 0F;
+            this.forgeCheckBox.RootElement.FlipText = false;
+            this.forgeCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.forgeCheckBox.RootElement.Text = null;
+            this.forgeCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.forgeCheckBox.Size = new System.Drawing.Size(218, 18);
+            this.forgeCheckBox.TabIndex = 10;
+            this.forgeCheckBox.Text = "Отображать сборки с Minecraft Forge";
+            this.forgeCheckBox.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.forgeCheckBox.GetChildAt(0))).Text = "Отображать сборки с Minecraft Forge";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.forgeCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // liteCheckBox
+            // 
+            this.liteCheckBox.Location = new System.Drawing.Point(3, 27);
+            this.liteCheckBox.Name = "liteCheckBox";
+            // 
+            // 
+            // 
+            this.liteCheckBox.RootElement.AccessibleDescription = null;
+            this.liteCheckBox.RootElement.AccessibleName = null;
+            this.liteCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.liteCheckBox.RootElement.AngleTransform = 0F;
+            this.liteCheckBox.RootElement.FlipText = false;
+            this.liteCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.liteCheckBox.RootElement.Text = null;
+            this.liteCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.liteCheckBox.Size = new System.Drawing.Size(191, 18);
+            this.liteCheckBox.TabIndex = 11;
+            this.liteCheckBox.Text = "Отображать сборки с LiteLoader";
+            this.liteCheckBox.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.liteCheckBox.GetChildAt(0))).Text = "Отображать сборки с LiteLoader";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.liteCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // optifineCheckBox
+            // 
+            this.optifineCheckBox.Location = new System.Drawing.Point(3, 51);
+            this.optifineCheckBox.Name = "optifineCheckBox";
+            // 
+            // 
+            // 
+            this.optifineCheckBox.RootElement.AccessibleDescription = null;
+            this.optifineCheckBox.RootElement.AccessibleName = null;
+            this.optifineCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.optifineCheckBox.RootElement.AngleTransform = 0F;
+            this.optifineCheckBox.RootElement.FlipText = false;
+            this.optifineCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.optifineCheckBox.RootElement.Text = null;
+            this.optifineCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.optifineCheckBox.Size = new System.Drawing.Size(179, 18);
+            this.optifineCheckBox.TabIndex = 12;
+            this.optifineCheckBox.Text = "Отображать сборки с Optifine";
+            this.optifineCheckBox.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.optifineCheckBox.GetChildAt(0))).Text = "Отображать сборки с Optifine";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.optifineCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // modVersionsDropDownList
+            // 
+            this.modVersionsDropDownList.AutoCompleteDisplayMember = null;
+            this.modVersionsDropDownList.AutoCompleteValueMember = null;
+            this.modVersionsDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
+            this.modVersionsDropDownList.Location = new System.Drawing.Point(3, 96);
+            this.modVersionsDropDownList.Name = "modVersionsDropDownList";
+            // 
+            // 
+            // 
+            this.modVersionsDropDownList.RootElement.AccessibleDescription = null;
+            this.modVersionsDropDownList.RootElement.AccessibleName = null;
+            this.modVersionsDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.modVersionsDropDownList.RootElement.AngleTransform = 0F;
+            this.modVersionsDropDownList.RootElement.FlipText = false;
+            this.modVersionsDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.modVersionsDropDownList.RootElement.Text = null;
+            this.modVersionsDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.modVersionsDropDownList.Size = new System.Drawing.Size(310, 24);
+            this.modVersionsDropDownList.TabIndex = 8;
+            this.modVersionsDropDownList.ThemeName = "VisualStudio2012Dark";
             // 
             // radGroupBox1
             // 
@@ -692,7 +858,7 @@ namespace FreeLauncher.Forms
             // 
             this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(5, 393);
+            this.cancelButton.Location = new System.Drawing.Point(5, 432);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(86, 34);
             this.cancelButton.TabIndex = 8;
@@ -703,7 +869,7 @@ namespace FreeLauncher.Forms
             // 
             this.openGameDirectoryButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.openGameDirectoryButton.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.openGameDirectoryButton.Location = new System.Drawing.Point(101, 393);
+            this.openGameDirectoryButton.Location = new System.Drawing.Point(101, 432);
             this.openGameDirectoryButton.Name = "openGameDirectoryButton";
             // 
             // 
@@ -727,7 +893,7 @@ namespace FreeLauncher.Forms
             // 
             this.saveProfileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.saveProfileButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveProfileButton.Location = new System.Drawing.Point(218, 393);
+            this.saveProfileButton.Location = new System.Drawing.Point(218, 432);
             this.saveProfileButton.Name = "saveProfileButton";
             // 
             // 
@@ -752,7 +918,7 @@ namespace FreeLauncher.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(341, 429);
+            this.ClientSize = new System.Drawing.Size(341, 468);
             this.Controls.Add(this.openGameDirectoryButton);
             this.Controls.Add(this.saveProfileButton);
             this.Controls.Add(this.cancelButton);
@@ -778,12 +944,22 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).EndInit();
             this.radGroupBox2.ResumeLayout(false);
-            this.radGroupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VersionSelector)).EndInit();
+            this.VersionSelector.ResumeLayout(false);
+            this.officialVersionsPage.ResumeLayout(false);
+            this.officialVersionsPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).EndInit();
+            this.modVersionsPage.ResumeLayout(false);
+            this.modVersionsPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.combinedCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.forgeCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.liteCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.optifineCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modVersionsDropDownList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
             this.radGroupBox1.ResumeLayout(false);
             this.radGroupBox1.PerformLayout();
@@ -817,11 +993,6 @@ namespace FreeLauncher.Forms
         private RadTextBox javaArgumentsBox;
         private RadCheckBox javaArgumentsCheckBox;
         private RadGroupBox radGroupBox2;
-        private RadCheckBox otherCheckBox;
-        public RadDropDownList versionsDropDownList;
-        private RadCheckBox alphaCheckBox;
-        private RadCheckBox betaCheckBox;
-        private RadCheckBox snapshotsCheckBox;
         private RadGroupBox radGroupBox1;
         private RadButton radButton1;
         private RadTextBox portTextBox;
@@ -840,5 +1011,18 @@ namespace FreeLauncher.Forms
         private RadButton cancelButton;
         private RadButton openGameDirectoryButton;
         private RadButton saveProfileButton;
+        private RadPageView VersionSelector;
+        private RadPageViewPage officialVersionsPage;
+        private RadCheckBox snapshotsCheckBox;
+        private RadCheckBox otherCheckBox;
+        private RadCheckBox betaCheckBox;
+        public RadDropDownList versionsDropDownList;
+        private RadCheckBox alphaCheckBox;
+        private RadPageViewPage modVersionsPage;
+        public RadDropDownList modVersionsDropDownList;
+        private RadCheckBox forgeCheckBox;
+        private RadCheckBox liteCheckBox;
+        private RadCheckBox optifineCheckBox;
+        private RadCheckBox combinedCheckBox;
     }
 }
