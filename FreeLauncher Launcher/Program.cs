@@ -10,6 +10,7 @@ namespace FreeLauncher_Launcher
     {
         private static void Main(string[] args)
         {
+            //TODO: Make this code better
             Console.WriteLine("FreeLauncher downloader v.0.2.1\n");
             Console.Title = "FreeLauncher downloader v.0.2.1";
             CommandLine.Parser.Default.ParseArguments(args, Variables.ProgramArguments);

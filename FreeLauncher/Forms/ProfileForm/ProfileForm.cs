@@ -180,6 +180,7 @@ namespace FreeLauncher.Forms
             }
         }
 
+        //TODO: Add modified versions
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
