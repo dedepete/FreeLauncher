@@ -101,10 +101,13 @@ namespace FreeLauncher.Forms
             } else {
                 CurrentProfile.WorkingDirectory = null;
             }
-            if (xResolutionBox.Text != "854" && yResolutionBox.Text != "480" && xResolutionBox.Text != string.Empty &&
+            if ((xResolutionBox.Text != "854" || yResolutionBox.Text != "480") && xResolutionBox.Text != string.Empty &&
                 yResolutionBox.Text != string.Empty) {
-                CurrentProfile.WindowSize.X = Convert.ToInt32(xResolutionBox.Text);
-                CurrentProfile.WindowSize.Y = Convert.ToInt32(yResolutionBox.Text);
+                MinecraftWindowSize winSize = new MinecraftWindowSize {
+                    X = Convert.ToInt32(xResolutionBox.Text),
+                    Y = Convert.ToInt32(yResolutionBox.Text)
+                };
+                CurrentProfile.WindowSize = winSize;
             } else {
                 CurrentProfile.WindowSize = null;
             }
