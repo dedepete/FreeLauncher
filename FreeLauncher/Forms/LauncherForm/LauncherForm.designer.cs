@@ -33,11 +33,11 @@ namespace FreeLauncher.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn1 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn2 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn3 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn4 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn5 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn6 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
-            Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
+            Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
             this.vs12theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.mainPageView = new Telerik.WinControls.UI.RadPageView();
             this.News = new Telerik.WinControls.UI.RadPageViewPage();
@@ -57,16 +57,16 @@ namespace FreeLauncher.Forms
             this.AboutPageViewPage = new Telerik.WinControls.UI.RadPageViewPage();
             this.radScrollablePanel2 = new Telerik.WinControls.UI.RadScrollablePanel();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.radLabel5 = new Telerik.WinControls.UI.RadLabel();
+            this.MCofflineDescLabel = new System.Windows.Forms.Label();
+            this.PartnersLabel = new Telerik.WinControls.UI.RadLabel();
             this.AboutVersion = new Telerik.WinControls.UI.RadLabel();
             this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.CopyrightInfoLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.DevInfoLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
+            this.GratitudesDescLabel = new System.Windows.Forms.Label();
+            this.GratitudesLabel = new Telerik.WinControls.UI.RadLabel();
             this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
             this.LicensesPage = new Telerik.WinControls.UI.RadPageViewPage();
             this.licensePageView = new Telerik.WinControls.UI.RadPageView();
@@ -88,7 +88,7 @@ namespace FreeLauncher.Forms
             this.StatusBar = new Telerik.WinControls.UI.RadProgressBar();
             this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
             this.DeleteProfileButton = new Telerik.WinControls.UI.RadButton();
-            this.radButton3 = new Telerik.WinControls.UI.RadButton();
+            this.ManageUsersButton = new Telerik.WinControls.UI.RadButton();
             this.NicknameDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.SelectedVersion = new System.Windows.Forms.Label();
             this.LogoBox = new System.Windows.Forms.PictureBox();
@@ -117,10 +117,10 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radScrollablePanel2)).BeginInit();
             this.radScrollablePanel2.PanelContainer.SuspendLayout();
             this.radScrollablePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PartnersLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AboutVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GratitudesLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
             this.LicensesPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.licensePageView)).BeginInit();
@@ -148,7 +148,7 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
             this.radPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DeleteProfileButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radButton3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ManageUsersButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NicknameDropDownList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LaunchButton)).BeginInit();
@@ -346,15 +346,15 @@ namespace FreeLauncher.Forms
             this.versionsListView.AllowRemove = false;
             this.versionsListView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.versionsListView.CheckOnClickMode = Telerik.WinControls.UI.CheckOnClickMode.FirstClick;
-            listViewDetailColumn1.HeaderText = "Версия";
-            listViewDetailColumn2.HeaderText = "Тип";
-            listViewDetailColumn2.Width = 100F;
-            listViewDetailColumn3.HeaderText = "Зависимость";
-            listViewDetailColumn3.Width = 100F;
+            listViewDetailColumn4.HeaderText = "Версия";
+            listViewDetailColumn5.HeaderText = "Тип";
+            listViewDetailColumn5.Width = 100F;
+            listViewDetailColumn6.HeaderText = "Зависимость";
+            listViewDetailColumn6.Width = 100F;
             this.versionsListView.Columns.AddRange(new Telerik.WinControls.UI.ListViewDetailColumn[] {
-            listViewDetailColumn1,
-            listViewDetailColumn2,
-            listViewDetailColumn3});
+            listViewDetailColumn4,
+            listViewDetailColumn5,
+            listViewDetailColumn6});
             this.versionsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.versionsListView.EnableColumnSort = true;
             this.versionsListView.EnableFiltering = true;
@@ -423,6 +423,7 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
+            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -436,17 +437,17 @@ namespace FreeLauncher.Forms
             // 
             // radScrollablePanel2.PanelContainer
             // 
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label6);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label7);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.radLabel5);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.AboutVersion);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label6);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.MCofflineDescLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.radLabel1);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label2);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.PartnersLabel);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.CopyrightInfoLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.label3);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label1);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.DevInfoLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.label5);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label4);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.radLabel2);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.GratitudesDescLabel);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.GratitudesLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.radLabel3);
             this.radScrollablePanel2.PanelContainer.Size = new System.Drawing.Size(819, 291);
             // 
@@ -478,42 +479,42 @@ namespace FreeLauncher.Forms
             this.label6.TabIndex = 11;
             this.label6.Text = "http://vk.com/mcoffline";
             // 
-            // label7
+            // MCofflineDescLabel
             // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label7.Location = new System.Drawing.Point(14, 228);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(402, 17);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "MCoffline - лучшая программа для серверных администраторов!";
+            this.MCofflineDescLabel.AutoSize = true;
+            this.MCofflineDescLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MCofflineDescLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.MCofflineDescLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.MCofflineDescLabel.Location = new System.Drawing.Point(14, 228);
+            this.MCofflineDescLabel.Name = "MCofflineDescLabel";
+            this.MCofflineDescLabel.Size = new System.Drawing.Size(402, 17);
+            this.MCofflineDescLabel.TabIndex = 9;
+            this.MCofflineDescLabel.Text = "MCoffline - лучшая программа для серверных администраторов!";
             // 
-            // radLabel5
+            // PartnersLabel
             // 
-            this.radLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.radLabel5.Font = new System.Drawing.Font("Segoe UI", 20.25F);
-            this.radLabel5.ForeColor = System.Drawing.Color.Transparent;
-            this.radLabel5.Location = new System.Drawing.Point(3, 191);
-            this.radLabel5.Name = "radLabel5";
+            this.PartnersLabel.BackColor = System.Drawing.Color.Transparent;
+            this.PartnersLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F);
+            this.PartnersLabel.ForeColor = System.Drawing.Color.Transparent;
+            this.PartnersLabel.Location = new System.Drawing.Point(3, 191);
+            this.PartnersLabel.Name = "PartnersLabel";
             // 
             // 
             // 
-            this.radLabel5.RootElement.AccessibleDescription = null;
-            this.radLabel5.RootElement.AccessibleName = null;
-            this.radLabel5.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel5.RootElement.AngleTransform = 0F;
-            this.radLabel5.RootElement.FlipText = false;
-            this.radLabel5.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel5.RootElement.Text = null;
-            this.radLabel5.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radLabel5.Size = new System.Drawing.Size(140, 41);
-            this.radLabel5.TabIndex = 10;
-            this.radLabel5.Text = "Партнёры";
-            this.radLabel5.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel5.GetChildAt(0))).Text = "Партнёры";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel5.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
+            this.PartnersLabel.RootElement.AccessibleDescription = null;
+            this.PartnersLabel.RootElement.AccessibleName = null;
+            this.PartnersLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.PartnersLabel.RootElement.AngleTransform = 0F;
+            this.PartnersLabel.RootElement.FlipText = false;
+            this.PartnersLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.PartnersLabel.RootElement.Text = null;
+            this.PartnersLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.PartnersLabel.Size = new System.Drawing.Size(140, 41);
+            this.PartnersLabel.TabIndex = 10;
+            this.PartnersLabel.Text = "Партнёры";
+            this.PartnersLabel.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadLabelElement)(this.PartnersLabel.GetChildAt(0))).Text = "Партнёры";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.PartnersLabel.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // AboutVersion
             // 
@@ -568,18 +569,18 @@ namespace FreeLauncher.Forms
             ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel1.GetChildAt(0))).Text = "FreeLauncher";
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel1.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
-            // label2
+            // CopyrightInfoLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(14, 278);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(602, 51);
-            this.label2.TabIndex = 4;
-            this.label2.Text = resources.GetString("label2.Text");
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.CopyrightInfoLabel.AutoSize = true;
+            this.CopyrightInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.CopyrightInfoLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.CopyrightInfoLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.CopyrightInfoLabel.Location = new System.Drawing.Point(14, 278);
+            this.CopyrightInfoLabel.Name = "CopyrightInfoLabel";
+            this.CopyrightInfoLabel.Size = new System.Drawing.Size(602, 51);
+            this.CopyrightInfoLabel.TabIndex = 4;
+            this.CopyrightInfoLabel.Text = resources.GetString("CopyrightInfoLabel.Text");
+            this.CopyrightInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
@@ -595,17 +596,17 @@ namespace FreeLauncher.Forms
             this.label3.TabIndex = 5;
             this.label3.Text = "http://vk.com/sesmc";
             // 
-            // label1
+            // DevInfoLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(14, 55);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(259, 34);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Разработано Space Earth Studio Minecraft\r\nИздано Space Earth Studio";
+            this.DevInfoLabel.AutoSize = true;
+            this.DevInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.DevInfoLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.DevInfoLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.DevInfoLabel.Location = new System.Drawing.Point(14, 55);
+            this.DevInfoLabel.Name = "DevInfoLabel";
+            this.DevInfoLabel.Size = new System.Drawing.Size(336, 34);
+            this.DevInfoLabel.TabIndex = 3;
+            this.DevInfoLabel.Text = "Разработано dedepete из Space Earth Studio Minecraft\r\nИздано Space Earth Studio";
             // 
             // label5
             // 
@@ -620,42 +621,42 @@ namespace FreeLauncher.Forms
             this.label5.TabIndex = 8;
             this.label5.Text = "http://ru-minecraft.ru";
             // 
-            // label4
+            // GratitudesDescLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label4.Location = new System.Drawing.Point(14, 154);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(449, 17);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Большое спасибо администрации портала ru-minecraft.ru за хост файлов";
+            this.GratitudesDescLabel.AutoSize = true;
+            this.GratitudesDescLabel.BackColor = System.Drawing.Color.Transparent;
+            this.GratitudesDescLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.GratitudesDescLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.GratitudesDescLabel.Location = new System.Drawing.Point(14, 154);
+            this.GratitudesDescLabel.Name = "GratitudesDescLabel";
+            this.GratitudesDescLabel.Size = new System.Drawing.Size(449, 17);
+            this.GratitudesDescLabel.TabIndex = 6;
+            this.GratitudesDescLabel.Text = "Большое спасибо администрации портала ru-minecraft.ru за хост файлов";
             // 
-            // radLabel2
+            // GratitudesLabel
             // 
-            this.radLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.radLabel2.Font = new System.Drawing.Font("Segoe UI", 20.25F);
-            this.radLabel2.ForeColor = System.Drawing.Color.Transparent;
-            this.radLabel2.Location = new System.Drawing.Point(3, 117);
-            this.radLabel2.Name = "radLabel2";
+            this.GratitudesLabel.BackColor = System.Drawing.Color.Transparent;
+            this.GratitudesLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F);
+            this.GratitudesLabel.ForeColor = System.Drawing.Color.Transparent;
+            this.GratitudesLabel.Location = new System.Drawing.Point(3, 117);
+            this.GratitudesLabel.Name = "GratitudesLabel";
             // 
             // 
             // 
-            this.radLabel2.RootElement.AccessibleDescription = null;
-            this.radLabel2.RootElement.AccessibleName = null;
-            this.radLabel2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel2.RootElement.AngleTransform = 0F;
-            this.radLabel2.RootElement.FlipText = false;
-            this.radLabel2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel2.RootElement.Text = null;
-            this.radLabel2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radLabel2.Size = new System.Drawing.Size(202, 41);
-            this.radLabel2.TabIndex = 7;
-            this.radLabel2.Text = "Благодарности";
-            this.radLabel2.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel2.GetChildAt(0))).Text = "Благодарности";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel2.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
+            this.GratitudesLabel.RootElement.AccessibleDescription = null;
+            this.GratitudesLabel.RootElement.AccessibleName = null;
+            this.GratitudesLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.GratitudesLabel.RootElement.AngleTransform = 0F;
+            this.GratitudesLabel.RootElement.FlipText = false;
+            this.GratitudesLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.GratitudesLabel.RootElement.Text = null;
+            this.GratitudesLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.GratitudesLabel.Size = new System.Drawing.Size(202, 41);
+            this.GratitudesLabel.TabIndex = 7;
+            this.GratitudesLabel.Text = "Благодарности";
+            this.GratitudesLabel.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadLabelElement)(this.GratitudesLabel.GetChildAt(0))).Text = "Благодарности";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.GratitudesLabel.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // radLabel3
             // 
@@ -835,15 +836,15 @@ namespace FreeLauncher.Forms
             this.CloseGameOutput.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.CloseGameOutput.RootElement.Text = null;
             this.CloseGameOutput.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.CloseGameOutput.Size = new System.Drawing.Size(350, 18);
+            this.CloseGameOutput.Size = new System.Drawing.Size(327, 18);
             this.CloseGameOutput.TabIndex = 2;
-            this.CloseGameOutput.Text = "Закрывать вкладку вывода игры, если завершение стабильное";
+            this.CloseGameOutput.Text = "Закрывать вкладку, если завершение прошло без ошибок";
             this.CloseGameOutput.ThemeName = "VisualStudio2012Dark";
             // 
             // UseGamePrefix
             // 
             this.UseGamePrefix.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseGamePrefix.Location = new System.Drawing.Point(10, 45);
+            this.UseGamePrefix.Location = new System.Drawing.Point(5, 45);
             this.UseGamePrefix.Name = "UseGamePrefix";
             // 
             // 
@@ -939,8 +940,8 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
             this.LangDropDownList.Enabled = false;
-            radListDataItem1.Text = "Русский (ru-default)";
-            this.LangDropDownList.Items.Add(radListDataItem1);
+            radListDataItem2.Text = "Русский (ru-default)";
+            this.LangDropDownList.Items.Add(radListDataItem2);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 69);
             this.LangDropDownList.Name = "LangDropDownList";
             // 
@@ -1018,7 +1019,7 @@ namespace FreeLauncher.Forms
             // 
             this.radPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("radPanel1.BackgroundImage")));
             this.radPanel1.Controls.Add(this.DeleteProfileButton);
-            this.radPanel1.Controls.Add(this.radButton3);
+            this.radPanel1.Controls.Add(this.ManageUsersButton);
             this.radPanel1.Controls.Add(this.NicknameDropDownList);
             this.radPanel1.Controls.Add(this.SelectedVersion);
             this.radPanel1.Controls.Add(this.LogoBox);
@@ -1056,27 +1057,28 @@ namespace FreeLauncher.Forms
             this.DeleteProfileButton.ThemeName = "VisualStudio2012Dark";
             this.DeleteProfileButton.Click += new System.EventHandler(this.DeleteProfileButton_Click);
             // 
-            // radButton3
+            // ManageUsersButton
             // 
-            this.radButton3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.radButton3.Enabled = false;
-            this.radButton3.Location = new System.Drawing.Point(521, 6);
-            this.radButton3.Name = "radButton3";
+            this.ManageUsersButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.ManageUsersButton.Image = global::FreeLauncher.Properties.Resources.edit;
+            this.ManageUsersButton.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ManageUsersButton.Location = new System.Drawing.Point(513, 6);
+            this.ManageUsersButton.Name = "ManageUsersButton";
             // 
             // 
             // 
-            this.radButton3.RootElement.AccessibleDescription = null;
-            this.radButton3.RootElement.AccessibleName = null;
-            this.radButton3.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radButton3.RootElement.AngleTransform = 0F;
-            this.radButton3.RootElement.FlipText = false;
-            this.radButton3.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radButton3.RootElement.Text = null;
-            this.radButton3.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radButton3.Size = new System.Drawing.Size(24, 24);
-            this.radButton3.TabIndex = 7;
-            this.radButton3.Text = "+";
-            this.radButton3.ThemeName = "VisualStudio2012Dark";
+            this.ManageUsersButton.RootElement.AccessibleDescription = null;
+            this.ManageUsersButton.RootElement.AccessibleName = null;
+            this.ManageUsersButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.ManageUsersButton.RootElement.AngleTransform = 0F;
+            this.ManageUsersButton.RootElement.FlipText = false;
+            this.ManageUsersButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.ManageUsersButton.RootElement.Text = null;
+            this.ManageUsersButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.ManageUsersButton.Size = new System.Drawing.Size(32, 24);
+            this.ManageUsersButton.TabIndex = 7;
+            this.ManageUsersButton.ThemeName = "VisualStudio2012Dark";
+            this.ManageUsersButton.Click += new System.EventHandler(this.ManageUsersButton_Click);
             // 
             // NicknameDropDownList
             // 
@@ -1097,9 +1099,10 @@ namespace FreeLauncher.Forms
             this.NicknameDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.NicknameDropDownList.RootElement.Text = null;
             this.NicknameDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.NicknameDropDownList.Size = new System.Drawing.Size(204, 24);
+            this.NicknameDropDownList.Size = new System.Drawing.Size(196, 24);
             this.NicknameDropDownList.TabIndex = 3;
             this.NicknameDropDownList.ThemeName = "VisualStudio2012Dark";
+            this.NicknameDropDownList.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.NicknameDropDownList_SelectedIndexChanged);
             // 
             // SelectedVersion
             // 
@@ -1257,10 +1260,10 @@ namespace FreeLauncher.Forms
             this.radScrollablePanel2.PanelContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radScrollablePanel2)).EndInit();
             this.radScrollablePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PartnersLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AboutVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GratitudesLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
             this.LicensesPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.licensePageView)).EndInit();
@@ -1293,7 +1296,7 @@ namespace FreeLauncher.Forms
             this.radPanel1.ResumeLayout(false);
             this.radPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DeleteProfileButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radButton3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ManageUsersButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NicknameDropDownList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LaunchButton)).EndInit();
@@ -1323,16 +1326,16 @@ namespace FreeLauncher.Forms
         private RadPageViewPage AboutPageViewPage;
         private RadScrollablePanel radScrollablePanel2;
         private Label label6;
-        private Label label7;
-        private RadLabel radLabel5;
+        private Label MCofflineDescLabel;
+        private RadLabel PartnersLabel;
         private RadLabel AboutVersion;
         private RadLabel radLabel1;
-        private Label label2;
+        private Label CopyrightInfoLabel;
         private Label label3;
-        private Label label1;
+        private Label DevInfoLabel;
         private Label label5;
-        private Label label4;
-        private RadLabel radLabel2;
+        private Label GratitudesDescLabel;
+        private RadLabel GratitudesLabel;
         private RadLabel radLabel3;
         private RadPageViewPage LicensesPage;
         private RadPageView licensePageView;
@@ -1347,7 +1350,7 @@ namespace FreeLauncher.Forms
         public RadCheckBox EnableMinecraftUpdateAlerts;
         public RadCheckBox radCheckBox1;
         private RadPanel radPanel1;
-        private RadButton radButton3;
+        private RadButton ManageUsersButton;
         public RadDropDownList NicknameDropDownList;
         private Label SelectedVersion;
         private PictureBox LogoBox;

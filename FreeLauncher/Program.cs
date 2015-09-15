@@ -8,7 +8,7 @@ using Telerik.WinControls;
 
 namespace FreeLauncher
 {
-    class Program
+    internal class Program
     {
         private static Configuration _cfg;
 
@@ -17,16 +17,22 @@ namespace FreeLauncher
         {
             Parser.Default.ParseArguments(args, Variables.ProgramArguments);
             InitValues();
-            _cfg = File.Exists(Variables.McLauncher + "\\configuration.json") ? JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(Variables.McLauncher + "\\configuration.json")) : new Configuration();
+            _cfg = File.Exists(Variables.McLauncher + "\\configuration.json")
+                ? JsonConvert.DeserializeObject<Configuration>(
+                    File.ReadAllText(Variables.McLauncher + "\\configuration.json"))
+                : new Configuration();
             ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Dark";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LauncherForm(ref _cfg));
-            File.WriteAllText(Variables.McLauncher + "\\configuration.json", JsonConvert.SerializeObject(_cfg, Formatting.Indented));
+            File.WriteAllText(Variables.McLauncher + "\\configuration.json",
+                JsonConvert.SerializeObject(_cfg, Formatting.Indented));
         }
 
         public static void InitValues()
         {
+            //TODO: Localization
+            //File.WriteAllText(Variables.McLauncher + "\\local.json", JsonConvert.SerializeObject(Variables.ProgramLocalization, Formatting.Indented));
             Variables.McDirectory = Variables.ProgramArguments.WorkingDirectory ??
                                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                         ".minecraft\\");

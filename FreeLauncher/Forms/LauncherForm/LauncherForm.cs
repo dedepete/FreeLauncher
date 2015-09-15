@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using dotMCLauncher.Core;
+using dotMCLauncher.YaDra4il;
 using Ionic.Zip;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
@@ -29,7 +30,10 @@ namespace FreeLauncher.Forms
 
         private ProfileManager _profileManager;
         private Profile _selectedProfile;
+        private UserManager _userManager;
+        private User _selectedUser;
         private readonly Configuration _cfg;
+        private string _versionToLaunch;
 
         private int StatusBarValue
         {
@@ -65,8 +69,7 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<int>(SetStatusBarValue), i);
-            }
-            else {
+            } else {
                 StatusBar.Value1 = i;
             }
         }
@@ -75,8 +78,7 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<int>(SetStatusBarMaxValue), i);
-            }
-            else {
+            } else {
                 StatusBar.Maximum = i;
             }
         }
@@ -85,8 +87,7 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<bool>(SetStatusBarVisibility), b);
-            }
-            else {
+            } else {
                 StatusBar.Visible = b;
             }
         }
@@ -101,6 +102,7 @@ namespace FreeLauncher.Forms
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             UseGamePrefix.Checked = _cfg.ShowGamePrefix;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
+            LoadLocalization();
             //
             Text = ProductName + " " + ProductVersion;
             AboutVersion.Text = ProductVersion;
@@ -118,60 +120,65 @@ namespace FreeLauncher.Forms
             if (!Directory.Exists(Variables.McLauncher)) {
                 Directory.CreateDirectory(Variables.McLauncher);
             }
-            RadMenuItem openVerButton = new RadMenuItem {Text = "Показать в проводнике"};
+            RadMenuItem launchVerButton = new RadMenuItem {Text = Variables.ProgramLocalization.Launch};
+            launchVerButton.Click += (sender, e) => {
+                if (versionsListView.SelectedItem == null) {
+                    return;
+                }
+                _versionToLaunch = versionsListView.SelectedItem[0].ToString();
+                LaunchButton.PerformClick();
+            };
+            RadMenuItem openVerButton = new RadMenuItem {Text = Variables.ProgramLocalization.OpenLocation};
             openVerButton.Click += (sender, e) => {
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
-                Console.WriteLine(Path.Combine(Variables.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
                 Process.Start(Path.Combine(Variables.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
             };
-            RadContextMenu verListMenuStrip = new RadContextMenu();
-            verListMenuStrip.Items.Add(openVerButton);
-            verListMenuStrip.Items.Add(new RadMenuSeparatorItem());
-            RadMenuItem delVerButton = new RadMenuItem {Text = "Удалить версию"};
+            RadMenuItem delVerButton = new RadMenuItem {Text = Variables.ProgramLocalization.DeleteVersion};
             delVerButton.Click += (sender, e) => {
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
                 DialogResult dr =
                     RadMessageBox.Show(
-                        string.Format("{0}({1})?", "Вы действительно хотите удалить эту версию",
+                        string.Format(Variables.ProgramLocalization.DeleteConfirmationText,
                             versionsListView.SelectedItem[0].ToString()),
-                        "Удаление",
+                        Variables.ProgramLocalization.DeleteConfirmationTitle,
                         MessageBoxButtons.YesNo, RadMessageIcon.Question);
                 if (dr != DialogResult.Yes) return;
                 try {
                     Directory.Delete(
                         Path.Combine(Variables.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"), true);
-                    AppendLog(string.Format("Версия '{0}' успешно удалена.", versionsListView.SelectedItem[0].ToString()));
+                    AppendLog($"Version '{versionsListView.SelectedItem[0].ToString()}' has been deleted successfuly.");
                     UpdateVersionListView();
                 }
                 catch (Exception ex) {
-                    AppendException(string.Format("Во время удаления произошла ошибка: {0}", ex.ToString()));
+                    AppendException($"An error has occurred during version deletion: {ex.ToString()}");
                 }
                 string path = Path.Combine(Variables.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-                string state = "Готов к запуску версии ";
+                string state = Variables.ProgramLocalization.ReadyToLaunch;
                 if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
                                                                      GetLatestVersion(_selectedProfile)))) {
-                    state = "Готов к загрузке версии ";
+                    state = Variables.ProgramLocalization.ReadyToDownload;
                 }
-                SelectedVersion.Text = state + (_selectedProfile.SelectedVersion ??
-                                                GetLatestVersion(_selectedProfile));
+                SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
+                                                             GetLatestVersion(_selectedProfile)));
             };
+            RadContextMenu verListMenuStrip = new RadContextMenu();
+            verListMenuStrip.Items.Add(launchVerButton);
+            verListMenuStrip.Items.Add(new RadMenuSeparatorItem());
+            verListMenuStrip.Items.Add(openVerButton);
             verListMenuStrip.Items.Add(delVerButton);
             new RadContextMenuManager().SetRadContextMenu(versionsListView, verListMenuStrip);
             Focus();
             if (!Variables.ProgramArguments.NotAStandalone) {
                 UpdateVersions();
             }
-            // TODO: Make this thing work with Mojang accounts
-            if (File.Exists(Path.Combine(Variables.McDirectory, "username"))) {
-                NicknameDropDownList.Text = File.ReadAllText(Path.Combine(Variables.McDirectory, "username"));
-            }
             UpdateProfileList();
             UpdateVersionListView();
+            UpdateUserList();
         }
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -191,23 +198,35 @@ namespace FreeLauncher.Forms
             _selectedProfile = _profileManager.Profiles[profilesDropDownBox.SelectedItem.Text];
             string path = Path.Combine(Variables.McVersions,
                 _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-            string state = "Готов к запуску версии ";
+            string state = Variables.ProgramLocalization.ReadyToLaunch;
             if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
                                                                  GetLatestVersion(_selectedProfile)))) {
-                state = "Готов к загрузке версии ";
+                state = Variables.ProgramLocalization.ReadyToDownload;
             }
-            SelectedVersion.Text = state + (_selectedProfile.SelectedVersion ??
-                                            GetLatestVersion(_selectedProfile));
+            SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
+                                                         GetLatestVersion(_selectedProfile)));
+        }
+
+        private void NicknameDropDownList_SelectedIndexChanged(object sender, PositionChangedEventArgs e)
+        {
+            if (NicknameDropDownList.SelectedItem == null) {
+                return;
+            }
+            _userManager.SelectedUsername = NicknameDropDownList.SelectedItem.Text;
+            _selectedUser = _userManager.Accounts[NicknameDropDownList.SelectedItem.Text];
         }
 
         private void EditProfile_Click(object sender, EventArgs e)
         {
-            ProfileForm pf = new ProfileForm(_selectedProfile) {Text = "Edit profile"};
+            ProfileForm pf = new ProfileForm(_selectedProfile) {
+                Text = Variables.ProgramLocalization.EditingProfileTitle
+            };
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
                 _profileManager.Profiles.Remove(_profileManager.LastUsedProfile);
                 if (_profileManager.Profiles.ContainsKey(pf.CurrentProfile.ProfileName)) {
-                    RadMessageBox.Show("Данный профиль уже существует в списке!", "Ошибка",
+                    RadMessageBox.Show(Variables.ProgramLocalization.ProfileAlreadyExistsErrorText,
+                        Variables.ProgramLocalization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     UpdateProfileList();
                     return;
@@ -224,11 +243,12 @@ namespace FreeLauncher.Forms
             Profile editedProfile = new Profile().ParseProfile(_selectedProfile.ToString());
             editedProfile.ProfileName = "Copy of '" + _selectedProfile.ProfileName + "'(" +
                                         DateTime.Now.ToString("HH:mm:ss") + ")";
-            ProfileForm pf = new ProfileForm(editedProfile) {Text = "Add profile"};
+            ProfileForm pf = new ProfileForm(editedProfile) {Text = Variables.ProgramLocalization.AddingProfileTitle};
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
                 if (_profileManager.Profiles.ContainsKey(editedProfile.ProfileName)) {
-                    RadMessageBox.Show("Данный профиль уже существует в списке!", "Ошибка",
+                    RadMessageBox.Show(Variables.ProgramLocalization.ProfileAlreadyExistsErrorText,
+                        Variables.ProgramLocalization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     return;
                 }
@@ -241,8 +261,11 @@ namespace FreeLauncher.Forms
 
         private void DeleteProfileButton_Click(object sender, EventArgs e)
         {
-            DialogResult dr = RadMessageBox.Show("Вы действительно хотите удалить этот профиль?", "Подтверждение",
-                MessageBoxButtons.YesNo, RadMessageIcon.Question);
+            DialogResult dr =
+                RadMessageBox.Show(
+                    string.Format(Variables.ProgramLocalization.ProfileDeleteConfirmationText,
+                        _profileManager.LastUsedProfile), Variables.ProgramLocalization.DeleteConfirmationTitle,
+                    MessageBoxButtons.YesNo, RadMessageIcon.Question);
             if (dr != DialogResult.Yes) {
                 return;
             }
@@ -252,14 +275,18 @@ namespace FreeLauncher.Forms
             UpdateProfileList();
         }
 
+        private void ManageUsersButton_Click(object sender, EventArgs e)
+        {
+            new UsersForm().ShowDialog();
+            UpdateUserList();
+        }
+
         private void LaunchButton_Click(object sender, EventArgs e)
         {
             BlockControls = true;
             if (string.IsNullOrWhiteSpace(NicknameDropDownList.Text)) {
                 NicknameDropDownList.Text = $"Player{DateTime.Now.ToString("hhmmss")}";
             }
-            // TODO: Make this thing work with Mojang accounts
-            File.WriteAllText(Path.Combine(Variables.McDirectory, "username"), NicknameDropDownList.Text);
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 CheckVersionAvailability();
@@ -272,19 +299,57 @@ namespace FreeLauncher.Forms
                     BackgroundWorker bgw2 = new BackgroundWorker();
                     bgw2.DoWork += delegate { CheckGameResources(); };
                     bgw2.RunWorkerCompleted += delegate {
+                        if (!_userManager.Accounts.ContainsKey(NicknameDropDownList.Text)) {
+                            User user = new User {
+                                Username = NicknameDropDownList.Text,
+                                Type = "offline"
+                            };
+                            _userManager.Accounts.Add(user.Username, user);
+                            _selectedUser = user;
+                        } else {
+                            _selectedUser = _userManager.Accounts[NicknameDropDownList.Text];
+                            if (_selectedUser.Type != "offline") {
+                                AuthManager am = new AuthManager {
+                                    SessionToken = _selectedUser.SessionToken,
+                                    Uuid = _selectedUser.Uuid
+                                };
+                                bool check = am.CheckSessionToken();
+                                if (!check) {
+                                    RadMessageBox.Show(
+                                        "Session token is not valid. Please, head up to user manager and re-add your account.",
+                                        Variables.ProgramLocalization.Error, MessageBoxButtons.OK,
+                                        RadMessageIcon.Exclamation);
+                                    User user = new User {
+                                        Username = NicknameDropDownList.Text,
+                                        Type = "offline"
+                                    };
+                                    _selectedUser = user;
+                                } else {
+                                    Refresh refresh = new Refresh(_selectedUser.SessionToken,
+                                        _selectedUser.AccessToken);
+                                    _selectedUser.UserProperties = (JArray) refresh.user["properties"];
+                                    _selectedUser.SessionToken = refresh.accessToken;
+                                    _userManager.Accounts[NicknameDropDownList.Text] = _selectedUser;
+                                }
+                            }
+                        }
+                        SaveUsers();
+                        UpdateUserList();
                         Version selectedVersion = new Version().ParseVersion(
-                            new DirectoryInfo(Variables.McVersions +
-                                              (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
+                            new DirectoryInfo(Variables.McVersions + (_versionToLaunch ?? (
+                                (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
                         };
                         if (_selectedProfile.FastConnectionSettigs != null) {
-                            selectedVersion.ArgumentCollection.Add("server", _selectedProfile.FastConnectionSettigs.ServerIP);
-                            selectedVersion.ArgumentCollection.Add("port", _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
+                            selectedVersion.ArgumentCollection.Add("server",
+                                _selectedProfile.FastConnectionSettigs.ServerIP);
+                            selectedVersion.ArgumentCollection.Add("port",
+                                _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
                         }
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
                             ? string.Empty
-                            :_selectedProfile.JavaArguments + " ";
+                            : _selectedProfile.JavaArguments + " ";
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
@@ -295,15 +360,16 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? Variables.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", NicknameDropDownList.Text}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", "test"}, {"auth_access_token", "test"}, {"auth_uuid", "test"}, {"user_properties", properties.ToString(Formatting.None)}, {"user_type", "mojang"}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token" }, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token" }, {"auth_uuid", _selectedUser.Uuid ?? "sample_token" }, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
-                        AppendLog(string.Format("Игра запущена. Версия: {0}.\nНачат вывод игры в другую вкладку.",
+                        AppendLog(string.Format("Version {0} successfuly launched.",
                             selectedVersion.VersionId));
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
                             _selectedProfile).Launch();
                         BlockControls = false;
                         UpdateVersionListView();
+                        _versionToLaunch = null;
                     };
                     bgw2.RunWorkerAsync();
                 };
@@ -327,8 +393,7 @@ namespace FreeLauncher.Forms
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
                 webPanel.Text = newsBrowser.Url.ToString();
                 webPanel.Visible = true;
-            }
-            else {
+            } else {
                 webPanel.Visible = false;
             }
         }
@@ -340,8 +405,7 @@ namespace FreeLauncher.Forms
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
                 webPanel.Text = newsBrowser.Url.ToString();
                 webPanel.Visible = true;
-            }
-            else {
+            } else {
                 webPanel.Visible = false;
             }
         }
@@ -382,13 +446,13 @@ namespace FreeLauncher.Forms
             }
             JObject jb =
                 JObject.Parse(jsonVersionList);
-            string remoteSnapshotVersion = jb["latest"]["snapshot"].ToString();
+            string remoteSnapshotVersion = jb["latest"]["snapshot"].ToString(),
+                remoteReleaseVersion = jb["latest"]["release"].ToString();
             AppendLog("Latest snapshot: " + remoteSnapshotVersion);
-            string remoteReleaseVersion = jb["latest"]["release"].ToString();
             AppendLog("Latest release: " + remoteReleaseVersion);
             JObject ver = JObject.Parse(File.ReadAllText(Variables.McVersions + "/versions.json"));
-            string localSnapshotVersion = ver["latest"]["snapshot"].ToString();
-            string localReleaseVersion = ver["latest"]["release"].ToString();
+            string localSnapshotVersion = ver["latest"]["snapshot"].ToString(),
+                localReleaseVersion = ver["latest"]["release"].ToString();
             AppendLog("Local versions: " + ((JArray) jb["versions"]).Count + ". Remote versions: " +
                       ((JArray) ver["versions"]).Count);
             if (((JArray) jb["versions"]).Count == ((JArray) ver["versions"]).Count &&
@@ -408,7 +472,7 @@ namespace FreeLauncher.Forms
                     new ProfileManager().ParseProfile(Variables.McDirectory +
                                                       "/launcher_profiles.json");
                 if (!_profileManager.Profiles.Any()) {
-                    throw new Exception("Какая-то редиска сломала список профилей >:(");
+                    throw new Exception("Someone broke my profiles>:(");
                 }
             }
             catch (Exception ex) {
@@ -448,72 +512,82 @@ namespace FreeLauncher.Forms
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(_profileManager.LastUsedProfile, true);
         }
 
+        private void UpdateUserList()
+        {
+            NicknameDropDownList.Items.Clear();
+            try {
+                _userManager = File.Exists(Variables.McLauncher + "users.json")
+                    ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(Variables.McLauncher + "users.json"))
+                    : new UserManager();
+            }
+            catch (Exception ex) {
+                AppendException("Reading user list: an exception has occurred\n" + ex.Message);
+                _userManager = new UserManager();
+                SaveUsers();
+            }
+            NicknameDropDownList.Items.AddRange(_userManager.Accounts.Keys);
+            NicknameDropDownList.SelectedItem = NicknameDropDownList.FindItemExact(_userManager.SelectedUsername, true);
+        }
+
         private void SaveProfiles()
         {
             File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                               "/.minecraft/launcher_profiles.json", _profileManager.ToJson());
         }
 
+        private void SaveUsers()
+        {
+            File.WriteAllText(Variables.McLauncher + "users.json",
+                JsonConvert.SerializeObject(_userManager, Formatting.Indented,
+                    new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
+        }
+
         private void CheckVersionAvailability()
         {
             long state = 0;
-            string filename = string.Empty;
+            string filename,
+                version = _versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile));
             WebClient downloader = new WebClient();
             downloader.DownloadProgressChanged += (sender, e) => {
                 StatusBarValue = e.ProgressPercentage;
             };
-            UpdateStatusBarText("Выполняется загрузка " + filename + "...");
             downloader.DownloadFileCompleted += delegate { state++; };
             StatusBarVisible = true;
             StatusBarMaxValue = 100;
             StatusBarValue = 0;
-            UpdateStatusBarText("Выполняется проверка доступности версии '" +
-                                (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) + "'");
-            AppendLog("Выполняется проверка доступности версии '" +
-                      (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) + "'...");
-            string path = Path.Combine(Variables.McVersions,
-                _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
+            UpdateStatusBarText(string.Format(Variables.ProgramLocalization.CheckingVersionAvailability, version));
+            AppendLog($"Checking '{version}' version availability...");
+            string path = Path.Combine(Variables.McVersions, version + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
-            if (
-                !File.Exists(path + "/" + (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) +
-                             ".json")) {
-                filename = (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) + ".json";
-                UpdateStatusBarAndLog("Выполняется загрузка " + filename + "...", new StackFrame().GetMethod().Name);
+            if (!File.Exists(path + "/" + version + ".json")) {
+                filename = version + ".json";
+                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
-                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json",
-                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))),
-                    string.Format("{0}/{1}/{1}.json", Variables.McVersions,
-                        _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)));
-            }
-            else {
+                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
+                    string.Format("{0}/{1}/{1}.json", Variables.McVersions, version));
+            } else {
                 state++;
             }
             StatusBarValue++;
             StatusBarValue = 0;
             while (state != 1) ;
             Version selectedVersion = new Version().ParseVersion(
-                new DirectoryInfo(Variables.McVersions +
-                                  (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))), false);
-            if (
-                !File.Exists(path + "/" + (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) +
-                             ".jar") &&
+                new DirectoryInfo(Variables.McVersions + version), false);
+            if (!File.Exists(path + "/" + version + ".jar") &&
                 selectedVersion.InheritsFrom == null) {
-                filename = (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)) + ".jar";
-                UpdateStatusBarAndLog("Выполняется загрузка " + filename + "...", new StackFrame().GetMethod().Name);
+                filename = version + ".jar";
+                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
-                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar",
-                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))),
-                    string.Format("{0}/{1}/{1}.jar", Variables.McVersions,
-                        _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)));
-            }
-            else {
+                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
+                    string.Format("{0}/{1}/{1}.jar", Variables.McVersions, version));
+            } else {
                 state++;
             }
             while (state != 2) ;
             if (selectedVersion.InheritsFrom == null) {
-                AppendLog("Выполняется проверка доступности завершена.");
+                AppendLog("Finished checking version avalability.");
                 return;
             }
             path = Path.Combine(Variables.McVersions, selectedVersion.InheritsFrom + "\\");
@@ -522,27 +596,25 @@ namespace FreeLauncher.Forms
             }
             if (!File.Exists(string.Format("{0}/{1}/{1}.jar", Variables.McVersions, selectedVersion.InheritsFrom))) {
                 filename = selectedVersion.InheritsFrom + ".jar";
-                UpdateStatusBarAndLog("Выполняется загрузка " + filename + "...", new StackFrame().GetMethod().Name);
+                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
                     string.Format("{0}/{1}/{1}.jar", Variables.McVersions, selectedVersion.InheritsFrom));
-            }
-            else {
+            } else {
                 state++;
             }
             while (state != 3) ;
             if (!File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions, selectedVersion.InheritsFrom))) {
                 filename = selectedVersion.InheritsFrom + ".json";
-                UpdateStatusBarAndLog("Выполняется загрузка " + filename + "...");
+                UpdateStatusBarAndLog("Downloading " + filename + "...");
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
                     string.Format("{0}/{1}/{1}.json", Variables.McVersions, selectedVersion.InheritsFrom));
-            }
-            else {
+            } else {
                 state++;
             }
             while (state != 4) ;
-            AppendLog("Выполняется проверка доступности завершена.");
+            AppendLog("Finished checking version avalability.");
         }
 
         private void CheckLibraries()
@@ -550,22 +622,21 @@ namespace FreeLauncher.Forms
             string libraries = string.Empty;
             Version selectedVersion = new Version().ParseVersion(
                 new DirectoryInfo(Variables.McVersions +
-                                  (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
+                                  (_versionToLaunch ??
+                                   (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
             StatusBarValue = 0;
             StatusBarMaxValue = selectedVersion.Libs.Count(a => a.IsForWindows()) + 1;
-            UpdateStatusBarText("Выполняется проверка библиотек");
-            AppendLog("Выполняется проверка библиотек...");
+            UpdateStatusBarText(Variables.ProgramLocalization.CheckingLibraries);
+            AppendLog("Checking libraries...");
             foreach (
                 Lib lib in
                     selectedVersion
                         .Libs.Where(a => a.IsForWindows())) {
                 StatusBarValue++;
                 if (!File.Exists(Variables.McLibs + lib.ToPath())) {
-                    UpdateStatusBarAndLog("Выполняется скачивание " + lib.Name + "...");
-                    if (DebugModeButton.IsChecked) {
-                        AppendLog("Url: " + (lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath());
-                    }
+                    UpdateStatusBarAndLog("Downloading " + lib.Name + "...");
+                    AppendDebug("Url: " + (lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath());
                     string directory = Path.GetDirectoryName(Variables.McLibs + lib.ToPath());
                     if (!File.Exists(directory)) {
                         Directory.CreateDirectory(directory);
@@ -574,35 +645,38 @@ namespace FreeLauncher.Forms
                         Variables.McLibs + lib.ToPath());
                 }
                 if (lib.IsNative != null) {
-                    UpdateStatusBarAndLog("Выполняется распаковка " + lib.Name + "...");
-                    using (ZipFile zip = ZipFile.Read(Variables.McLibs + lib.ToPath()))
+                    UpdateStatusBarAndLog("Unpacking " + lib.Name + "...");
+                    using (ZipFile zip = ZipFile.Read(Variables.McLibs + lib.ToPath())) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
+                            AppendDebug($"Unzipping {entry.FileName}");
                             try {
-                                entry.Extract(Variables.McDirectory + "\\natives\\",
+                                entry.Extract(Variables.McDirectory + "natives\\",
                                     ExtractExistingFileAction.OverwriteSilently);
                             }
                             catch (Exception ex) {
                                 AppendException(ex.Message);
                             }
                         }
-                }
-                else {
+                    }
+                } else {
                     libraries += Variables.McLibs + lib.ToPath() + ";";
                 }
-                UpdateStatusBarText("Выполняется проверка библиотек");
+                UpdateStatusBarText(Variables.ProgramLocalization.CheckingLibraries);
             }
             libraries += string.Format("{0}{1}\\{1}.jar", Variables.McVersions,
-                selectedVersion.InheritsFrom ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)));
+                selectedVersion.InheritsFrom ??
+                (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
             Variables.Libraries = libraries;
-            AppendLog("Проверка библиотек завершена.");
+            AppendLog("Finished checking libraries.");
         }
 
         private void CheckGameResources()
         {
-            UpdateStatusBarAndLog("Выполняется проверка игровых ресурсов...");
+            UpdateStatusBarAndLog("Checking game assets...");
             Version selectedVersion = new Version().ParseVersion(
                 new DirectoryInfo(Variables.McVersions +
-                                  (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
+                                  (_versionToLaunch ??
+                                   (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             string file = string.Format("{0}/assets/indexes/{1}.json", Variables.McDirectory,
                 selectedVersion.AssetsIndex ?? "legacy");
             if (!File.Exists(file)) {
@@ -631,7 +705,7 @@ namespace FreeLauncher.Forms
                     Directory.CreateDirectory(path);
                 }
                 try {
-                    AppendLog("Downloading " + resourseFile + "...");
+                    AppendDebug("Downloading " + resourseFile + "...");
                     new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
                         Variables.McDirectory + "\\assets\\objects\\" + resourseFile);
                 }
@@ -640,12 +714,12 @@ namespace FreeLauncher.Forms
                 }
                 StatusBarValue++;
             }
-            AppendLog("Проверка игровых ресурсов завершена.");
+            AppendLog("Finished checking game assets.");
             if (selectedVersion.AssetsIndex == null) {
                 StatusBarValue = 0;
                 StatusBarMaxValue = jo["objects"].Cast<JProperty>()
                     .Count(res => !File.Exists(Variables.McDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
-                UpdateStatusBarAndLog("Выполняется конвертирование ресурсов...");
+                UpdateStatusBarAndLog("Converting assets...");
                 foreach (
                     JProperty res in
                         jo["objects"].Cast<JProperty>()
@@ -656,6 +730,8 @@ namespace FreeLauncher.Forms
                             Directory.CreateDirectory(
                                 new FileInfo(Variables.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName);
                         }
+                        AppendDebug(
+                            $"Converting \"{"\\assets\\objects\\" + res.Value["hash"].ToString()[0] + res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"]}\" to \"{"\\assets\\legacy\\" + res.Name}\"");
                         File.Copy(
                             Variables.McDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
                             res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"],
@@ -666,7 +742,7 @@ namespace FreeLauncher.Forms
                     }
                     StatusBarValue++;
                 }
-                AppendLog("Конвертирование игровых ресурсов завершено.");
+                AppendLog("Finished converting assets.");
             }
             StatusBarVisible = false;
         }
@@ -674,27 +750,32 @@ namespace FreeLauncher.Forms
         private string GetLatestVersion(Profile profile)
         {
             JObject versionsList = JObject.Parse(File.ReadAllText(Variables.McVersions + "\\versions.json"));
-            return profile.AllowedReleaseTypes.Contains("snapshot")
-                ? versionsList["latest"]["snapshot"].ToString()
+            return profile.AllowedReleaseTypes != null
+                ? profile.AllowedReleaseTypes.Contains("snapshot")
+                    ? versionsList["latest"]["snapshot"].ToString()
+                    : versionsList["latest"]["release"].ToString()
                 : versionsList["latest"]["release"].ToString();
         }
 
         public object[] AddNewPage()
         {
             RadPageViewPage outputPage = new RadPageViewPage {
-                Text = string.Format("{0} ({1})", "ВЫВОД ИГРЫ", _selectedProfile.ProfileName)
+                Text =
+                    string.Format("{0} ({1})", Variables.ProgramLocalization.GameOutput,
+                        _versionToLaunch ?? _selectedProfile.ProfileName)
             };
             RadButton killProcessButton = new RadButton {
-                Text = "Kill Process",
+                Text = Variables.ProgramLocalization.KillProcess,
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
             RadPanel panel = new RadPanel {
-                Text = _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile),
+                Text = (_versionToLaunch ?? (
+                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))),
                 Dock = DockStyle.Top
             };
             panel.Size = new Size(panel.Size.Width, 60);
             RadButton closeButton = new RadButton {
-                Text = "Close",
+                Text = Variables.ProgramLocalization.Close,
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top),
                 Enabled = false
             };
@@ -717,12 +798,38 @@ namespace FreeLauncher.Forms
             };
         }
 
+        private void LoadLocalization()
+        {
+            News.Text = Variables.ProgramLocalization.NewsTabText;
+            ConsolePage.Text = Variables.ProgramLocalization.ConsoleTabText;
+            EditVersions.Text = Variables.ProgramLocalization.ManageVersionsTabText;
+            AboutPage.Text = Variables.ProgramLocalization.AboutTabText;
+            AboutPageViewPage.Text = Variables.ProgramLocalization.AboutTabText;
+            LicensesPage.Text = Variables.ProgramLocalization.LicensesTabText;
+            SettingsPage.Text = Variables.ProgramLocalization.SettingsTabText;
+
+            LaunchButton.Text = Variables.ProgramLocalization.LaunchButtonText;
+            AddProfile.Text = Variables.ProgramLocalization.AddProfileButtonText;
+            EditProfile.Text = Variables.ProgramLocalization.EditProfileButtonText;
+
+            DevInfoLabel.Text = Variables.ProgramLocalization.DevInfo;
+            GratitudesLabel.Text = Variables.ProgramLocalization.GratitudesText;
+            GratitudesDescLabel.Text = Variables.ProgramLocalization.GratitudesDescription;
+            PartnersLabel.Text = Variables.ProgramLocalization.PartnersText;
+            MCofflineDescLabel.Text = Variables.ProgramLocalization.MCofflineDescription;
+            CopyrightInfoLabel.Text = Variables.ProgramLocalization.CopyrightInfo;
+
+            EnableMinecraftUpdateAlerts.Text = Variables.ProgramLocalization.EnableMinecraftUpdateAlertsText;
+            EnableMinecraftLogging.Text = Variables.ProgramLocalization.EnableMinecraftLoggingText;
+            UseGamePrefix.Text = Variables.ProgramLocalization.UseGamePrefixText;
+            CloseGameOutput.Text = Variables.ProgramLocalization.CloseGameOutputText;
+        }
+
         private void UpdateVersionListView()
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action(UpdateVersionListView));
-            }
-            else {
+            } else {
                 versionsListView.Items.Clear();
                 foreach (
                     Version version in
@@ -730,7 +837,7 @@ namespace FreeLauncher.Forms
                             .Select(versionDir => new DirectoryInfo(versionDir))
                             .Select(info => new Version().ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
-                        version.InheritsFrom ?? "Independent");
+                        version.InheritsFrom ?? Variables.ProgramLocalization.Independent);
                 }
             }
         }
@@ -739,8 +846,7 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<string>(UpdateStatusBarText), text);
-            }
-            else {
+            } else {
                 StatusBar.Text = text;
             }
         }
@@ -750,8 +856,7 @@ namespace FreeLauncher.Forms
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<string, string>(UpdateStatusBarAndLog), text,
                     new StackFrame(1).GetMethod().Name);
-            }
-            else {
+            } else {
                 StatusBar.Text = text;
                 AppendLog(text, methodName);
             }
@@ -761,8 +866,7 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<string, string>(AppendLog), text, new StackFrame(1).GetMethod().Name);
-            }
-            else {
+            } else {
                 logBox.AppendText(string.Format(
                     string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
                     DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "INFO",
@@ -774,11 +878,25 @@ namespace FreeLauncher.Forms
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<string, string>(AppendException), text, new StackFrame(1).GetMethod().Name);
-            }
-            else {
+            } else {
                 logBox.AppendText(string.Format(
                     string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
                     DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "ERR",
+                    methodName ?? new StackFrame(1, false).GetMethod().Name, text));
+            }
+        }
+
+        private void AppendDebug(string text, string methodName = null)
+        {
+            if (!DebugModeButton.IsChecked) {
+                return;
+            }
+            if (logBox.InvokeRequired) {
+                logBox.Invoke(new Action<string, string>(AppendDebug), text, new StackFrame(1).GetMethod().Name);
+            } else {
+                logBox.AppendText(string.Format(
+                    string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
+                    DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "DEBUG",
                     methodName ?? new StackFrame(1, false).GetMethod().Name, text));
             }
         }
@@ -840,16 +958,19 @@ namespace FreeLauncher.Forms
             }
             _errorReader.Abort();
             AppendLog(
-                string.Format("Процесс был завершён с кодом {0}. Сеанс с {1}(Всего {2})",
+                string.Format("Process exited with error code {0}. Session since {1}({2} total)",
                     _minecraftProcess.ExitCode +
-                    (_minecraftProcess.ExitCode == 0 ? "(Стабильно)" : "(Могли возникнуть проблемы)"),
+                    (_minecraftProcess.ExitCode == 0
+                        ? "(Stable)"
+                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(There could be problems)"),
                     _minecraftProcess.StartTime.ToString("HH:mm:ss"),
                     Math.Round(_minecraftProcess.StartTime.Subtract(DateTime.Now).TotalMinutes, 2)
                         .ToString(CultureInfo.InvariantCulture)
-                        .Replace('-', ' ') + " минут"), false);
+                        .Replace('-', ' ') + " min."), false);
             _launcherForm.Invoke((MethodInvoker) delegate {
                 _closePageButton.Enabled = true;
-                if (_launcherForm.CloseGameOutput.Checked && _minecraftProcess.ExitCode == 0) {
+                if (_launcherForm.CloseGameOutput.Checked &&
+                    (_minecraftProcess.ExitCode == 0 || _minecraftProcess.ExitCode == -1)) {
                     _closePageButton.PerformClick();
                 }
                 _killProcessButton.Enabled = false;
@@ -863,8 +984,7 @@ namespace FreeLauncher.Forms
             }
             if (_gameLoggingBox.InvokeRequired) {
                 _gameLoggingBox.Invoke(new Action<string, bool>(AppendLog), text, iserror);
-            }
-            else {
+            } else {
                 Color color = iserror ? Color.Red : Color.DarkSlateGray;
                 string line = (_launcherForm.UseGamePrefix.ToggleState ==
                                ToggleState.On

@@ -933,6 +933,7 @@ namespace FreeLauncher.Forms
             // 
             // 
             this.RootElement.ApplyShapeToControl = true;
+            this.ShowIcon = false;
             this.Text = "ProfileForm";
             this.ThemeName = "VisualStudio2012Dark";
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox3)).EndInit();
