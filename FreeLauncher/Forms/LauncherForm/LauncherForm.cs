@@ -333,6 +333,7 @@ namespace FreeLauncher.Forms
                                 }
                             }
                         }
+                        _userManager.SelectedUsername = _selectedUser.Username;
                         SaveUsers();
                         UpdateUserList();
                         Version selectedVersion = new Version().ParseVersion(
@@ -953,9 +954,7 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Invoke((MethodInvoker) (() => _launcherForm.Show()));
             }
-            if (_launcherForm.EnableMinecraftLogging.Checked) {
-                _outputReader.Abort();
-            }
+            _outputReader?.Abort();
             _errorReader.Abort();
             AppendLog(
                 string.Format("Process exited with error code {0}. Session since {1}({2} total)",
