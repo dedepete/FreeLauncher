@@ -67,7 +67,7 @@
     </Reference>
     <Reference Include="dotMCLauncher.Core, Version=0.0.3.72, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\dotMCLauncher\Core\0.0.3.72\dotMCLauncher.Core.dll</HintPath>
+      <HintPath>..\lib\dotMCLauncher\Core\0.0.3.78\dotMCLauncher.Core.dll</HintPath>
     </Reference>
     <Reference Include="dotMCLauncher.YaDra4il, Version=1.0.0.29, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

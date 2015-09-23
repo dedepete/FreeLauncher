@@ -133,10 +133,7 @@ namespace FreeLauncher.Forms
                     CurrentProfile.LauncherVisibilityOnGameClose = Profile.LauncherVisibility.VISIBLE;
                     break;
             }
-            List<string> types = new List<string>
-            {
-                "release"
-            };
+            List<string> types = new List<string>();
             if (snapshotsCheckBox.Checked) {
                 types.Add("snapshot");
             }
@@ -164,8 +161,11 @@ namespace FreeLauncher.Forms
                 }
                 types.Add("modified");
             }
+            if (types.Count == 0) {
+                types = null;
+            }
             CurrentProfile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
-            CurrentProfile.AllowedReleaseTypes = types.ToArray();
+            CurrentProfile.AllowedReleaseTypes = types?.ToArray();
             if (javaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
                 javaArgumentsBox.Text != string.Empty) {
                 CurrentProfile.JavaArguments = javaArgumentsBox.Text;

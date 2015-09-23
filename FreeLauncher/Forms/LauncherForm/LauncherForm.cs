@@ -214,6 +214,7 @@ namespace FreeLauncher.Forms
             }
             _userManager.SelectedUsername = NicknameDropDownList.SelectedItem.Text;
             _selectedUser = _userManager.Accounts[NicknameDropDownList.SelectedItem.Text];
+            SaveUsers();
         }
 
         private void EditProfile_Click(object sender, EventArgs e)
