@@ -3,9 +3,11 @@ using Microsoft.Win32;
 
 namespace FreeLauncher
 {
-    static class Java
+    internal static class Java
     {
-        public static string JavaExecutable => GetJavaInstallationPath() == null ? null : string.Format("{0}\\bin\\java.exe", GetJavaInstallationPath());
+        public static string JavaExecutable
+            => GetJavaInstallationPath() == null ? null : string.Format("{0}\\bin\\java.exe", GetJavaInstallationPath());
+
         public static string JavaInstallationPath => GetJavaInstallationPath();
 
         public static string JavaBitInstallation
@@ -14,11 +16,11 @@ namespace FreeLauncher
                 if (JavaExecutable == null) {
                     return "null";
                 }
-                if ((_isNotWow6432Installation && !Environment.Is64BitOperatingSystem) || (!_isNotWow6432Installation && Environment.Is64BitOperatingSystem)){
+                if ((_isNotWow6432Installation && !Environment.Is64BitOperatingSystem) ||
+                    (!_isNotWow6432Installation && Environment.Is64BitOperatingSystem)) {
                     return "32";
                 }
-                if (_isNotWow6432Installation && Environment.Is64BitOperatingSystem)
-                {
+                if (_isNotWow6432Installation && Environment.Is64BitOperatingSystem) {
                     return "64";
                 }
                 return "null";
