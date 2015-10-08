@@ -20,6 +20,7 @@ namespace FreeLauncher.Forms
         public UsersForm()
         {
             InitializeComponent();
+            LoadLocalization();
             _userManager = File.Exists(Variables.McLauncher + "users.json")
                 ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(Variables.McLauncher + "users.json"))
                 : new UserManager();
@@ -37,7 +38,7 @@ namespace FreeLauncher.Forms
             AddUserButton.Enabled =
                 UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
-            AddUserButton.Text = "Подождите, пожалуйста";
+            AddUserButton.Text = Variables.ProgramLocalization.PleaseWait;
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 User user = new User {Username = UsernameTextBox.Text};
@@ -71,7 +72,7 @@ namespace FreeLauncher.Forms
                 catch (WebException ex) {
                     switch (ex.Status) {
                         case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show("Incorrect username and/or password!", "Error", MessageBoxButtons.OK,
+                            RadMessageBox.Show(Variables.ProgramLocalization.IncorrectLoginOrPassword, Variables.ProgramLocalization.Error, MessageBoxButtons.OK,
                                 RadMessageIcon.Error);
                             return;
                         default:
@@ -88,7 +89,7 @@ namespace FreeLauncher.Forms
             bgw.RunWorkerCompleted += delegate {
                 UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
-                AddUserButton.Text = "Добавить нового пользователя";
+                AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
             };
             bgw.RunWorkerAsync();
@@ -136,6 +137,16 @@ namespace FreeLauncher.Forms
             } else {
                 AddUserButton.Enabled = false;
             }
+        }
+
+        private void LoadLocalization()
+        {
+            DeleteUserButton.Text = Variables.ProgramLocalization.RemoveSelectedUser;
+            AddNewUserBox.Text = Variables.ProgramLocalization.AddNewUserBox;
+            NicknameLabel.Text = Variables.ProgramLocalization.Nickname;
+            LicenseQuestionLabel.Text = Variables.ProgramLocalization.LicenseQuestion;
+            PasswordLabel.Text = Variables.ProgramLocalization.Password;
+            AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
         }
     }
 

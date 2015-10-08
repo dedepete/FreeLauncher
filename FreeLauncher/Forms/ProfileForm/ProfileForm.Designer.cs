@@ -36,9 +36,9 @@ namespace FreeLauncher.Forms
             Telerik.WinControls.UI.RadListDataItem radListDataItem3 = new Telerik.WinControls.UI.RadListDataItem();
             this.radGroupBox3 = new Telerik.WinControls.UI.RadGroupBox();
             this.javaExecutableBox = new Telerik.WinControls.UI.RadTextBox();
-            this.javaExecutableCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.JavaExecutableCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.javaArgumentsBox = new Telerik.WinControls.UI.RadTextBox();
-            this.javaArgumentsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.JavaArgumentsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.radGroupBox2 = new Telerik.WinControls.UI.RadGroupBox();
             this.VersionSelector = new Telerik.WinControls.UI.RadPageView();
             this.officialVersionsPage = new Telerik.WinControls.UI.RadPageViewPage();
@@ -57,16 +57,16 @@ namespace FreeLauncher.Forms
             this.radButton1 = new Telerik.WinControls.UI.RadButton();
             this.portTextBox = new Telerik.WinControls.UI.RadTextBox();
             this.ipTextBox = new Telerik.WinControls.UI.RadTextBox();
-            this.fastConnectCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
+            this.FastConnectCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.ActionAfterLaunchLabel = new Telerik.WinControls.UI.RadLabel();
             this.radLabel3 = new Telerik.WinControls.UI.RadLabel();
             this.yResolutionBox = new Telerik.WinControls.UI.RadTextBox();
             this.xResolutionBox = new Telerik.WinControls.UI.RadTextBox();
-            this.radLabel2 = new Telerik.WinControls.UI.RadLabel();
+            this.WindowResolutionLabel = new Telerik.WinControls.UI.RadLabel();
             this.stateBox = new Telerik.WinControls.UI.RadDropDownList();
             this.gameDirectoryBox = new Telerik.WinControls.UI.RadTextBox();
-            this.gameDirectoryCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
+            this.GameDirectoryCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.ProfileNameLabel = new Telerik.WinControls.UI.RadLabel();
             this.nameBox = new Telerik.WinControls.UI.RadTextBox();
             this.cancelButton = new Telerik.WinControls.UI.RadButton();
             this.openGameDirectoryButton = new Telerik.WinControls.UI.RadButton();
@@ -74,9 +74,9 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox3)).BeginInit();
             this.radGroupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.javaExecutableBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.javaExecutableCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JavaExecutableCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JavaArgumentsCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).BeginInit();
             this.radGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VersionSelector)).BeginInit();
@@ -98,16 +98,16 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radButton1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.portTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ipTextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastConnectCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FastConnectCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ActionAfterLaunchLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yResolutionBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xResolutionBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowResolutionLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stateBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameDirectoryBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDirectoryCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GameDirectoryCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ProfileNameLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nameBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.openGameDirectoryButton)).BeginInit();
@@ -120,9 +120,9 @@ namespace FreeLauncher.Forms
             this.radGroupBox3.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
             this.radGroupBox3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.radGroupBox3.Controls.Add(this.javaExecutableBox);
-            this.radGroupBox3.Controls.Add(this.javaExecutableCheckBox);
+            this.radGroupBox3.Controls.Add(this.JavaExecutableCheckBox);
             this.radGroupBox3.Controls.Add(this.javaArgumentsBox);
-            this.radGroupBox3.Controls.Add(this.javaArgumentsCheckBox);
+            this.radGroupBox3.Controls.Add(this.JavaArgumentsCheckBox);
             this.radGroupBox3.HeaderText = "Настройки Java";
             this.radGroupBox3.Location = new System.Drawing.Point(5, 347);
             this.radGroupBox3.Name = "radGroupBox3";
@@ -162,28 +162,28 @@ namespace FreeLauncher.Forms
             this.javaExecutableBox.TabIndex = 7;
             this.javaExecutableBox.ThemeName = "VisualStudio2012Dark";
             // 
-            // javaExecutableCheckBox
+            // JavaExecutableCheckBox
             // 
-            this.javaExecutableCheckBox.Location = new System.Drawing.Point(3, 21);
-            this.javaExecutableCheckBox.Name = "javaExecutableCheckBox";
+            this.JavaExecutableCheckBox.Location = new System.Drawing.Point(3, 21);
+            this.JavaExecutableCheckBox.Name = "JavaExecutableCheckBox";
             // 
             // 
             // 
-            this.javaExecutableCheckBox.RootElement.AccessibleDescription = null;
-            this.javaExecutableCheckBox.RootElement.AccessibleName = null;
-            this.javaExecutableCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.javaExecutableCheckBox.RootElement.AngleTransform = 0F;
-            this.javaExecutableCheckBox.RootElement.FlipText = false;
-            this.javaExecutableCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.javaExecutableCheckBox.RootElement.Text = null;
-            this.javaExecutableCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.javaExecutableCheckBox.Size = new System.Drawing.Size(128, 18);
-            this.javaExecutableCheckBox.TabIndex = 6;
-            this.javaExecutableCheckBox.Text = "Исполняемый файл:";
-            this.javaExecutableCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.javaExecutableCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.javaExecutableCheckBox_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.javaExecutableCheckBox.GetChildAt(0))).Text = "Исполняемый файл:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.javaExecutableCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.JavaExecutableCheckBox.RootElement.AccessibleDescription = null;
+            this.JavaExecutableCheckBox.RootElement.AccessibleName = null;
+            this.JavaExecutableCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.JavaExecutableCheckBox.RootElement.AngleTransform = 0F;
+            this.JavaExecutableCheckBox.RootElement.FlipText = false;
+            this.JavaExecutableCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.JavaExecutableCheckBox.RootElement.Text = null;
+            this.JavaExecutableCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.JavaExecutableCheckBox.Size = new System.Drawing.Size(128, 18);
+            this.JavaExecutableCheckBox.TabIndex = 6;
+            this.JavaExecutableCheckBox.Text = "Исполняемый файл:";
+            this.JavaExecutableCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.JavaExecutableCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.javaExecutableCheckBox_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.JavaExecutableCheckBox.GetChildAt(0))).Text = "Исполняемый файл:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.JavaExecutableCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // javaArgumentsBox
             // 
@@ -205,28 +205,28 @@ namespace FreeLauncher.Forms
             this.javaArgumentsBox.TabIndex = 5;
             this.javaArgumentsBox.ThemeName = "VisualStudio2012Dark";
             // 
-            // javaArgumentsCheckBox
+            // JavaArgumentsCheckBox
             // 
-            this.javaArgumentsCheckBox.Location = new System.Drawing.Point(3, 48);
-            this.javaArgumentsCheckBox.Name = "javaArgumentsCheckBox";
+            this.JavaArgumentsCheckBox.Location = new System.Drawing.Point(3, 48);
+            this.JavaArgumentsCheckBox.Name = "JavaArgumentsCheckBox";
             // 
             // 
             // 
-            this.javaArgumentsCheckBox.RootElement.AccessibleDescription = null;
-            this.javaArgumentsCheckBox.RootElement.AccessibleName = null;
-            this.javaArgumentsCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.javaArgumentsCheckBox.RootElement.AngleTransform = 0F;
-            this.javaArgumentsCheckBox.RootElement.FlipText = false;
-            this.javaArgumentsCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.javaArgumentsCheckBox.RootElement.Text = null;
-            this.javaArgumentsCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.javaArgumentsCheckBox.Size = new System.Drawing.Size(83, 18);
-            this.javaArgumentsCheckBox.TabIndex = 4;
-            this.javaArgumentsCheckBox.Text = "Аргументы:";
-            this.javaArgumentsCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.javaArgumentsCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.javaArgumentsCheckBox_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.javaArgumentsCheckBox.GetChildAt(0))).Text = "Аргументы:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.javaArgumentsCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.JavaArgumentsCheckBox.RootElement.AccessibleDescription = null;
+            this.JavaArgumentsCheckBox.RootElement.AccessibleName = null;
+            this.JavaArgumentsCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.JavaArgumentsCheckBox.RootElement.AngleTransform = 0F;
+            this.JavaArgumentsCheckBox.RootElement.FlipText = false;
+            this.JavaArgumentsCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.JavaArgumentsCheckBox.RootElement.Text = null;
+            this.JavaArgumentsCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.JavaArgumentsCheckBox.Size = new System.Drawing.Size(81, 18);
+            this.JavaArgumentsCheckBox.TabIndex = 4;
+            this.JavaArgumentsCheckBox.Text = "Флаги JVM:";
+            this.JavaArgumentsCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.JavaArgumentsCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.javaArgumentsCheckBox_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.JavaArgumentsCheckBox.GetChildAt(0))).Text = "Флаги JVM:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.JavaArgumentsCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // radGroupBox2
             // 
@@ -320,12 +320,12 @@ namespace FreeLauncher.Forms
             this.otherCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.otherCheckBox.RootElement.Text = null;
             this.otherCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.otherCheckBox.Size = new System.Drawing.Size(168, 18);
+            this.otherCheckBox.Size = new System.Drawing.Size(301, 18);
             this.otherCheckBox.TabIndex = 7;
-            this.otherCheckBox.Text = "Отображать прочие версии";
+            this.otherCheckBox.Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
             this.otherCheckBox.ThemeName = "VisualStudio2012Dark";
             this.otherCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Отображать прочие версии";
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.otherCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // betaCheckBox
@@ -525,16 +525,16 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.Controls.Add(this.radButton1);
             this.radGroupBox1.Controls.Add(this.portTextBox);
             this.radGroupBox1.Controls.Add(this.ipTextBox);
-            this.radGroupBox1.Controls.Add(this.fastConnectCheckBox);
-            this.radGroupBox1.Controls.Add(this.radLabel4);
+            this.radGroupBox1.Controls.Add(this.FastConnectCheckBox);
+            this.radGroupBox1.Controls.Add(this.ActionAfterLaunchLabel);
             this.radGroupBox1.Controls.Add(this.radLabel3);
             this.radGroupBox1.Controls.Add(this.yResolutionBox);
             this.radGroupBox1.Controls.Add(this.xResolutionBox);
-            this.radGroupBox1.Controls.Add(this.radLabel2);
+            this.radGroupBox1.Controls.Add(this.WindowResolutionLabel);
             this.radGroupBox1.Controls.Add(this.stateBox);
             this.radGroupBox1.Controls.Add(this.gameDirectoryBox);
-            this.radGroupBox1.Controls.Add(this.gameDirectoryCheckBox);
-            this.radGroupBox1.Controls.Add(this.radLabel1);
+            this.radGroupBox1.Controls.Add(this.GameDirectoryCheckBox);
+            this.radGroupBox1.Controls.Add(this.ProfileNameLabel);
             this.radGroupBox1.Controls.Add(this.nameBox);
             this.radGroupBox1.HeaderText = "Основные настройки профиля";
             this.radGroupBox1.Location = new System.Drawing.Point(5, 2);
@@ -606,51 +606,51 @@ namespace FreeLauncher.Forms
             this.ipTextBox.TabIndex = 11;
             this.ipTextBox.ThemeName = "VisualStudio2012Dark";
             // 
-            // fastConnectCheckBox
+            // FastConnectCheckBox
             // 
-            this.fastConnectCheckBox.Location = new System.Drawing.Point(3, 127);
-            this.fastConnectCheckBox.Name = "fastConnectCheckBox";
-            // 
-            // 
-            // 
-            this.fastConnectCheckBox.RootElement.AccessibleDescription = null;
-            this.fastConnectCheckBox.RootElement.AccessibleName = null;
-            this.fastConnectCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.fastConnectCheckBox.RootElement.AngleTransform = 0F;
-            this.fastConnectCheckBox.RootElement.FlipText = false;
-            this.fastConnectCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.fastConnectCheckBox.RootElement.Text = null;
-            this.fastConnectCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.fastConnectCheckBox.Size = new System.Drawing.Size(144, 18);
-            this.fastConnectCheckBox.TabIndex = 10;
-            this.fastConnectCheckBox.Text = "Быстрое подключение:";
-            this.fastConnectCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.fastConnectCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.fastConnectCheckBox_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.fastConnectCheckBox.GetChildAt(0))).Text = "Быстрое подключение:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.fastConnectCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // radLabel4
-            // 
-            this.radLabel4.BackColor = System.Drawing.Color.Transparent;
-            this.radLabel4.Location = new System.Drawing.Point(1, 98);
-            this.radLabel4.Name = "radLabel4";
+            this.FastConnectCheckBox.Location = new System.Drawing.Point(3, 127);
+            this.FastConnectCheckBox.Name = "FastConnectCheckBox";
             // 
             // 
             // 
-            this.radLabel4.RootElement.AccessibleDescription = null;
-            this.radLabel4.RootElement.AccessibleName = null;
-            this.radLabel4.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel4.RootElement.AngleTransform = 0F;
-            this.radLabel4.RootElement.FlipText = false;
-            this.radLabel4.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel4.RootElement.Text = null;
-            this.radLabel4.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radLabel4.Size = new System.Drawing.Size(134, 18);
-            this.radLabel4.TabIndex = 9;
-            this.radLabel4.Text = "После запуска Minecraft:";
-            this.radLabel4.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel4.GetChildAt(0))).Text = "После запуска Minecraft:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel4.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.FastConnectCheckBox.RootElement.AccessibleDescription = null;
+            this.FastConnectCheckBox.RootElement.AccessibleName = null;
+            this.FastConnectCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.FastConnectCheckBox.RootElement.AngleTransform = 0F;
+            this.FastConnectCheckBox.RootElement.FlipText = false;
+            this.FastConnectCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.FastConnectCheckBox.RootElement.Text = null;
+            this.FastConnectCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.FastConnectCheckBox.Size = new System.Drawing.Size(122, 18);
+            this.FastConnectCheckBox.TabIndex = 10;
+            this.FastConnectCheckBox.Text = "Автоподключение:";
+            this.FastConnectCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.FastConnectCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.fastConnectCheckBox_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.FastConnectCheckBox.GetChildAt(0))).Text = "Автоподключение:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.FastConnectCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // ActionAfterLaunchLabel
+            // 
+            this.ActionAfterLaunchLabel.BackColor = System.Drawing.Color.Transparent;
+            this.ActionAfterLaunchLabel.Location = new System.Drawing.Point(1, 98);
+            this.ActionAfterLaunchLabel.Name = "ActionAfterLaunchLabel";
+            // 
+            // 
+            // 
+            this.ActionAfterLaunchLabel.RootElement.AccessibleDescription = null;
+            this.ActionAfterLaunchLabel.RootElement.AccessibleName = null;
+            this.ActionAfterLaunchLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.ActionAfterLaunchLabel.RootElement.AngleTransform = 0F;
+            this.ActionAfterLaunchLabel.RootElement.FlipText = false;
+            this.ActionAfterLaunchLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.ActionAfterLaunchLabel.RootElement.Text = null;
+            this.ActionAfterLaunchLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.ActionAfterLaunchLabel.Size = new System.Drawing.Size(134, 18);
+            this.ActionAfterLaunchLabel.TabIndex = 9;
+            this.ActionAfterLaunchLabel.Text = "После запуска Minecraft:";
+            this.ActionAfterLaunchLabel.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadLabelElement)(this.ActionAfterLaunchLabel.GetChildAt(0))).Text = "После запуска Minecraft:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.ActionAfterLaunchLabel.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // radLabel3
             // 
@@ -715,28 +715,28 @@ namespace FreeLauncher.Forms
             this.xResolutionBox.Text = "854";
             this.xResolutionBox.ThemeName = "VisualStudio2012Dark";
             // 
-            // radLabel2
+            // WindowResolutionLabel
             // 
-            this.radLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.radLabel2.Location = new System.Drawing.Point(1, 73);
-            this.radLabel2.Name = "radLabel2";
+            this.WindowResolutionLabel.BackColor = System.Drawing.Color.Transparent;
+            this.WindowResolutionLabel.Location = new System.Drawing.Point(1, 73);
+            this.WindowResolutionLabel.Name = "WindowResolutionLabel";
             // 
             // 
             // 
-            this.radLabel2.RootElement.AccessibleDescription = null;
-            this.radLabel2.RootElement.AccessibleName = null;
-            this.radLabel2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel2.RootElement.AngleTransform = 0F;
-            this.radLabel2.RootElement.FlipText = false;
-            this.radLabel2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel2.RootElement.Text = null;
-            this.radLabel2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radLabel2.Size = new System.Drawing.Size(85, 18);
-            this.radLabel2.TabIndex = 5;
-            this.radLabel2.Text = "Размер экрана:";
-            this.radLabel2.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel2.GetChildAt(0))).Text = "Размер экрана:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel2.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.WindowResolutionLabel.RootElement.AccessibleDescription = null;
+            this.WindowResolutionLabel.RootElement.AccessibleName = null;
+            this.WindowResolutionLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.WindowResolutionLabel.RootElement.AngleTransform = 0F;
+            this.WindowResolutionLabel.RootElement.FlipText = false;
+            this.WindowResolutionLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.WindowResolutionLabel.RootElement.Text = null;
+            this.WindowResolutionLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.WindowResolutionLabel.Size = new System.Drawing.Size(85, 18);
+            this.WindowResolutionLabel.TabIndex = 5;
+            this.WindowResolutionLabel.Text = "Размер экрана:";
+            this.WindowResolutionLabel.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadLabelElement)(this.WindowResolutionLabel.GetChildAt(0))).Text = "Размер экрана:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.WindowResolutionLabel.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // stateBox
             // 
@@ -789,51 +789,51 @@ namespace FreeLauncher.Forms
             this.gameDirectoryBox.TabIndex = 3;
             this.gameDirectoryBox.ThemeName = "VisualStudio2012Dark";
             // 
-            // gameDirectoryCheckBox
+            // GameDirectoryCheckBox
             // 
-            this.gameDirectoryCheckBox.Location = new System.Drawing.Point(3, 47);
-            this.gameDirectoryCheckBox.Name = "gameDirectoryCheckBox";
-            // 
-            // 
-            // 
-            this.gameDirectoryCheckBox.RootElement.AccessibleDescription = null;
-            this.gameDirectoryCheckBox.RootElement.AccessibleName = null;
-            this.gameDirectoryCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.gameDirectoryCheckBox.RootElement.AngleTransform = 0F;
-            this.gameDirectoryCheckBox.RootElement.FlipText = false;
-            this.gameDirectoryCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.gameDirectoryCheckBox.RootElement.Text = null;
-            this.gameDirectoryCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.gameDirectoryCheckBox.Size = new System.Drawing.Size(134, 18);
-            this.gameDirectoryCheckBox.TabIndex = 2;
-            this.gameDirectoryCheckBox.Text = "Игровая директория:";
-            this.gameDirectoryCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.gameDirectoryCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.gameDirectoryCheckBox_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.gameDirectoryCheckBox.GetChildAt(0))).Text = "Игровая директория:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.gameDirectoryCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // radLabel1
-            // 
-            this.radLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.radLabel1.Location = new System.Drawing.Point(1, 21);
-            this.radLabel1.Name = "radLabel1";
+            this.GameDirectoryCheckBox.Location = new System.Drawing.Point(3, 47);
+            this.GameDirectoryCheckBox.Name = "GameDirectoryCheckBox";
             // 
             // 
             // 
-            this.radLabel1.RootElement.AccessibleDescription = null;
-            this.radLabel1.RootElement.AccessibleName = null;
-            this.radLabel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel1.RootElement.AngleTransform = 0F;
-            this.radLabel1.RootElement.FlipText = false;
-            this.radLabel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel1.RootElement.Text = null;
-            this.radLabel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radLabel1.Size = new System.Drawing.Size(107, 18);
-            this.radLabel1.TabIndex = 1;
-            this.radLabel1.Text = "Название профиля:";
-            this.radLabel1.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.radLabel1.GetChildAt(0))).Text = "Название профиля:";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.radLabel1.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            this.GameDirectoryCheckBox.RootElement.AccessibleDescription = null;
+            this.GameDirectoryCheckBox.RootElement.AccessibleName = null;
+            this.GameDirectoryCheckBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.GameDirectoryCheckBox.RootElement.AngleTransform = 0F;
+            this.GameDirectoryCheckBox.RootElement.FlipText = false;
+            this.GameDirectoryCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.GameDirectoryCheckBox.RootElement.Text = null;
+            this.GameDirectoryCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.GameDirectoryCheckBox.Size = new System.Drawing.Size(133, 18);
+            this.GameDirectoryCheckBox.TabIndex = 2;
+            this.GameDirectoryCheckBox.Text = "Рабочая директория:";
+            this.GameDirectoryCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.GameDirectoryCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.gameDirectoryCheckBox_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.GameDirectoryCheckBox.GetChildAt(0))).Text = "Рабочая директория:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.GameDirectoryCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // ProfileNameLabel
+            // 
+            this.ProfileNameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.ProfileNameLabel.Location = new System.Drawing.Point(1, 21);
+            this.ProfileNameLabel.Name = "ProfileNameLabel";
+            // 
+            // 
+            // 
+            this.ProfileNameLabel.RootElement.AccessibleDescription = null;
+            this.ProfileNameLabel.RootElement.AccessibleName = null;
+            this.ProfileNameLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.ProfileNameLabel.RootElement.AngleTransform = 0F;
+            this.ProfileNameLabel.RootElement.FlipText = false;
+            this.ProfileNameLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.ProfileNameLabel.RootElement.Text = null;
+            this.ProfileNameLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.ProfileNameLabel.Size = new System.Drawing.Size(107, 18);
+            this.ProfileNameLabel.TabIndex = 1;
+            this.ProfileNameLabel.Text = "Название профиля:";
+            this.ProfileNameLabel.ThemeName = "VisualStudio2012Dark";
+            ((Telerik.WinControls.UI.RadLabelElement)(this.ProfileNameLabel.GetChildAt(0))).Text = "Название профиля:";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.ProfileNameLabel.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // nameBox
             // 
@@ -884,7 +884,7 @@ namespace FreeLauncher.Forms
             this.openGameDirectoryButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.openGameDirectoryButton.Size = new System.Drawing.Size(111, 34);
             this.openGameDirectoryButton.TabIndex = 10;
-            this.openGameDirectoryButton.Text = "Открыть игр. директорию";
+            this.openGameDirectoryButton.Text = "Открыть раб. директорию";
             this.openGameDirectoryButton.TextWrap = true;
             this.openGameDirectoryButton.ThemeName = "VisualStudio2012Dark";
             this.openGameDirectoryButton.Click += new System.EventHandler(this.openGameDirectoryButton_Click);
@@ -940,9 +940,9 @@ namespace FreeLauncher.Forms
             this.radGroupBox3.ResumeLayout(false);
             this.radGroupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.javaExecutableBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.javaExecutableCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JavaExecutableCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.javaArgumentsCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JavaArgumentsCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).EndInit();
             this.radGroupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.VersionSelector)).EndInit();
@@ -967,16 +967,16 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radButton1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.portTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ipTextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastConnectCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FastConnectCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ActionAfterLaunchLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yResolutionBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xResolutionBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowResolutionLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stateBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gameDirectoryBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameDirectoryCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GameDirectoryCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ProfileNameLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nameBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.openGameDirectoryButton)).EndInit();
@@ -990,24 +990,24 @@ namespace FreeLauncher.Forms
 
         private RadGroupBox radGroupBox3;
         private RadTextBox javaExecutableBox;
-        private RadCheckBox javaExecutableCheckBox;
+        private RadCheckBox JavaExecutableCheckBox;
         private RadTextBox javaArgumentsBox;
-        private RadCheckBox javaArgumentsCheckBox;
+        private RadCheckBox JavaArgumentsCheckBox;
         private RadGroupBox radGroupBox2;
         private RadGroupBox radGroupBox1;
         private RadButton radButton1;
         private RadTextBox portTextBox;
         private RadTextBox ipTextBox;
-        private RadCheckBox fastConnectCheckBox;
-        private RadLabel radLabel4;
+        private RadCheckBox FastConnectCheckBox;
+        private RadLabel ActionAfterLaunchLabel;
         private RadLabel radLabel3;
         private RadTextBox yResolutionBox;
         private RadTextBox xResolutionBox;
-        private RadLabel radLabel2;
+        private RadLabel WindowResolutionLabel;
         private RadDropDownList stateBox;
         private RadTextBox gameDirectoryBox;
-        private RadCheckBox gameDirectoryCheckBox;
-        private RadLabel radLabel1;
+        private RadCheckBox GameDirectoryCheckBox;
+        private RadLabel ProfileNameLabel;
         public RadTextBox nameBox;
         private RadButton cancelButton;
         private RadButton openGameDirectoryButton;

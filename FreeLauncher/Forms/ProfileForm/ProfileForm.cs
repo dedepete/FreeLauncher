@@ -20,6 +20,7 @@ namespace FreeLauncher.Forms
         {
             CurrentProfile = profile;
             InitializeComponent();
+            LoadLocalization();
             if (CurrentProfile.AllowedReleaseTypes != null) {
                 foreach (string item in CurrentProfile.AllowedReleaseTypes) {
                     switch (item) {
@@ -56,7 +57,7 @@ namespace FreeLauncher.Forms
             GetVersions();
             nameBox.Text = CurrentProfile.ProfileName;
             if (CurrentProfile.WorkingDirectory != null) {
-                gameDirectoryCheckBox.Checked = true;
+                GameDirectoryCheckBox.Checked = true;
                 gameDirectoryBox.Text = CurrentProfile.WorkingDirectory;
             } else {
                 gameDirectoryBox.Text = Variables.McDirectory;
@@ -66,7 +67,7 @@ namespace FreeLauncher.Forms
                 yResolutionBox.Text = CurrentProfile.WindowSize.Y.ToString();
             }
             if (CurrentProfile.FastConnectionSettigs != null) {
-                fastConnectCheckBox.Checked = true;
+                FastConnectCheckBox.Checked = true;
                 ipTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerIP;
                 portTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerPort.ToString();
             }
@@ -82,20 +83,37 @@ namespace FreeLauncher.Forms
                     break;
             }
             if (Java.JavaExecutable == "\\bin\\java.exe") {
-                RadMessageBox.Show(this,
-                    "Не удалось определить путь до Java! Пожалуйста, укажите путь к исполняемому файлу вручную.",
-                    "Ошибка", MessageBoxButtons.OK, RadMessageIcon.Error);
+                RadMessageBox.Show(this, Variables.ProgramLocalization.JavaDetectionFailed,
+                    Variables.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
             }
             javaExecutableBox.Text = CurrentProfile.JavaExecutable ?? Java.JavaExecutable;
-            javaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
+            JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
             javaArgumentsBox.Text = CurrentProfile.JavaArguments ?? "-Xmx1G";
-            javaArgumentsCheckBox.Checked = javaArgumentsBox.Text != "-Xmx1G";
+            JavaArgumentsCheckBox.Checked = javaArgumentsBox.Text != "-Xmx1G";
+        }
+
+        private void LoadLocalization()
+        {
+            ProfileNameLabel.Text = Variables.ProgramLocalization.ProfileName;
+            GameDirectoryCheckBox.Text = Variables.ProgramLocalization.WorkingDirectory;
+            WindowResolutionLabel.Text = Variables.ProgramLocalization.WindowResolution;
+            ActionAfterLaunchLabel.Text = Variables.ProgramLocalization.ActionAfterLaunch;
+            FastConnectCheckBox.Text = Variables.ProgramLocalization.Autoconnect;
+            snapshotsCheckBox.Text = Variables.ProgramLocalization.Snapshots;
+            betaCheckBox.Text = Variables.ProgramLocalization.Beta;
+            alphaCheckBox.Text = Variables.ProgramLocalization.Alpha;
+            otherCheckBox.Text = Variables.ProgramLocalization.Other;
+            JavaExecutableCheckBox.Text = Variables.ProgramLocalization.JavaExecutable;
+            JavaArgumentsCheckBox.Text = Variables.ProgramLocalization.JavaFlags;
+            cancelButton.Text = Variables.ProgramLocalization.Cancel;
+            openGameDirectoryButton.Text = Variables.ProgramLocalization.OpenDirectory;
+            saveProfileButton.Text = Variables.ProgramLocalization.Save;
         }
 
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (gameDirectoryCheckBox.Checked && gameDirectoryBox.Text != Variables.McDirectory &&
+            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != Variables.McDirectory &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {
@@ -111,7 +129,7 @@ namespace FreeLauncher.Forms
             } else {
                 CurrentProfile.WindowSize = null;
             }
-            if (fastConnectCheckBox.Checked && ipTextBox.Text != null) {
+            if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
                 CurrentProfile.FastConnectionSettigs = new ConnectionSettings() {
                     ServerIP = ipTextBox.Text,
                     ServerPort = Convert.ToInt32((portTextBox.Text != string.Empty
@@ -166,13 +184,13 @@ namespace FreeLauncher.Forms
             }
             CurrentProfile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
             CurrentProfile.AllowedReleaseTypes = types?.ToArray();
-            if (javaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
+            if (JavaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
                 javaArgumentsBox.Text != string.Empty) {
                 CurrentProfile.JavaArguments = javaArgumentsBox.Text;
             } else {
                 CurrentProfile.JavaArguments = null;
             }
-            if (javaExecutableCheckBox.Checked && javaExecutableBox.Text != Java.JavaExecutable &&
+            if (JavaExecutableCheckBox.Checked && javaExecutableBox.Text != Java.JavaExecutable &&
                 javaExecutableBox.Text != string.Empty) {
                 CurrentProfile.JavaExecutable = javaExecutableBox.Text;
             } else {
@@ -184,7 +202,7 @@ namespace FreeLauncher.Forms
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
-            versionsDropDownList.Items.Add("Use latest version");
+            versionsDropDownList.Items.Add(Variables.ProgramLocalization.UseLatestVersion);
             List<string> list = new List<string>();
             JObject json = JObject.Parse(File.ReadAllText(Variables.McVersions + "/versions.json"));
             foreach (JObject ver in json["versions"]) {
@@ -251,22 +269,22 @@ namespace FreeLauncher.Forms
 
         private void gameDirectoryCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)
         {
-            gameDirectoryBox.Enabled = gameDirectoryCheckBox.Checked;
+            gameDirectoryBox.Enabled = GameDirectoryCheckBox.Checked;
         }
 
         private void fastConnectCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)
         {
-            ipTextBox.Enabled = portTextBox.Enabled = fastConnectCheckBox.Checked;
+            ipTextBox.Enabled = portTextBox.Enabled = FastConnectCheckBox.Checked;
         }
 
         private void javaExecutableCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)
         {
-            javaExecutableBox.Enabled = javaExecutableCheckBox.Checked;
+            javaExecutableBox.Enabled = JavaExecutableCheckBox.Checked;
         }
 
         private void javaArgumentsCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)
         {
-            javaArgumentsBox.Enabled = javaArgumentsCheckBox.Checked;
+            javaArgumentsBox.Enabled = JavaArgumentsCheckBox.Checked;
         }
 
         private void openGameDirectoryButton_Click(object sender, EventArgs e)

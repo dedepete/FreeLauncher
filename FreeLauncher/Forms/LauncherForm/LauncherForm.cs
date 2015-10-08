@@ -108,6 +108,7 @@ namespace FreeLauncher.Forms
             AboutVersion.Text = ProductVersion;
             AppendLog($"Application: {ProductName} v.{ProductVersion}" +
                       (!Variables.ProgramArguments.NotAStandalone ? "-standalone" : string.Empty));
+            AppendLog($"Application language: {Variables.ProgramLocalization.Name}({Variables.ProgramLocalization.LanguageTag})");
             AppendLog("==============");
             AppendLog("System info:");
             AppendLog($"Operating system: {Environment.OSVersion}({new ComputerInfo().OSFullName})");
@@ -432,6 +433,11 @@ namespace FreeLauncher.Forms
         private void SetToClipboardButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(logBox.Text);
+        }
+
+        private void urlLabel_Click(object sender, EventArgs e)
+        {
+            Process.Start((sender as Label).Text);
         }
 
         private void UpdateVersions()

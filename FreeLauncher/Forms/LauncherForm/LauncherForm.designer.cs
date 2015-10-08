@@ -505,6 +505,7 @@ namespace FreeLauncher.Forms
             this.label6.Size = new System.Drawing.Size(127, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "http://vk.com/mcoffline";
+            this.label6.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // MCofflineDescLabel
             // 
@@ -594,6 +595,7 @@ namespace FreeLauncher.Forms
             this.label3.Size = new System.Drawing.Size(119, 15);
             this.label3.TabIndex = 5;
             this.label3.Text = "http://vk.com/sesmc";
+            this.label3.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // DevInfoLabel
             // 
@@ -619,6 +621,7 @@ namespace FreeLauncher.Forms
             this.label5.Size = new System.Drawing.Size(117, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "http://ru-minecraft.ru";
+            this.label5.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // GratitudesDescLabel
             // 
