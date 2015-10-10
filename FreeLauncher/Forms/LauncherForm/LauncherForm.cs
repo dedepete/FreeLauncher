@@ -501,7 +501,8 @@ namespace FreeLauncher.Forms
                                 ProductName, new JObject {
                                     {"name", ProductName}, {
                                         "allowedReleaseTypes", new JArray {
-                                            "release"
+                                            "release",
+                                            "other"
                                         }
                                     },
                                     {"launcherVisibilityOnGameClose", "keep the launcher open"}
