@@ -33,7 +33,7 @@ namespace FreeLauncher
         {
             //TODO: Localization
             //File.WriteAllText(Variables.McLauncher + "\\local.json", JsonConvert.SerializeObject(Variables.ProgramLocalization, Formatting.Indented));
-            //Variables.ProgramLocalization = JsonConvert.DeserializeObject<Localization>(File.ReadAllText(Variables.McLauncher + "\\lang.uk-UA.json"));
+            //Variables.ProgramLocalization = JsonConvert.DeserializeObject<Localization>(File.ReadAllText(Variables.McLauncher + "\\lang.en-UK.json"));
             Variables.McDirectory = Variables.ProgramArguments.WorkingDirectory ??
                                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                         ".minecraft\\");

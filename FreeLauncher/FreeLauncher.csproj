@@ -164,6 +164,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Translations\lang.en-UK.json" />
     <None Include="Translations\lang.ru-RU.json" />
     <None Include="Translations\lang.uk_UA.json" />
   </ItemGroup>
