@@ -941,7 +941,7 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteDisplayMember = null;
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            this.LangDropDownList.Enabled = false;
+            radListDataItem1.Tag = "ru-RU";
             radListDataItem1.Text = "Русский (ru-default)";
             this.LangDropDownList.Items.Add(radListDataItem1);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 69);
@@ -959,8 +959,9 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LangDropDownList.Size = new System.Drawing.Size(202, 24);
             this.LangDropDownList.TabIndex = 3;
-            this.LangDropDownList.Text = "Русский (ru-default)";
+            this.LangDropDownList.Text = "Русский (ru-RU)";
             this.LangDropDownList.ThemeName = "VisualStudio2012Dark";
+            this.LangDropDownList.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.LangDropDownList_SelectedIndexChanged);
             // 
             // EnableMinecraftUpdateAlerts
             // 

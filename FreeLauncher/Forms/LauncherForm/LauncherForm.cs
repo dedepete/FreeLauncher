@@ -115,6 +115,19 @@ namespace FreeLauncher.Forms
             AppendLog($"Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
             AppendLog("==============");
+            if (Variables.LocalizationsList.Count != 0) {
+                foreach (KeyValuePair<string, Localization> keyvalue in Variables.LocalizationsList) {
+                    LangDropDownList.Items.Add(new RadListDataItem {
+                        Text = $"{keyvalue.Value.Name} ({keyvalue.Key})",
+                        Tag = keyvalue.Key
+                    });
+                }
+                foreach (RadListDataItem item in LangDropDownList.Items.Where(a => a.Tag.ToString() == _cfg.SelectedLanguage)) {
+                    LangDropDownList.SelectedItem = item;
+                }
+            } else {
+                LangDropDownList.Enabled = false;
+            }
             if (!Directory.Exists(Variables.McDirectory)) {
                 Directory.CreateDirectory(Variables.McDirectory);
             }
@@ -353,6 +366,9 @@ namespace FreeLauncher.Forms
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
                             ? string.Empty
                             : _selectedProfile.JavaArguments + " ";
+                        if (_selectedProfile.WorkingDirectory != null && !Directory.Exists(_selectedProfile.WorkingDirectory)) {
+                            Directory.CreateDirectory(_selectedProfile.WorkingDirectory);
+                        }
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
@@ -363,7 +379,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? Variables.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token" }, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token" }, {"auth_uuid", _selectedUser.Uuid ?? "sample_token" }, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token" }, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token" }, {"auth_uuid", _selectedUser.Uuid ?? "sample_token" }, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Version {0} successfuly launched.",
@@ -438,6 +454,17 @@ namespace FreeLauncher.Forms
         private void urlLabel_Click(object sender, EventArgs e)
         {
             Process.Start((sender as Label).Text);
+        }
+
+        private void LangDropDownList_SelectedIndexChanged(object sender, PositionChangedEventArgs e)
+        {
+            if (LangDropDownList.SelectedItem.Tag.ToString() == _cfg.SelectedLanguage) {
+                return;
+            }
+            Variables.ProgramLocalization = LangDropDownList.SelectedIndex == 0 ? new Localization() : Variables.LocalizationsList[LangDropDownList.SelectedItem.Tag.ToString()];
+            _cfg.SelectedLanguage = LangDropDownList.SelectedItem.Tag.ToString();
+            AppendLog($"Application language changed to {LangDropDownList.SelectedItem.Tag}");
+            LoadLocalization();
         }
 
         private void UpdateVersions()
@@ -909,6 +936,7 @@ namespace FreeLauncher.Forms
                     methodName ?? new StackFrame(1, false).GetMethod().Name, text));
             }
         }
+
     }
 
     internal class MinecraftProcess

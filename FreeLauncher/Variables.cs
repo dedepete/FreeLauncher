@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using CommandLine;
-using Newtonsoft.Json;
 
 namespace FreeLauncher
 {
@@ -10,6 +9,7 @@ namespace FreeLauncher
     {
         public static Arguments ProgramArguments = new Arguments();
         public static Localization ProgramLocalization = new Localization();
+        public static Dictionary<string, Localization> LocalizationsList = new Dictionary<string, Localization>(); 
 
         public static string McDirectory = ProgramArguments.WorkingDirectory ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft\\");
         public static string McLauncher = Path.Combine(McDirectory, "freelauncher\\");
@@ -30,7 +30,6 @@ namespace FreeLauncher
         public bool NotAStandalone { get; set; }
     }
 
-    //TODO: Localization
     public class Localization
     {
         public string Name = "Русский";

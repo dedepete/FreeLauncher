@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using CommandLine;
 using FreeLauncher.Forms;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 
 namespace FreeLauncher
@@ -21,6 +23,20 @@ namespace FreeLauncher
                 ? JsonConvert.DeserializeObject<Configuration>(
                     File.ReadAllText(Variables.McLauncher + "\\configuration.json"))
                 : new Configuration();
+            if (Directory.Exists(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"))) {
+                foreach (
+                    Localization local in
+                        new DirectoryInfo(Path.Combine(Application.StartupPath + "/freelauncher-langs/"))
+                            .GetFiles()
+                            .Where(file => file.Name.Contains("lang"))
+                            .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
+                            .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
+                    Variables.LocalizationsList.Add(local.LanguageTag, local);
+                    if (local.LanguageTag == _cfg.SelectedLanguage) {
+                        Variables.ProgramLocalization = local;
+                    }
+                }
+            }
             ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Dark";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -31,9 +47,6 @@ namespace FreeLauncher
 
         public static void InitValues()
         {
-            //TODO: Localization
-            //File.WriteAllText(Variables.McLauncher + "\\local.json", JsonConvert.SerializeObject(Variables.ProgramLocalization, Formatting.Indented));
-            //Variables.ProgramLocalization = JsonConvert.DeserializeObject<Localization>(File.ReadAllText(Variables.McLauncher + "\\lang.en-UK.json"));
             Variables.McDirectory = Variables.ProgramArguments.WorkingDirectory ??
                                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                         ".minecraft\\");
