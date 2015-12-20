@@ -33,11 +33,11 @@ namespace FreeLauncher.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn4 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn5 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn6 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn1 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn2 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn3 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
-            Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
+            Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
             this.vs12theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.mainPageView = new Telerik.WinControls.UI.RadPageView();
             this.News = new Telerik.WinControls.UI.RadPageViewPage();
@@ -56,6 +56,8 @@ namespace FreeLauncher.Forms
             this.AboutPageView = new Telerik.WinControls.UI.RadPageView();
             this.AboutPageViewPage = new Telerik.WinControls.UI.RadPageViewPage();
             this.radScrollablePanel2 = new Telerik.WinControls.UI.RadScrollablePanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.AboutVersion = new Telerik.WinControls.UI.RadLabel();
             this.label6 = new System.Windows.Forms.Label();
             this.MCofflineDescLabel = new System.Windows.Forms.Label();
@@ -96,8 +98,6 @@ namespace FreeLauncher.Forms
             this.profilesDropDownBox = new Telerik.WinControls.UI.RadDropDownList();
             this.EditProfile = new Telerik.WinControls.UI.RadButton();
             this.AddProfile = new Telerik.WinControls.UI.RadButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mainPageView)).BeginInit();
             this.mainPageView.SuspendLayout();
             this.News.SuspendLayout();
@@ -348,15 +348,15 @@ namespace FreeLauncher.Forms
             this.versionsListView.AllowRemove = false;
             this.versionsListView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.versionsListView.CheckOnClickMode = Telerik.WinControls.UI.CheckOnClickMode.FirstClick;
-            listViewDetailColumn4.HeaderText = "Версия";
-            listViewDetailColumn5.HeaderText = "Тип";
-            listViewDetailColumn5.Width = 100F;
-            listViewDetailColumn6.HeaderText = "Зависимость";
-            listViewDetailColumn6.Width = 100F;
+            listViewDetailColumn1.HeaderText = "Версия";
+            listViewDetailColumn2.HeaderText = "Тип";
+            listViewDetailColumn2.Width = 100F;
+            listViewDetailColumn3.HeaderText = "Зависимость";
+            listViewDetailColumn3.Width = 100F;
             this.versionsListView.Columns.AddRange(new Telerik.WinControls.UI.ListViewDetailColumn[] {
-            listViewDetailColumn4,
-            listViewDetailColumn5,
-            listViewDetailColumn6});
+            listViewDetailColumn1,
+            listViewDetailColumn2,
+            listViewDetailColumn3});
             this.versionsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.versionsListView.EnableColumnSort = true;
             this.versionsListView.EnableFiltering = true;
@@ -425,7 +425,6 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
-            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -469,6 +468,32 @@ namespace FreeLauncher.Forms
             this.radScrollablePanel2.TabIndex = 9;
             this.radScrollablePanel2.Text = "radScrollablePanel2";
             this.radScrollablePanel2.ThemeName = "VisualStudio2012Dark";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label1.ForeColor = System.Drawing.Color.Gray;
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label1.Location = new System.Drawing.Point(14, 261);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(109, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "http://vk.com/vmine";
+            this.label1.Click += new System.EventHandler(this.urlLabel_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(14, 244);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(283, 17);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Юмор и приколы по Minecraft и Minecraft PE!";
             // 
             // AboutVersion
             // 
@@ -694,7 +719,6 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
-            this.LicensesPage.ItemSize = new System.Drawing.SizeF(279F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -771,7 +795,6 @@ namespace FreeLauncher.Forms
             // SettingsPage
             // 
             this.SettingsPage.Controls.Add(this.radScrollablePanel1);
-            this.SettingsPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.SettingsPage.Location = new System.Drawing.Point(5, 5);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Size = new System.Drawing.Size(838, 293);
@@ -948,9 +971,9 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteDisplayMember = null;
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            radListDataItem2.Tag = "ru-RU";
-            radListDataItem2.Text = "Русский (ru-default)";
-            this.LangDropDownList.Items.Add(radListDataItem2);
+            radListDataItem1.Tag = "ru-RU";
+            radListDataItem1.Text = "Русский (ru-default)";
+            this.LangDropDownList.Items.Add(radListDataItem1);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 69);
             this.LangDropDownList.Name = "LangDropDownList";
             // 
@@ -1230,32 +1253,6 @@ namespace FreeLauncher.Forms
             this.AddProfile.TextWrap = true;
             this.AddProfile.ThemeName = "VisualStudio2012Dark";
             this.AddProfile.Click += new System.EventHandler(this.AddProfile_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label1.ForeColor = System.Drawing.Color.Gray;
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(14, 261);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "http://vk.com/vmine";
-            this.label1.Click += new System.EventHandler(this.urlLabel_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(14, 244);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(283, 17);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Юмор и приколы по Minecraft и Minecraft PE!";
             // 
             // LauncherForm
             // 

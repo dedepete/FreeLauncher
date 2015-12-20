@@ -136,8 +136,7 @@ namespace FreeLauncher.Forms
                         ? portTextBox.Text
                         : "25565"))
                 };
-            }
-            else {
+            } else {
                 CurrentProfile.FastConnectionSettigs = null;
             }
             switch (stateBox.SelectedItem.Tag.ToString()) {
@@ -209,7 +208,7 @@ namespace FreeLauncher.Forms
                 string id = ver["id"].ToString(),
                     type = ver["type"].ToString();
                 list.Add(string.Format("{0} {1}", type, id));
-                RadListDataItem ritem = new RadListDataItem { Text = type + " " + id, Tag = id };
+                RadListDataItem ritem = new RadListDataItem {Text = type + " " + id, Tag = id};
                 switch (type) {
                     case "snapshot":
                         if (snapshotsCheckBox.Checked) {
@@ -243,7 +242,7 @@ namespace FreeLauncher.Forms
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
                     select
-                        new Version().ParseVersion(
+                        Version.ParseVersion(
                             new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
                                 new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {

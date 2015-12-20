@@ -351,7 +351,7 @@ namespace FreeLauncher.Forms
                         _userManager.SelectedUsername = _selectedUser.Username;
                         SaveUsers();
                         UpdateUserList();
-                        Version selectedVersion = new Version().ParseVersion(
+                        Version selectedVersion = Version.ParseVersion(
                             new DirectoryInfo(Variables.McVersions + (_versionToLaunch ?? (
                                 (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
                         JObject properties = new JObject {
@@ -366,7 +366,8 @@ namespace FreeLauncher.Forms
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
                             ? string.Empty
                             : _selectedProfile.JavaArguments + " ";
-                        if (_selectedProfile.WorkingDirectory != null && !Directory.Exists(_selectedProfile.WorkingDirectory)) {
+                        if (_selectedProfile.WorkingDirectory != null &&
+                            !Directory.Exists(_selectedProfile.WorkingDirectory)) {
                             Directory.CreateDirectory(_selectedProfile.WorkingDirectory);
                         }
                         ProcessStartInfo proc = new ProcessStartInfo {
@@ -379,7 +380,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? Variables.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token" }, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token" }, {"auth_uuid", _selectedUser.Uuid ?? "sample_token" }, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={Variables.McDirectory + "natives\\"} -cp {(Variables.Libraries.Contains(' ') ? "\"" + Variables.Libraries + "\"" : Variables.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? Variables.McDirectory}, {"assets_root", Variables.McDirectory + "assets\\"}, {"game_assets", Variables.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Version {0} successfuly launched.",
@@ -461,7 +462,9 @@ namespace FreeLauncher.Forms
             if (LangDropDownList.SelectedItem.Tag.ToString() == _cfg.SelectedLanguage) {
                 return;
             }
-            Variables.ProgramLocalization = LangDropDownList.SelectedIndex == 0 ? new Localization() : Variables.LocalizationsList[LangDropDownList.SelectedItem.Tag.ToString()];
+            Variables.ProgramLocalization = LangDropDownList.SelectedIndex == 0
+                ? new Localization()
+                : Variables.LocalizationsList[LangDropDownList.SelectedItem.Tag.ToString()];
             _cfg.SelectedLanguage = LangDropDownList.SelectedItem.Tag.ToString();
             AppendLog($"Application language changed to {LangDropDownList.SelectedItem.Tag}");
             LoadLocalization();
@@ -609,7 +612,7 @@ namespace FreeLauncher.Forms
             StatusBarValue++;
             StatusBarValue = 0;
             while (state != 1) ;
-            Version selectedVersion = new Version().ParseVersion(
+            Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(Variables.McVersions + version), false);
             if (!File.Exists(path + "/" + version + ".jar") &&
                 selectedVersion.InheritsFrom == null) {
@@ -656,7 +659,7 @@ namespace FreeLauncher.Forms
         private void CheckLibraries()
         {
             string libraries = string.Empty;
-            Version selectedVersion = new Version().ParseVersion(
+            Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(Variables.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
@@ -709,7 +712,7 @@ namespace FreeLauncher.Forms
         private void CheckGameResources()
         {
             UpdateStatusBarAndLog("Checking game assets...");
-            Version selectedVersion = new Version().ParseVersion(
+            Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(Variables.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
@@ -871,7 +874,7 @@ namespace FreeLauncher.Forms
                     Version version in
                         Directory.GetDirectories(Variables.McVersions)
                             .Select(versionDir => new DirectoryInfo(versionDir))
-                            .Select(info => new Version().ParseVersion(info, false))) {
+                            .Select(info => Version.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? Variables.ProgramLocalization.Independent);
                 }
