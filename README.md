@@ -6,5 +6,5 @@ Requires **.NET Framework 4.0**
 ## Third-party assemblies used in this software
 * Telerik RadControls for WinForms - http://www.telerik.com/products/winforms.aspx
 * JSON.NET                         - http://james.newtonking.com/json
-* Ionic.Zip                        - http://dotnetzip.codeplex.com/
+* DotNetZip                        - https://github.com/haf/DotNetZip.Semverd
 * CommandLineParser                - https://github.com/gsscoder/commandline
