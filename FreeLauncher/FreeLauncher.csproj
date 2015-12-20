@@ -65,9 +65,9 @@
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net40\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="dotMCLauncher.Core, Version=0.0.3.78, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="dotMCLauncher.Core, Version=0.0.4.82, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\dotMCLauncher\Core\0.0.4.81\dotMCLauncher.Core.dll</HintPath>
+      <HintPath>..\lib\dotMCLauncher\Core\0.0.4.84\dotMCLauncher.Core.dll</HintPath>
     </Reference>
     <Reference Include="dotMCLauncher.YaDra4il, Version=1.0.0.29, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

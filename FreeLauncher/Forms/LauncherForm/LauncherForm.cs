@@ -255,7 +255,7 @@ namespace FreeLauncher.Forms
 
         private void AddProfile_Click(object sender, EventArgs e)
         {
-            Profile editedProfile = new Profile().ParseProfile(_selectedProfile.ToString());
+            Profile editedProfile = Profile.ParseProfile(_selectedProfile.ToString());
             editedProfile.ProfileName = "Copy of '" + _selectedProfile.ProfileName + "'(" +
                                         DateTime.Now.ToString("HH:mm:ss") + ")";
             ProfileForm pf = new ProfileForm(editedProfile) {Text = Variables.ProgramLocalization.AddingProfileTitle};
@@ -507,7 +507,7 @@ namespace FreeLauncher.Forms
             profilesDropDownBox.Items.Clear();
             try {
                 _profileManager =
-                    new ProfileManager().ParseProfile(Variables.McDirectory +
+                    ProfileManager.ParseProfile(Variables.McDirectory +
                                                       "/launcher_profiles.json");
                 if (!_profileManager.Profiles.Any()) {
                     throw new Exception("Someone broke my profiles>:(");
@@ -542,7 +542,7 @@ namespace FreeLauncher.Forms
                     },
                     {"selectedProfile", ProductName}
                 }.ToString());
-                _profileManager = new ProfileManager().ParseProfile(Variables.McDirectory +
+                _profileManager = ProfileManager.ParseProfile(Variables.McDirectory +
                                                                     "/launcher_profiles.json");
                 SaveProfiles();
             }
