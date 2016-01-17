@@ -172,15 +172,12 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.mainPageView.RootElement.AccessibleDescription = null;
-            this.mainPageView.RootElement.AccessibleName = null;
             this.mainPageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.mainPageView.RootElement.AngleTransform = 0F;
             this.mainPageView.RootElement.FlipText = false;
             this.mainPageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.mainPageView.RootElement.Text = null;
             this.mainPageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.mainPageView.SelectedPage = this.News;
+            this.mainPageView.SelectedPage = this.EditVersions;
             this.mainPageView.Size = new System.Drawing.Size(858, 363);
             this.mainPageView.TabIndex = 2;
             this.mainPageView.ThemeName = "VisualStudio2012Dark";
@@ -219,13 +216,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.webPanel.RootElement.AccessibleDescription = null;
-            this.webPanel.RootElement.AccessibleName = null;
             this.webPanel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.webPanel.RootElement.AngleTransform = 0F;
             this.webPanel.RootElement.FlipText = false;
             this.webPanel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.webPanel.RootElement.Text = null;
             this.webPanel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.webPanel.Size = new System.Drawing.Size(848, 20);
             this.webPanel.TabIndex = 1;
@@ -240,13 +234,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.BackWebButton.RootElement.AccessibleDescription = null;
-            this.BackWebButton.RootElement.AccessibleName = null;
             this.BackWebButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.BackWebButton.RootElement.AngleTransform = 0F;
             this.BackWebButton.RootElement.FlipText = false;
             this.BackWebButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.BackWebButton.RootElement.Text = null;
             this.BackWebButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.BackWebButton.Size = new System.Drawing.Size(64, 17);
             this.BackWebButton.TabIndex = 1;
@@ -262,13 +253,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.ForwardWebButton.RootElement.AccessibleDescription = null;
-            this.ForwardWebButton.RootElement.AccessibleName = null;
             this.ForwardWebButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.ForwardWebButton.RootElement.AngleTransform = 0F;
             this.ForwardWebButton.RootElement.FlipText = false;
             this.ForwardWebButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ForwardWebButton.RootElement.Text = null;
             this.ForwardWebButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.ForwardWebButton.Size = new System.Drawing.Size(64, 17);
             this.ForwardWebButton.TabIndex = 0;
@@ -368,13 +356,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.versionsListView.RootElement.AccessibleDescription = null;
-            this.versionsListView.RootElement.AccessibleName = null;
             this.versionsListView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.versionsListView.RootElement.AngleTransform = 0F;
             this.versionsListView.RootElement.FlipText = false;
             this.versionsListView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.versionsListView.RootElement.Text = null;
             this.versionsListView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.versionsListView.SelectLastAddedItem = false;
             this.versionsListView.ShowItemToolTips = false;
@@ -405,13 +390,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.AboutPageView.RootElement.AccessibleDescription = null;
-            this.AboutPageView.RootElement.AccessibleName = null;
             this.AboutPageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.AboutPageView.RootElement.AngleTransform = 0F;
             this.AboutPageView.RootElement.FlipText = false;
             this.AboutPageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.AboutPageView.RootElement.Text = null;
             this.AboutPageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AboutPageView.SelectedPage = this.AboutPageViewPage;
             this.AboutPageView.Size = new System.Drawing.Size(848, 328);
@@ -456,13 +438,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radScrollablePanel2.RootElement.AccessibleDescription = null;
-            this.radScrollablePanel2.RootElement.AccessibleName = null;
             this.radScrollablePanel2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radScrollablePanel2.RootElement.AngleTransform = 0F;
             this.radScrollablePanel2.RootElement.FlipText = false;
             this.radScrollablePanel2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radScrollablePanel2.RootElement.Text = null;
             this.radScrollablePanel2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radScrollablePanel2.Size = new System.Drawing.Size(838, 293);
             this.radScrollablePanel2.TabIndex = 9;
@@ -505,14 +484,11 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.AboutVersion.RootElement.AccessibleDescription = null;
-            this.AboutVersion.RootElement.AccessibleName = null;
             this.AboutVersion.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.AboutVersion.RootElement.AngleTransform = 0F;
             this.AboutVersion.RootElement.FlipText = false;
             this.AboutVersion.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.AboutVersion.RootElement.MinSize = new System.Drawing.Size(58, 18);
-            this.AboutVersion.RootElement.Text = null;
             this.AboutVersion.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AboutVersion.Size = new System.Drawing.Size(58, 18);
             this.AboutVersion.TabIndex = 1;
@@ -559,13 +535,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radLabel1.RootElement.AccessibleDescription = null;
-            this.radLabel1.RootElement.AccessibleName = null;
             this.radLabel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radLabel1.RootElement.AngleTransform = 0F;
             this.radLabel1.RootElement.FlipText = false;
             this.radLabel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel1.RootElement.Text = null;
             this.radLabel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel1.Size = new System.Drawing.Size(175, 41);
             this.radLabel1.TabIndex = 0;
@@ -584,13 +557,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.PartnersLabel.RootElement.AccessibleDescription = null;
-            this.PartnersLabel.RootElement.AccessibleName = null;
             this.PartnersLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.PartnersLabel.RootElement.AngleTransform = 0F;
             this.PartnersLabel.RootElement.FlipText = false;
             this.PartnersLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.PartnersLabel.RootElement.Text = null;
             this.PartnersLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.PartnersLabel.Size = new System.Drawing.Size(140, 41);
             this.PartnersLabel.TabIndex = 10;
@@ -675,13 +645,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.GratitudesLabel.RootElement.AccessibleDescription = null;
-            this.GratitudesLabel.RootElement.AccessibleName = null;
             this.GratitudesLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.GratitudesLabel.RootElement.AngleTransform = 0F;
             this.GratitudesLabel.RootElement.FlipText = false;
             this.GratitudesLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.GratitudesLabel.RootElement.Text = null;
             this.GratitudesLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.GratitudesLabel.Size = new System.Drawing.Size(202, 41);
             this.GratitudesLabel.TabIndex = 7;
@@ -700,14 +667,11 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radLabel3.RootElement.AccessibleDescription = null;
-            this.radLabel3.RootElement.AccessibleName = null;
             this.radLabel3.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radLabel3.RootElement.AngleTransform = 0F;
             this.radLabel3.RootElement.FlipText = false;
             this.radLabel3.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.radLabel3.RootElement.Opacity = 0.2D;
-            this.radLabel3.RootElement.Text = null;
             this.radLabel3.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel3.Size = new System.Drawing.Size(279, 41);
             this.radLabel3.TabIndex = 2;
@@ -734,13 +698,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.licensePageView.RootElement.AccessibleDescription = null;
-            this.licensePageView.RootElement.AccessibleName = null;
             this.licensePageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.licensePageView.RootElement.AngleTransform = 0F;
             this.licensePageView.RootElement.FlipText = false;
             this.licensePageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.licensePageView.RootElement.Text = null;
             this.licensePageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.licensePageView.SelectedPage = this.FreeLauncherLicense;
             this.licensePageView.Size = new System.Drawing.Size(838, 293);
@@ -814,13 +775,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radScrollablePanel1.RootElement.AccessibleDescription = null;
-            this.radScrollablePanel1.RootElement.AccessibleName = null;
             this.radScrollablePanel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radScrollablePanel1.RootElement.AngleTransform = 0F;
             this.radScrollablePanel1.RootElement.FlipText = false;
             this.radScrollablePanel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radScrollablePanel1.RootElement.Text = null;
             this.radScrollablePanel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radScrollablePanel1.Size = new System.Drawing.Size(838, 293);
             this.radScrollablePanel1.TabIndex = 1;
@@ -840,13 +798,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radGroupBox2.RootElement.AccessibleDescription = null;
-            this.radGroupBox2.RootElement.AccessibleName = null;
             this.radGroupBox2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radGroupBox2.RootElement.AngleTransform = 0F;
             this.radGroupBox2.RootElement.FlipText = false;
             this.radGroupBox2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox2.RootElement.Text = null;
             this.radGroupBox2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox2.Size = new System.Drawing.Size(357, 121);
             this.radGroupBox2.TabIndex = 1;
@@ -860,13 +815,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.CloseGameOutput.RootElement.AccessibleDescription = null;
-            this.CloseGameOutput.RootElement.AccessibleName = null;
             this.CloseGameOutput.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.CloseGameOutput.RootElement.AngleTransform = 0F;
             this.CloseGameOutput.RootElement.FlipText = false;
             this.CloseGameOutput.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.CloseGameOutput.RootElement.Text = null;
             this.CloseGameOutput.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.CloseGameOutput.Size = new System.Drawing.Size(327, 18);
             this.CloseGameOutput.TabIndex = 2;
@@ -881,13 +833,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.UseGamePrefix.RootElement.AccessibleDescription = null;
-            this.UseGamePrefix.RootElement.AccessibleName = null;
             this.UseGamePrefix.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.UseGamePrefix.RootElement.AngleTransform = 0F;
             this.UseGamePrefix.RootElement.FlipText = false;
             this.UseGamePrefix.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.UseGamePrefix.RootElement.Text = null;
             this.UseGamePrefix.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.UseGamePrefix.Size = new System.Drawing.Size(288, 18);
             this.UseGamePrefix.TabIndex = 1;
@@ -903,13 +852,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.EnableMinecraftLogging.RootElement.AccessibleDescription = null;
-            this.EnableMinecraftLogging.RootElement.AccessibleName = null;
             this.EnableMinecraftLogging.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.EnableMinecraftLogging.RootElement.AngleTransform = 0F;
             this.EnableMinecraftLogging.RootElement.FlipText = false;
             this.EnableMinecraftLogging.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EnableMinecraftLogging.RootElement.Text = null;
             this.EnableMinecraftLogging.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.EnableMinecraftLogging.Size = new System.Drawing.Size(177, 18);
             this.EnableMinecraftLogging.TabIndex = 0;
@@ -931,13 +877,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radGroupBox1.RootElement.AccessibleDescription = null;
-            this.radGroupBox1.RootElement.AccessibleName = null;
             this.radGroupBox1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radGroupBox1.RootElement.AngleTransform = 0F;
             this.radGroupBox1.RootElement.FlipText = false;
             this.radGroupBox1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox1.RootElement.Text = null;
             this.radGroupBox1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox1.Size = new System.Drawing.Size(357, 121);
             this.radGroupBox1.TabIndex = 0;
@@ -951,13 +894,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radLabel4.RootElement.AccessibleDescription = null;
-            this.radLabel4.RootElement.AccessibleName = null;
             this.radLabel4.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radLabel4.RootElement.AngleTransform = 0F;
             this.radLabel4.RootElement.FlipText = false;
             this.radLabel4.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel4.RootElement.Text = null;
             this.radLabel4.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel4.Size = new System.Drawing.Size(87, 18);
             this.radLabel4.TabIndex = 5;
@@ -979,13 +919,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.LangDropDownList.RootElement.AccessibleDescription = null;
-            this.LangDropDownList.RootElement.AccessibleName = null;
             this.LangDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.LangDropDownList.RootElement.AngleTransform = 0F;
             this.LangDropDownList.RootElement.FlipText = false;
             this.LangDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.LangDropDownList.RootElement.Text = null;
             this.LangDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LangDropDownList.Size = new System.Drawing.Size(202, 24);
             this.LangDropDownList.TabIndex = 3;
@@ -1002,13 +939,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.EnableMinecraftUpdateAlerts.RootElement.AccessibleDescription = null;
-            this.EnableMinecraftUpdateAlerts.RootElement.AccessibleName = null;
             this.EnableMinecraftUpdateAlerts.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.EnableMinecraftUpdateAlerts.RootElement.AngleTransform = 0F;
             this.EnableMinecraftUpdateAlerts.RootElement.FlipText = false;
             this.EnableMinecraftUpdateAlerts.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EnableMinecraftUpdateAlerts.RootElement.Text = null;
             this.EnableMinecraftUpdateAlerts.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.EnableMinecraftUpdateAlerts.Size = new System.Drawing.Size(340, 18);
             this.EnableMinecraftUpdateAlerts.TabIndex = 2;
@@ -1024,13 +958,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radCheckBox1.RootElement.AccessibleDescription = null;
-            this.radCheckBox1.RootElement.AccessibleName = null;
             this.radCheckBox1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radCheckBox1.RootElement.AngleTransform = 0F;
             this.radCheckBox1.RootElement.FlipText = false;
             this.radCheckBox1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radCheckBox1.RootElement.Text = null;
             this.radCheckBox1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radCheckBox1.Size = new System.Drawing.Size(257, 18);
             this.radCheckBox1.TabIndex = 0;
@@ -1066,13 +997,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.radPanel1.RootElement.AccessibleDescription = null;
-            this.radPanel1.RootElement.AccessibleName = null;
             this.radPanel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.radPanel1.RootElement.AngleTransform = 0F;
             this.radPanel1.RootElement.FlipText = false;
             this.radPanel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radPanel1.RootElement.Text = null;
             this.radPanel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radPanel1.Size = new System.Drawing.Size(858, 59);
             this.radPanel1.TabIndex = 3;
@@ -1100,13 +1028,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.ManageUsersButton.RootElement.AccessibleDescription = null;
-            this.ManageUsersButton.RootElement.AccessibleName = null;
             this.ManageUsersButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.ManageUsersButton.RootElement.AngleTransform = 0F;
             this.ManageUsersButton.RootElement.FlipText = false;
             this.ManageUsersButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ManageUsersButton.RootElement.Text = null;
             this.ManageUsersButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.ManageUsersButton.Size = new System.Drawing.Size(32, 24);
             this.ManageUsersButton.TabIndex = 7;
@@ -1124,13 +1049,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.NicknameDropDownList.RootElement.AccessibleDescription = null;
-            this.NicknameDropDownList.RootElement.AccessibleName = null;
             this.NicknameDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.NicknameDropDownList.RootElement.AngleTransform = 0F;
             this.NicknameDropDownList.RootElement.FlipText = false;
             this.NicknameDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.NicknameDropDownList.RootElement.Text = null;
             this.NicknameDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.NicknameDropDownList.Size = new System.Drawing.Size(196, 24);
             this.NicknameDropDownList.TabIndex = 3;
@@ -1173,13 +1095,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.LaunchButton.RootElement.AccessibleDescription = null;
-            this.LaunchButton.RootElement.AccessibleName = null;
             this.LaunchButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.LaunchButton.RootElement.AngleTransform = 0F;
             this.LaunchButton.RootElement.FlipText = false;
             this.LaunchButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.LaunchButton.RootElement.Text = null;
             this.LaunchButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LaunchButton.Size = new System.Drawing.Size(231, 22);
             this.LaunchButton.TabIndex = 4;
@@ -1197,13 +1116,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.profilesDropDownBox.RootElement.AccessibleDescription = null;
-            this.profilesDropDownBox.RootElement.AccessibleName = null;
             this.profilesDropDownBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.profilesDropDownBox.RootElement.AngleTransform = 0F;
             this.profilesDropDownBox.RootElement.FlipText = false;
             this.profilesDropDownBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.profilesDropDownBox.RootElement.Text = null;
             this.profilesDropDownBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.profilesDropDownBox.Size = new System.Drawing.Size(191, 24);
             this.profilesDropDownBox.TabIndex = 2;
@@ -1217,13 +1133,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.EditProfile.RootElement.AccessibleDescription = null;
-            this.EditProfile.RootElement.AccessibleName = null;
             this.EditProfile.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.EditProfile.RootElement.AngleTransform = 0F;
             this.EditProfile.RootElement.FlipText = false;
             this.EditProfile.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EditProfile.RootElement.Text = null;
             this.EditProfile.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.EditProfile.Size = new System.Drawing.Size(110, 22);
             this.EditProfile.TabIndex = 1;
@@ -1239,13 +1152,10 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.AddProfile.RootElement.AccessibleDescription = null;
-            this.AddProfile.RootElement.AccessibleName = null;
             this.AddProfile.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
             this.AddProfile.RootElement.AngleTransform = 0F;
             this.AddProfile.RootElement.FlipText = false;
             this.AddProfile.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.AddProfile.RootElement.Text = null;
             this.AddProfile.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AddProfile.Size = new System.Drawing.Size(110, 22);
             this.AddProfile.TabIndex = 0;
