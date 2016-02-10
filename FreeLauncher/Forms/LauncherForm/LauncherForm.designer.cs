@@ -37,7 +37,6 @@ namespace FreeLauncher.Forms
             Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn2 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
             Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn3 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
-            Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
             this.vs12theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.mainPageView = new Telerik.WinControls.UI.RadPageView();
             this.News = new Telerik.WinControls.UI.RadPageViewPage();
@@ -911,9 +910,6 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteDisplayMember = null;
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            radListDataItem1.Tag = "ru-RU";
-            radListDataItem1.Text = "Русский (ru-default)";
-            this.LangDropDownList.Items.Add(radListDataItem1);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 69);
             this.LangDropDownList.Name = "LangDropDownList";
             // 
@@ -926,7 +922,6 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LangDropDownList.Size = new System.Drawing.Size(202, 24);
             this.LangDropDownList.TabIndex = 3;
-            this.LangDropDownList.Text = "Русский (ru-RU)";
             this.LangDropDownList.ThemeName = "VisualStudio2012Dark";
             this.LangDropDownList.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.LangDropDownList_SelectedIndexChanged);
             // 

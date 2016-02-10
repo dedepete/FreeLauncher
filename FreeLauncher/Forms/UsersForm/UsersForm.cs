@@ -38,7 +38,7 @@ namespace FreeLauncher.Forms
             AddUserButton.Enabled =
                 UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
-            AddUserButton.Text = Variables.ProgramLocalization.PleaseWait;
+            AddUserButton.Text = Variables.GetString("PleaseWait");
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 User user = new User {Username = UsernameTextBox.Text};
@@ -72,7 +72,7 @@ namespace FreeLauncher.Forms
                 catch (WebException ex) {
                     switch (ex.Status) {
                         case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show(Variables.ProgramLocalization.IncorrectLoginOrPassword, Variables.ProgramLocalization.Error, MessageBoxButtons.OK,
+                            RadMessageBox.Show(Variables.GetString("IncorrectLoginOrPassword"), Variables.GetString("Error"), MessageBoxButtons.OK,
                                 RadMessageIcon.Error);
                             return;
                         default:
@@ -89,7 +89,7 @@ namespace FreeLauncher.Forms
             bgw.RunWorkerCompleted += delegate {
                 UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
-                AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+                AddUserButton.Text = Variables.GetString("AddNewUserButton");
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
             };
             bgw.RunWorkerAsync();
@@ -141,12 +141,12 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            DeleteUserButton.Text = Variables.ProgramLocalization.RemoveSelectedUser;
-            AddNewUserBox.Text = Variables.ProgramLocalization.AddNewUserBox;
-            NicknameLabel.Text = Variables.ProgramLocalization.Nickname;
-            LicenseQuestionLabel.Text = Variables.ProgramLocalization.LicenseQuestion;
-            PasswordLabel.Text = Variables.ProgramLocalization.Password;
-            AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+            DeleteUserButton.Text = Variables.GetString("RemoveSelectedUser");
+            AddNewUserBox.Text = Variables.GetString("AddNewUserBox");
+            NicknameLabel.Text = Variables.GetString("Nickname");
+            LicenseQuestionLabel.Text = Variables.GetString("LicenseQuestion");
+            PasswordLabel.Text = Variables.GetString("Password");
+            AddUserButton.Text = Variables.GetString("AddNewUserButton");
         }
     }
 
