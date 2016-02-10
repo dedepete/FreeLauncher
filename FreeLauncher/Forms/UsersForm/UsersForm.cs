@@ -38,10 +38,10 @@ namespace FreeLauncher.Forms
             AddUserButton.Enabled =
                 UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
-            AddUserButton.Text = Variables.ProgramLocalization.PleaseWait;
+            AddUserButton.Text = Variables.GetString("PleaseWait");
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
-                User user = new User {Username = UsernameTextBox.Text};
+                User user = new User { Username = UsernameTextBox.Text };
                 if (!YesNoToggleSwitch.Value) {
                     user.Type = "offline";
                     if (_userManager.Accounts.ContainsKey(user.Username)) {
@@ -54,7 +54,7 @@ namespace FreeLauncher.Forms
                     UpdateUsers();
                     return;
                 }
-                AuthManager auth = new AuthManager {Email = UsernameTextBox.Text, Password = PasswordTextBox.Text};
+                AuthManager auth = new AuthManager { Email = UsernameTextBox.Text, Password = PasswordTextBox.Text };
                 try {
                     auth.Login();
                     user.Type = auth.IsLegacy ? "legacy" : "mojang";
@@ -72,14 +72,15 @@ namespace FreeLauncher.Forms
                 catch (WebException ex) {
                     switch (ex.Status) {
                         case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show(Variables.ProgramLocalization.IncorrectLoginOrPassword, Variables.ProgramLocalization.Error, MessageBoxButtons.OK,
+                            RadMessageBox.Show(Variables.GetString("IncorrectLoginOrPassword"), Variables.GetString("Error"), MessageBoxButtons.OK,
                                 RadMessageIcon.Error);
                             return;
                         default:
                             return;
                     }
                 }
-                Invoke(new Action(() => {
+                Invoke(new Action(() =>
+                {
                     SaveUsers();
                     UpdateUsers();
                     UsernameTextBox.Clear();
@@ -89,7 +90,7 @@ namespace FreeLauncher.Forms
             bgw.RunWorkerCompleted += delegate {
                 UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
-                AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+                AddUserButton.Text = Variables.GetString("AddNewUserButton");
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
             };
             bgw.RunWorkerAsync();
@@ -109,7 +110,7 @@ namespace FreeLauncher.Forms
         {
             File.WriteAllText(Variables.McLauncher + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
-                    new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
+                    new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         private void DeleteUserButton_Click(object sender, EventArgs e)
@@ -141,28 +142,36 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            DeleteUserButton.Text = Variables.ProgramLocalization.RemoveSelectedUser;
-            AddNewUserBox.Text = Variables.ProgramLocalization.AddNewUserBox;
-            NicknameLabel.Text = Variables.ProgramLocalization.Nickname;
-            LicenseQuestionLabel.Text = Variables.ProgramLocalization.LicenseQuestion;
-            PasswordLabel.Text = Variables.ProgramLocalization.Password;
-            AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+            DeleteUserButton.Text = Variables.GetString("RemoveSelectedUser");
+            AddNewUserBox.Text = Variables.GetString("AddNewUserBox");
+            NicknameLabel.Text = Variables.GetString("Nickname");
+            LicenseQuestionLabel.Text = Variables.GetString("LicenseQuestion");
+            PasswordLabel.Text = Variables.GetString("Password");
+            AddUserButton.Text = Variables.GetString("AddNewUserButton");
         }
     }
 
     public class UserManager
     {
-        [JsonProperty("selectedUsername")] public string SelectedUsername;
-        [JsonProperty("users")] public Dictionary<string, User> Accounts = new Dictionary<string, User>();
+        [JsonProperty("selectedUsername")]
+        public string SelectedUsername;
+        [JsonProperty("users")]
+        public Dictionary<string, User> Accounts = new Dictionary<string, User>();
     }
 
     public class User
     {
-        [JsonProperty("username")] public string Username;
-        [JsonProperty("type")] public string Type;
-        [JsonProperty("uuid")] public string Uuid;
-        [JsonProperty("sessionToken")] public string SessionToken;
-        [JsonProperty("accessToken")] public string AccessToken;
-        [JsonProperty("properties")] public JArray UserProperties;
+        [JsonProperty("username")]
+        public string Username;
+        [JsonProperty("type")]
+        public string Type;
+        [JsonProperty("uuid")]
+        public string Uuid;
+        [JsonProperty("sessionToken")]
+        public string SessionToken;
+        [JsonProperty("accessToken")]
+        public string AccessToken;
+        [JsonProperty("properties")]
+        public JArray UserProperties;
     }
 }

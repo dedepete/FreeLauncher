@@ -83,8 +83,8 @@ namespace FreeLauncher.Forms
                     break;
             }
             if (Java.JavaExecutable == "\\bin\\java.exe") {
-                RadMessageBox.Show(this, Variables.ProgramLocalization.JavaDetectionFailed,
-                    Variables.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
+                RadMessageBox.Show(this, Variables.GetString("JavaDetectionFailed"),
+                    Variables.GetString("Error"), MessageBoxButtons.OK, RadMessageIcon.Error);
             }
             javaExecutableBox.Text = CurrentProfile.JavaExecutable ?? Java.JavaExecutable;
             JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
@@ -94,20 +94,20 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            ProfileNameLabel.Text = Variables.ProgramLocalization.ProfileName;
-            GameDirectoryCheckBox.Text = Variables.ProgramLocalization.WorkingDirectory;
-            WindowResolutionLabel.Text = Variables.ProgramLocalization.WindowResolution;
-            ActionAfterLaunchLabel.Text = Variables.ProgramLocalization.ActionAfterLaunch;
-            FastConnectCheckBox.Text = Variables.ProgramLocalization.Autoconnect;
-            snapshotsCheckBox.Text = Variables.ProgramLocalization.Snapshots;
-            betaCheckBox.Text = Variables.ProgramLocalization.Beta;
-            alphaCheckBox.Text = Variables.ProgramLocalization.Alpha;
-            otherCheckBox.Text = Variables.ProgramLocalization.Other;
-            JavaExecutableCheckBox.Text = Variables.ProgramLocalization.JavaExecutable;
-            JavaArgumentsCheckBox.Text = Variables.ProgramLocalization.JavaFlags;
-            cancelButton.Text = Variables.ProgramLocalization.Cancel;
-            openGameDirectoryButton.Text = Variables.ProgramLocalization.OpenDirectory;
-            saveProfileButton.Text = Variables.ProgramLocalization.Save;
+            ProfileNameLabel.Text = Variables.GetString("ProfileName");
+            GameDirectoryCheckBox.Text = Variables.GetString("WorkingDirectory");
+            WindowResolutionLabel.Text = Variables.GetString("WindowResolution");
+            ActionAfterLaunchLabel.Text = Variables.GetString("ActionAfterLaunch");
+            FastConnectCheckBox.Text = Variables.GetString("Autoconnect");
+            snapshotsCheckBox.Text = Variables.GetString("Snapshots");
+            betaCheckBox.Text = Variables.GetString("Beta");
+            alphaCheckBox.Text = Variables.GetString("Alpha");
+            otherCheckBox.Text = Variables.GetString("Other");
+            JavaExecutableCheckBox.Text = Variables.GetString("JavaExecutable");
+            JavaArgumentsCheckBox.Text = Variables.GetString("JavaFlags");
+            cancelButton.Text = Variables.GetString("Cancel");
+            openGameDirectoryButton.Text = Variables.GetString("OpenDirectory");
+            saveProfileButton.Text = Variables.GetString("Save");
         }
 
         private void saveProfileButton_Click(object sender, EventArgs e)
@@ -201,14 +201,14 @@ namespace FreeLauncher.Forms
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
-            versionsDropDownList.Items.Add(Variables.ProgramLocalization.UseLatestVersion);
+            versionsDropDownList.Items.Add(Variables.GetString("UseLatestVersion"));
             List<string> list = new List<string>();
             JObject json = JObject.Parse(File.ReadAllText(Variables.McVersions + "/versions.json"));
             foreach (JObject ver in json["versions"]) {
                 string id = ver["id"].ToString(),
                     type = ver["type"].ToString();
                 list.Add(string.Format("{0} {1}", type, id));
-                RadListDataItem ritem = new RadListDataItem {Text = type + " " + id, Tag = id};
+                RadListDataItem ritem = new RadListDataItem { Text = type + " " + id, Tag = id };
                 switch (type) {
                     case "snapshot":
                         if (snapshotsCheckBox.Checked) {
@@ -237,14 +237,14 @@ namespace FreeLauncher.Forms
             }
             if (otherCheckBox.Checked) {
                 foreach (Version version in from b in Directory.GetDirectories(Variables.McVersions)
-                    where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
-                        new DirectoryInfo(b).Name))
-                    let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
-                    where add
-                    select
-                        Version.ParseVersion(
-                            new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
-                                new DirectoryInfo(b).Name)), false)) {
+                                            where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
+                                                new DirectoryInfo(b).Name))
+                                            let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
+                                            where add
+                                            select
+                                                Version.ParseVersion(
+                                                    new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
+                                                        new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId
                     });
