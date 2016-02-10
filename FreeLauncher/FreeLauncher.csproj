@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arguments.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Forms\LauncherForm\LauncherForm.cs">
       <SubType>Form</SubType>

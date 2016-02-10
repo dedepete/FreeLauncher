@@ -41,7 +41,7 @@ namespace FreeLauncher.Forms
             AddUserButton.Text = Variables.GetString("PleaseWait");
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
-                User user = new User {Username = UsernameTextBox.Text};
+                User user = new User { Username = UsernameTextBox.Text };
                 if (!YesNoToggleSwitch.Value) {
                     user.Type = "offline";
                     if (_userManager.Accounts.ContainsKey(user.Username)) {
@@ -54,7 +54,7 @@ namespace FreeLauncher.Forms
                     UpdateUsers();
                     return;
                 }
-                AuthManager auth = new AuthManager {Email = UsernameTextBox.Text, Password = PasswordTextBox.Text};
+                AuthManager auth = new AuthManager { Email = UsernameTextBox.Text, Password = PasswordTextBox.Text };
                 try {
                     auth.Login();
                     user.Type = auth.IsLegacy ? "legacy" : "mojang";
@@ -79,7 +79,8 @@ namespace FreeLauncher.Forms
                             return;
                     }
                 }
-                Invoke(new Action(() => {
+                Invoke(new Action(() =>
+                {
                     SaveUsers();
                     UpdateUsers();
                     UsernameTextBox.Clear();
@@ -109,7 +110,7 @@ namespace FreeLauncher.Forms
         {
             File.WriteAllText(Variables.McLauncher + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
-                    new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
+                    new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         private void DeleteUserButton_Click(object sender, EventArgs e)
@@ -152,17 +153,25 @@ namespace FreeLauncher.Forms
 
     public class UserManager
     {
-        [JsonProperty("selectedUsername")] public string SelectedUsername;
-        [JsonProperty("users")] public Dictionary<string, User> Accounts = new Dictionary<string, User>();
+        [JsonProperty("selectedUsername")]
+        public string SelectedUsername;
+        [JsonProperty("users")]
+        public Dictionary<string, User> Accounts = new Dictionary<string, User>();
     }
 
     public class User
     {
-        [JsonProperty("username")] public string Username;
-        [JsonProperty("type")] public string Type;
-        [JsonProperty("uuid")] public string Uuid;
-        [JsonProperty("sessionToken")] public string SessionToken;
-        [JsonProperty("accessToken")] public string AccessToken;
-        [JsonProperty("properties")] public JArray UserProperties;
+        [JsonProperty("username")]
+        public string Username;
+        [JsonProperty("type")]
+        public string Type;
+        [JsonProperty("uuid")]
+        public string Uuid;
+        [JsonProperty("sessionToken")]
+        public string SessionToken;
+        [JsonProperty("accessToken")]
+        public string AccessToken;
+        [JsonProperty("properties")]
+        public JArray UserProperties;
     }
 }
