@@ -15,12 +15,12 @@ namespace FreeLauncher
         [STAThread]
         public static void Main(string[] args)
         {
-            ApplicationContext.Init(args);
+            var applicationContext = new ApplicationContext(args);
             ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Dark";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LauncherForm());
-            ApplicationContext.SaveConfiguration();
+            Application.Run(new LauncherForm(applicationContext));
+            applicationContext.SaveConfiguration();
         }
     }
 }

@@ -9,34 +9,30 @@ using Newtonsoft.Json.Linq;
 
 namespace FreeLauncher
 {
-    public static class ApplicationContext
+    public class ApplicationContext
     {
-        private static string configurationFile;
+        private readonly string _configurationFile;
 
-        public static Arguments ProgramArguments { get; private set; }
+        public Arguments ProgramArguments { get; private set; }
 
-        public static Localization ProgramLocalization { get; private set; }
-        public static Dictionary<string, Localization> LocalizationsList { get; private set; }
+        public Localization ProgramLocalization { get; private set; }
+        public Dictionary<string, Localization> LocalizationsList { get; private set; }
 
-        public static string McDirectory { get; private set; }
-        public static string McLauncher { get; private set; }
-        public static string McVersions { get; private set; }
-        public static string McLibs { get; private set; }
+        public string McDirectory { get; private set; }
+        public string McLauncher { get; private set; }
+        public string McVersions { get; private set; }
+        public string McLibs { get; private set; }
 
-        public static string Libraries { get; set; }
+        public string Libraries { get; set; }
 
-        public static Configuration Configuration { get; private set; }
+        public Configuration Configuration { get; private set; }
 
-        static ApplicationContext()
+        public ApplicationContext(string[] args)
         {
             Libraries = string.Empty;
             ProgramArguments = new Arguments();
             ProgramLocalization = new Localization();
             LocalizationsList = new Dictionary<string, Localization>();
-        }
-
-        public static void Init(string[] args)
-        {
             Parser.Default.ParseArguments(args, ProgramArguments);
             McDirectory = ProgramArguments.WorkingDirectory ??
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -45,12 +41,12 @@ namespace FreeLauncher
             McVersions = Path.Combine(McDirectory, "versions\\");
             McLibs = Path.Combine(McDirectory, "libraries\\");
 
-            configurationFile = McLauncher + "\\configuration.json";
+            _configurationFile = McLauncher + "\\configuration.json";
             Configuration = GetConfiguration();
             LoadLocalization();
         }
 
-        public static void SetLocalization(string localizationName)
+        public void SetLocalization(string localizationName)
         {
             if (string.IsNullOrEmpty(localizationName))
                 ProgramLocalization = new Localization();
@@ -59,20 +55,20 @@ namespace FreeLauncher
             }
         }
 
-        public static void SaveConfiguration()
+        public void SaveConfiguration()
         {
-            File.WriteAllText(configurationFile, JsonConvert.SerializeObject(Configuration, Formatting.Indented));
+            File.WriteAllText(_configurationFile, JsonConvert.SerializeObject(Configuration, Formatting.Indented));
         }
 
-        private static Configuration GetConfiguration()
+        private Configuration GetConfiguration()
         {
-            if (File.Exists(configurationFile))
-                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(configurationFile));
+            if (File.Exists(_configurationFile))
+                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile));
 
             return new Configuration();
         }
 
-        private static void LoadLocalization()
+        private void LoadLocalization()
         {
             var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
             if (langsDirectory.Exists)

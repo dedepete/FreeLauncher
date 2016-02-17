@@ -28,6 +28,7 @@ namespace FreeLauncher.Forms
     {
         #region Variables
 
+        private readonly ApplicationContext _applicationContext;
         private ProfileManager _profileManager;
         private Profile _selectedProfile;
         private UserManager _userManager;
@@ -95,11 +96,12 @@ namespace FreeLauncher.Forms
 
         #endregion
 
-        public LauncherForm()
+        public LauncherForm(ApplicationContext appContext)
         {
+            _applicationContext = appContext;
             InitializeComponent();
             // Loading configuration
-            _cfg = ApplicationContext.Configuration;
+            _cfg = _applicationContext.Configuration;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             UseGamePrefix.Checked = _cfg.ShowGamePrefix;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
@@ -108,16 +110,16 @@ namespace FreeLauncher.Forms
             Text = ProductName + " " + ProductVersion;
             AboutVersion.Text = ProductVersion;
             AppendLog($"Application: {ProductName} v.{ProductVersion}" +
-                      (!ApplicationContext.ProgramArguments.NotAStandalone ? "-standalone" : string.Empty));
-            AppendLog($"Application language: {ApplicationContext.ProgramLocalization.Name}({ApplicationContext.ProgramLocalization.LanguageTag})");
+                      (!_applicationContext.ProgramArguments.NotAStandalone ? "-standalone" : string.Empty));
+            AppendLog($"Application language: {_applicationContext.ProgramLocalization.Name}({_applicationContext.ProgramLocalization.LanguageTag})");
             AppendLog("==============");
             AppendLog("System info:");
             AppendLog($"Operating system: {Environment.OSVersion}({new ComputerInfo().OSFullName})");
             AppendLog($"Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
             AppendLog("==============");
-            if (ApplicationContext.LocalizationsList.Count != 0) {
-                foreach (KeyValuePair<string, Localization> keyvalue in ApplicationContext.LocalizationsList) {
+            if (_applicationContext.LocalizationsList.Count != 0) {
+                foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
                     LangDropDownList.Items.Add(new RadListDataItem {
                         Text = $"{keyvalue.Value.Name} ({keyvalue.Key})",
                         Tag = keyvalue.Key
@@ -129,14 +131,14 @@ namespace FreeLauncher.Forms
             } else {
                 LangDropDownList.Enabled = false;
             }
-            if (!Directory.Exists(ApplicationContext.McDirectory)) {
-                Directory.CreateDirectory(ApplicationContext.McDirectory);
+            if (!Directory.Exists(_applicationContext.McDirectory)) {
+                Directory.CreateDirectory(_applicationContext.McDirectory);
             }
-            if (!Directory.Exists(ApplicationContext.McLauncher)) {
-                Directory.CreateDirectory(ApplicationContext.McLauncher);
+            if (!Directory.Exists(_applicationContext.McLauncher)) {
+                Directory.CreateDirectory(_applicationContext.McLauncher);
             }
             Focus();
-            if (!ApplicationContext.ProgramArguments.NotAStandalone) {
+            if (!_applicationContext.ProgramArguments.NotAStandalone) {
                 UpdateVersions();
             }
             UpdateProfileList();
@@ -159,12 +161,12 @@ namespace FreeLauncher.Forms
             }
             _profileManager.LastUsedProfile = profilesDropDownBox.SelectedItem.Text;
             _selectedProfile = _profileManager.Profiles[profilesDropDownBox.SelectedItem.Text];
-            string path = Path.Combine(ApplicationContext.McVersions,
+            string path = Path.Combine(_applicationContext.McVersions,
                 _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-            string state = ApplicationContext.ProgramLocalization.ReadyToLaunch;
+            string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
             if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
                                                                  GetLatestVersion(_selectedProfile)))) {
-                state = ApplicationContext.ProgramLocalization.ReadyToDownload;
+                state = _applicationContext.ProgramLocalization.ReadyToDownload;
             }
             SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
                                                          GetLatestVersion(_selectedProfile)));
@@ -182,15 +184,15 @@ namespace FreeLauncher.Forms
 
         private void EditProfile_Click(object sender, EventArgs e)
         {
-            ProfileForm pf = new ProfileForm(_selectedProfile) {
-                Text = ApplicationContext.ProgramLocalization.EditingProfileTitle
+            ProfileForm pf = new ProfileForm(_selectedProfile, _applicationContext) {
+                Text = _applicationContext.ProgramLocalization.EditingProfileTitle
             };
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
                 _profileManager.Profiles.Remove(_profileManager.LastUsedProfile);
                 if (_profileManager.Profiles.ContainsKey(pf.CurrentProfile.ProfileName)) {
-                    RadMessageBox.Show(ApplicationContext.ProgramLocalization.ProfileAlreadyExistsErrorText,
-                        ApplicationContext.ProgramLocalization.Error,
+                    RadMessageBox.Show(_applicationContext.ProgramLocalization.ProfileAlreadyExistsErrorText,
+                        _applicationContext.ProgramLocalization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     UpdateProfileList();
                     return;
@@ -207,12 +209,12 @@ namespace FreeLauncher.Forms
             Profile editedProfile = Profile.ParseProfile(_selectedProfile.ToString());
             editedProfile.ProfileName = "Copy of '" + _selectedProfile.ProfileName + "'(" +
                                         DateTime.Now.ToString("HH:mm:ss") + ")";
-            ProfileForm pf = new ProfileForm(editedProfile) {Text = ApplicationContext.ProgramLocalization.AddingProfileTitle};
+            ProfileForm pf = new ProfileForm(editedProfile, _applicationContext) {Text = _applicationContext.ProgramLocalization.AddingProfileTitle};
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
                 if (_profileManager.Profiles.ContainsKey(editedProfile.ProfileName)) {
-                    RadMessageBox.Show(ApplicationContext.ProgramLocalization.ProfileAlreadyExistsErrorText,
-                        ApplicationContext.ProgramLocalization.Error,
+                    RadMessageBox.Show(_applicationContext.ProgramLocalization.ProfileAlreadyExistsErrorText,
+                        _applicationContext.ProgramLocalization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     return;
                 }
@@ -227,8 +229,8 @@ namespace FreeLauncher.Forms
         {
             DialogResult dr =
                 RadMessageBox.Show(
-                    string.Format(ApplicationContext.ProgramLocalization.ProfileDeleteConfirmationText,
-                        _profileManager.LastUsedProfile), ApplicationContext.ProgramLocalization.DeleteConfirmationTitle,
+                    string.Format(_applicationContext.ProgramLocalization.ProfileDeleteConfirmationText,
+                        _profileManager.LastUsedProfile), _applicationContext.ProgramLocalization.DeleteConfirmationTitle,
                     MessageBoxButtons.YesNo, RadMessageIcon.Question);
             if (dr != DialogResult.Yes) {
                 return;
@@ -241,7 +243,7 @@ namespace FreeLauncher.Forms
 
         private void ManageUsersButton_Click(object sender, EventArgs e)
         {
-            new UsersForm().ShowDialog();
+            new UsersForm(_applicationContext).ShowDialog();
             UpdateUserList();
         }
 
@@ -281,7 +283,7 @@ namespace FreeLauncher.Forms
                                 if (!check) {
                                     RadMessageBox.Show(
                                         "Session token is not valid. Please, head up to user manager and re-add your account.",
-                                        ApplicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
+                                        _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
                                         RadMessageIcon.Exclamation);
                                     User user = new User {
                                         Username = NicknameDropDownList.Text,
@@ -301,7 +303,7 @@ namespace FreeLauncher.Forms
                         SaveUsers();
                         UpdateUserList();
                         Version selectedVersion = Version.ParseVersion(
-                            new DirectoryInfo(ApplicationContext.McVersions + (_versionToLaunch ?? (
+                            new DirectoryInfo(_applicationContext.McVersions + (_versionToLaunch ?? (
                                 (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
@@ -327,9 +329,9 @@ namespace FreeLauncher.Forms
                             CreateNoWindow = true,
                             FileName = _selectedProfile.JavaExecutable ?? Java.JavaExecutable,
                             StandardErrorEncoding = Encoding.UTF8,
-                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? ApplicationContext.McDirectory,
+                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={ApplicationContext.McDirectory + "natives\\"} -cp {(ApplicationContext.Libraries.Contains(' ') ? "\"" + ApplicationContext.Libraries + "\"" : ApplicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? ApplicationContext.McDirectory}, {"assets_root", ApplicationContext.McDirectory + "assets\\"}, {"game_assets", ApplicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Version {0} successfuly launched.",
@@ -396,8 +398,8 @@ namespace FreeLauncher.Forms
         {
             versionsListView.SelectedItem = e.Item;
             Version ver =
-                Version.ParseVersion(new DirectoryInfo(Path.Combine(ApplicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\")), false);
-            RadMenuItem launchVerButton = new RadMenuItem { Text = ApplicationContext.ProgramLocalization.Launch };
+                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\")), false);
+            RadMenuItem launchVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.Launch };
             launchVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
@@ -420,42 +422,42 @@ namespace FreeLauncher.Forms
                 _versionToLaunch = versionsListView.SelectedItem[0].ToString();
                 LaunchButton.PerformClick();
             };
-            RadMenuItem openVerButton = new RadMenuItem { Text = ApplicationContext.ProgramLocalization.OpenLocation };
+            RadMenuItem openVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.OpenLocation };
             openVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
-                Process.Start(Path.Combine(ApplicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
+                Process.Start(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
             };
-            RadMenuItem delVerButton = new RadMenuItem { Text = ApplicationContext.ProgramLocalization.DeleteVersion};
+            RadMenuItem delVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.DeleteVersion};
             delVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
                 DialogResult dr =
                     RadMessageBox.Show(
-                        string.Format(ApplicationContext.ProgramLocalization.DeleteConfirmationText,
+                        string.Format(_applicationContext.ProgramLocalization.DeleteConfirmationText,
                             versionsListView.SelectedItem[0].ToString()),
-                        ApplicationContext.ProgramLocalization.DeleteConfirmationTitle,
+                        _applicationContext.ProgramLocalization.DeleteConfirmationTitle,
                         MessageBoxButtons.YesNo, RadMessageIcon.Question);
                 if (dr != DialogResult.Yes) {
                     return;
                 }
                 try {
                     Directory.Delete(
-                        Path.Combine(ApplicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"), true);
+                        Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"), true);
                     AppendLog($"Version '{versionsListView.SelectedItem[0].ToString()}' has been deleted successfuly.");
                     UpdateVersionListView();
                 }
                 catch (Exception ex) {
                     AppendException($"An error has occurred during version deletion: {ex.ToString()}");
                 }
-                string path = Path.Combine(ApplicationContext.McVersions,
+                string path = Path.Combine(_applicationContext.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-                string state = ApplicationContext.ProgramLocalization.ReadyToLaunch;
+                string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
                 if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
                                                                      GetLatestVersion(_selectedProfile)))) {
-                    state = ApplicationContext.ProgramLocalization.ReadyToDownload;
+                    state = _applicationContext.ProgramLocalization.ReadyToDownload;
                 }
                 SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
                                                              GetLatestVersion(_selectedProfile)));
@@ -488,9 +490,9 @@ namespace FreeLauncher.Forms
 
             var selectedLocalization = LangDropDownList.SelectedItem.Tag;
             if (LangDropDownList.SelectedIndex == 0)
-                ApplicationContext.SetLocalization(string.Empty);
+                _applicationContext.SetLocalization(string.Empty);
             else
-                ApplicationContext.SetLocalization(selectedLocalization.ToString());
+                _applicationContext.SetLocalization(selectedLocalization.ToString());
 
             _cfg.SelectedLanguage = selectedLocalization.ToString();
             AppendLog($"Application language changed to {selectedLocalization}");
@@ -502,11 +504,11 @@ namespace FreeLauncher.Forms
             AppendLog("Checking version.json...");
             string jsonVersionList = new WebClient().DownloadString(
                 new Uri("https://s3.amazonaws.com/Minecraft.Download/versions/versions.json"));
-            if (!Directory.Exists(ApplicationContext.McVersions)) {
-                Directory.CreateDirectory(ApplicationContext.McVersions);
+            if (!Directory.Exists(_applicationContext.McVersions)) {
+                Directory.CreateDirectory(_applicationContext.McVersions);
             }
-            if (!File.Exists(ApplicationContext.McVersions + "\\versions.json")) {
-                File.WriteAllText(ApplicationContext.McVersions + "\\versions.json", jsonVersionList);
+            if (!File.Exists(_applicationContext.McVersions + "\\versions.json")) {
+                File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
                 return;
             }
             JObject jb =
@@ -515,7 +517,7 @@ namespace FreeLauncher.Forms
                 remoteReleaseVersion = jb["latest"]["release"].ToString();
             AppendLog("Latest snapshot: " + remoteSnapshotVersion);
             AppendLog("Latest release: " + remoteReleaseVersion);
-            JObject ver = JObject.Parse(File.ReadAllText(ApplicationContext.McVersions + "/versions.json"));
+            JObject ver = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
             string localSnapshotVersion = ver["latest"]["snapshot"].ToString(),
                 localReleaseVersion = ver["latest"]["release"].ToString();
             AppendLog("Local versions: " + ((JArray) jb["versions"]).Count + ". Remote versions: " +
@@ -526,7 +528,7 @@ namespace FreeLauncher.Forms
                 return;
             }
             AppendLog("Writting new list... ");
-            File.WriteAllText(ApplicationContext.McVersions + "\\versions.json", jsonVersionList);
+            File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
         }
 
         private void UpdateProfileList()
@@ -534,7 +536,7 @@ namespace FreeLauncher.Forms
             profilesDropDownBox.Items.Clear();
             try {
                 _profileManager =
-                    ProfileManager.ParseProfile(ApplicationContext.McDirectory +
+                    ProfileManager.ParseProfile(_applicationContext.McDirectory +
                                                       "/launcher_profiles.json");
                 if (!_profileManager.Profiles.Any()) {
                     throw new Exception("Someone broke my profiles>:(");
@@ -543,15 +545,15 @@ namespace FreeLauncher.Forms
             catch (Exception ex) {
                 AppendException("Reading profile list: an exception has occurred\n" + ex.Message +
                                 "\nCreating a new one.");
-                if (File.Exists(ApplicationContext.McDirectory +
+                if (File.Exists(_applicationContext.McDirectory +
                                 "/launcher_profiles.json")) {
                     string fileName = "launcher_profiles-" + DateTime.Now.ToString("hhmmss") + ".bak.json";
                     AppendLog("A copy of old profile list has been created: " + fileName);
-                    File.Move(ApplicationContext.McDirectory +
-                              "/launcher_profiles.json", ApplicationContext.McDirectory +
+                    File.Move(_applicationContext.McDirectory +
+                              "/launcher_profiles.json", _applicationContext.McDirectory +
                                                          "/" + fileName);
                 }
-                File.WriteAllText(ApplicationContext.McDirectory + "/launcher_profiles.json", new JObject {
+                File.WriteAllText(_applicationContext.McDirectory + "/launcher_profiles.json", new JObject {
                     {
                         "profiles", new JObject {
                             {
@@ -569,7 +571,7 @@ namespace FreeLauncher.Forms
                     },
                     {"selectedProfile", ProductName}
                 }.ToString());
-                _profileManager = ProfileManager.ParseProfile(ApplicationContext.McDirectory +
+                _profileManager = ProfileManager.ParseProfile(_applicationContext.McDirectory +
                                                                     "/launcher_profiles.json");
                 SaveProfiles();
             }
@@ -582,8 +584,8 @@ namespace FreeLauncher.Forms
         {
             NicknameDropDownList.Items.Clear();
             try {
-                _userManager = File.Exists(ApplicationContext.McLauncher + "users.json")
-                    ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(ApplicationContext.McLauncher + "users.json"))
+                _userManager = File.Exists(_applicationContext.McLauncher + "users.json")
+                    ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.McLauncher + "users.json"))
                     : new UserManager();
             }
             catch (Exception ex) {
@@ -603,7 +605,7 @@ namespace FreeLauncher.Forms
 
         private void SaveUsers()
         {
-            File.WriteAllText(ApplicationContext.McLauncher + "users.json",
+            File.WriteAllText(_applicationContext.McLauncher + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
                     new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
         }
@@ -621,9 +623,9 @@ namespace FreeLauncher.Forms
             StatusBarVisible = true;
             StatusBarMaxValue = 100;
             StatusBarValue = 0;
-            UpdateStatusBarText(string.Format(ApplicationContext.ProgramLocalization.CheckingVersionAvailability, version));
+            UpdateStatusBarText(string.Format(_applicationContext.ProgramLocalization.CheckingVersionAvailability, version));
             AppendLog($"Checking '{version}' version availability...");
-            string path = Path.Combine(ApplicationContext.McVersions, version + "\\");
+            string path = Path.Combine(_applicationContext.McVersions, version + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
@@ -632,7 +634,7 @@ namespace FreeLauncher.Forms
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
-                    string.Format("{0}/{1}/{1}.json", ApplicationContext.McVersions, version));
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version));
             } else {
                 state++;
             }
@@ -640,14 +642,14 @@ namespace FreeLauncher.Forms
             StatusBarValue = 0;
             while (state != 1) ;
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(ApplicationContext.McVersions + version), false);
+                new DirectoryInfo(_applicationContext.McVersions + version), false);
             if ((!File.Exists(path + "/" + version + ".jar") || _restoreVersion) &&
                 selectedVersion.InheritsFrom == null) {
                 filename = version + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
-                    string.Format("{0}/{1}/{1}.jar", ApplicationContext.McVersions, version));
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version));
             } else {
                 state++;
             }
@@ -656,26 +658,26 @@ namespace FreeLauncher.Forms
                 AppendLog("Finished checking version avalability.");
                 return;
             }
-            path = Path.Combine(ApplicationContext.McVersions, selectedVersion.InheritsFrom + "\\");
+            path = Path.Combine(_applicationContext.McVersions, selectedVersion.InheritsFrom + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
-            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", ApplicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
+            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.jar", ApplicationContext.McVersions, selectedVersion.InheritsFrom));
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom));
             } else {
                 state++;
             }
             while (state != 3) ;
-            if (!File.Exists(string.Format("{0}/{1}/{1}.json", ApplicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
+            if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".json";
                 UpdateStatusBarAndLog("Downloading " + filename + "...");
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.json", ApplicationContext.McVersions, selectedVersion.InheritsFrom));
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom));
             } else {
                 state++;
             }
@@ -687,36 +689,36 @@ namespace FreeLauncher.Forms
         {
             string libraries = string.Empty;
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(ApplicationContext.McVersions +
+                new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
             StatusBarValue = 0;
             StatusBarMaxValue = selectedVersion.Libs.Count(a => a.IsForWindows()) + 1;
-            UpdateStatusBarText(ApplicationContext.ProgramLocalization.CheckingLibraries);
+            UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             AppendLog("Checking libraries...");
             foreach (
                 Lib lib in
                     selectedVersion
                         .Libs.Where(a => a.IsForWindows())) {
                 StatusBarValue++;
-                if (!File.Exists(ApplicationContext.McLibs + lib.ToPath()) || _restoreVersion) {
+                if (!File.Exists(_applicationContext.McLibs + lib.ToPath()) || _restoreVersion) {
                     UpdateStatusBarAndLog("Downloading " + lib.Name + "...");
                     AppendDebug("Url: " + (lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath());
-                    string directory = Path.GetDirectoryName(ApplicationContext.McLibs + lib.ToPath());
+                    string directory = Path.GetDirectoryName(_applicationContext.McLibs + lib.ToPath());
                     if (!File.Exists(directory)) {
                         Directory.CreateDirectory(directory);
                     }
                     new WebClient().DownloadFile((lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath(),
-                        ApplicationContext.McLibs + lib.ToPath());
+                        _applicationContext.McLibs + lib.ToPath());
                 }
                 if (lib.IsNative != null) {
                     UpdateStatusBarAndLog("Unpacking " + lib.Name + "...");
-                    using (ZipFile zip = ZipFile.Read(ApplicationContext.McLibs + lib.ToPath())) {
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.ToPath())) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
-                                entry.Extract(ApplicationContext.McDirectory + "natives\\",
+                                entry.Extract(_applicationContext.McDirectory + "natives\\",
                                     ExtractExistingFileAction.OverwriteSilently);
                             }
                             catch (Exception ex) {
@@ -725,14 +727,14 @@ namespace FreeLauncher.Forms
                         }
                     }
                 } else {
-                    libraries += ApplicationContext.McLibs + lib.ToPath() + ";";
+                    libraries += _applicationContext.McLibs + lib.ToPath() + ";";
                 }
-                UpdateStatusBarText(ApplicationContext.ProgramLocalization.CheckingLibraries);
+                UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
-            libraries += string.Format("{0}{1}\\{1}.jar", ApplicationContext.McVersions,
+            libraries += string.Format("{0}{1}\\{1}.jar", _applicationContext.McVersions,
                 selectedVersion.InheritsFrom ??
                 (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
-            ApplicationContext.Libraries = libraries;
+            _applicationContext.Libraries = libraries;
             AppendLog("Finished checking libraries.");
         }
 
@@ -740,10 +742,10 @@ namespace FreeLauncher.Forms
         {
             UpdateStatusBarAndLog("Checking game assets...");
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(ApplicationContext.McVersions +
+                new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
-            string file = string.Format("{0}/assets/indexes/{1}.json", ApplicationContext.McDirectory,
+            string file = string.Format("{0}/assets/indexes/{1}.json", _applicationContext.McDirectory,
                 selectedVersion.AssetsIndex ?? "legacy");
             if (!File.Exists(file)) {
                 if (!Directory.Exists(Path.GetDirectoryName(file))) {
@@ -758,14 +760,14 @@ namespace FreeLauncher.Forms
             StatusBarMaxValue = jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
-                .Count(filename => !File.Exists(ApplicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion) + 1;
+                .Count(filename => !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion) + 1;
             foreach (string resourseFile in jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
                 .Where(
                     filename =>
-                        !File.Exists(ApplicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion)) {
-                string path = ApplicationContext.McDirectory + "\\assets\\objects\\" + resourseFile[0] + resourseFile[1] +
+                        !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion)) {
+                string path = _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile[0] + resourseFile[1] +
                               "\\";
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
@@ -773,7 +775,7 @@ namespace FreeLauncher.Forms
                 try {
                     AppendDebug("Downloading " + resourseFile + "...");
                     new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
-                        ApplicationContext.McDirectory + "\\assets\\objects\\" + resourseFile);
+                        _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile);
                 }
                 catch (Exception ex) {
                     AppendException(ex.ToString());
@@ -784,24 +786,24 @@ namespace FreeLauncher.Forms
             if (selectedVersion.AssetsIndex == null) {
                 StatusBarValue = 0;
                 StatusBarMaxValue = jo["objects"].Cast<JProperty>()
-                    .Count(res => !File.Exists(ApplicationContext.McDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
+                    .Count(res => !File.Exists(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
                 UpdateStatusBarAndLog("Converting assets...");
                 foreach (
                     JProperty res in
                         jo["objects"].Cast<JProperty>()
-                            .Where(res => !File.Exists(ApplicationContext.McDirectory + "\\assets\\legacy\\" + res.Name) || _restoreVersion)) {
+                            .Where(res => !File.Exists(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name) || _restoreVersion)) {
                     try {
                         if (!Directory.Exists(
-                            new FileInfo(ApplicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName)) {
+                            new FileInfo(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName)) {
                             Directory.CreateDirectory(
-                                new FileInfo(ApplicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName);
+                                new FileInfo(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName);
                         }
                         AppendDebug(
                             $"Converting \"{"\\assets\\objects\\" + res.Value["hash"].ToString()[0] + res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"]}\" to \"{"\\assets\\legacy\\" + res.Name}\"");
                         File.Copy(
-                            ApplicationContext.McDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
+                            _applicationContext.McDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
                             res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"],
-                            ApplicationContext.McDirectory + "\\assets\\legacy\\" + res.Name);
+                            _applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name);
                     }
                     catch (Exception ex) {
                         AppendLog(ex.ToString());
@@ -815,7 +817,7 @@ namespace FreeLauncher.Forms
 
         private string GetLatestVersion(Profile profile)
         {
-            JObject versionsList = JObject.Parse(File.ReadAllText(ApplicationContext.McVersions + "\\versions.json"));
+            JObject versionsList = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "\\versions.json"));
             return profile.AllowedReleaseTypes != null
                 ? profile.AllowedReleaseTypes.Contains("snapshot")
                     ? versionsList["latest"]["snapshot"].ToString()
@@ -827,11 +829,11 @@ namespace FreeLauncher.Forms
         {
             RadPageViewPage outputPage = new RadPageViewPage {
                 Text =
-                    string.Format("{0} ({1})", ApplicationContext.ProgramLocalization.GameOutput,
+                    string.Format("{0} ({1})", _applicationContext.ProgramLocalization.GameOutput,
                         _versionToLaunch ?? _selectedProfile.ProfileName)
             };
             RadButton killProcessButton = new RadButton {
-                Text = ApplicationContext.ProgramLocalization.KillProcess,
+                Text = _applicationContext.ProgramLocalization.KillProcess,
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
             RadPanel panel = new RadPanel {
@@ -841,7 +843,7 @@ namespace FreeLauncher.Forms
             };
             panel.Size = new Size(panel.Size.Width, 60);
             RadButton closeButton = new RadButton {
-                Text = ApplicationContext.ProgramLocalization.Close,
+                Text = _applicationContext.ProgramLocalization.Close,
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top),
                 Enabled = false
             };
@@ -866,29 +868,29 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            News.Text = ApplicationContext.ProgramLocalization.NewsTabText;
-            ConsolePage.Text = ApplicationContext.ProgramLocalization.ConsoleTabText;
-            EditVersions.Text = ApplicationContext.ProgramLocalization.ManageVersionsTabText;
-            AboutPage.Text = ApplicationContext.ProgramLocalization.AboutTabText;
-            AboutPageViewPage.Text = ApplicationContext.ProgramLocalization.AboutTabText;
-            LicensesPage.Text = ApplicationContext.ProgramLocalization.LicensesTabText;
-            SettingsPage.Text = ApplicationContext.ProgramLocalization.SettingsTabText;
+            News.Text = _applicationContext.ProgramLocalization.NewsTabText;
+            ConsolePage.Text = _applicationContext.ProgramLocalization.ConsoleTabText;
+            EditVersions.Text = _applicationContext.ProgramLocalization.ManageVersionsTabText;
+            AboutPage.Text = _applicationContext.ProgramLocalization.AboutTabText;
+            AboutPageViewPage.Text = _applicationContext.ProgramLocalization.AboutTabText;
+            LicensesPage.Text = _applicationContext.ProgramLocalization.LicensesTabText;
+            SettingsPage.Text = _applicationContext.ProgramLocalization.SettingsTabText;
 
-            LaunchButton.Text = ApplicationContext.ProgramLocalization.LaunchButtonText;
-            AddProfile.Text = ApplicationContext.ProgramLocalization.AddProfileButtonText;
-            EditProfile.Text = ApplicationContext.ProgramLocalization.EditProfileButtonText;
+            LaunchButton.Text = _applicationContext.ProgramLocalization.LaunchButtonText;
+            AddProfile.Text = _applicationContext.ProgramLocalization.AddProfileButtonText;
+            EditProfile.Text = _applicationContext.ProgramLocalization.EditProfileButtonText;
 
-            DevInfoLabel.Text = ApplicationContext.ProgramLocalization.DevInfo;
-            GratitudesLabel.Text = ApplicationContext.ProgramLocalization.GratitudesText;
-            GratitudesDescLabel.Text = ApplicationContext.ProgramLocalization.GratitudesDescription;
-            PartnersLabel.Text = ApplicationContext.ProgramLocalization.PartnersText;
-            MCofflineDescLabel.Text = ApplicationContext.ProgramLocalization.MCofflineDescription;
-            CopyrightInfoLabel.Text = ApplicationContext.ProgramLocalization.CopyrightInfo;
+            DevInfoLabel.Text = _applicationContext.ProgramLocalization.DevInfo;
+            GratitudesLabel.Text = _applicationContext.ProgramLocalization.GratitudesText;
+            GratitudesDescLabel.Text = _applicationContext.ProgramLocalization.GratitudesDescription;
+            PartnersLabel.Text = _applicationContext.ProgramLocalization.PartnersText;
+            MCofflineDescLabel.Text = _applicationContext.ProgramLocalization.MCofflineDescription;
+            CopyrightInfoLabel.Text = _applicationContext.ProgramLocalization.CopyrightInfo;
 
-            EnableMinecraftUpdateAlerts.Text = ApplicationContext.ProgramLocalization.EnableMinecraftUpdateAlertsText;
-            EnableMinecraftLogging.Text = ApplicationContext.ProgramLocalization.EnableMinecraftLoggingText;
-            UseGamePrefix.Text = ApplicationContext.ProgramLocalization.UseGamePrefixText;
-            CloseGameOutput.Text = ApplicationContext.ProgramLocalization.CloseGameOutputText;
+            EnableMinecraftUpdateAlerts.Text = _applicationContext.ProgramLocalization.EnableMinecraftUpdateAlertsText;
+            EnableMinecraftLogging.Text = _applicationContext.ProgramLocalization.EnableMinecraftLoggingText;
+            UseGamePrefix.Text = _applicationContext.ProgramLocalization.UseGamePrefixText;
+            CloseGameOutput.Text = _applicationContext.ProgramLocalization.CloseGameOutputText;
         }
 
         private void UpdateVersionListView()
@@ -899,11 +901,11 @@ namespace FreeLauncher.Forms
                 versionsListView.Items.Clear();
                 foreach (
                     Version version in
-                        Directory.GetDirectories(ApplicationContext.McVersions)
+                        Directory.GetDirectories(_applicationContext.McVersions)
                             .Select(versionDir => new DirectoryInfo(versionDir))
                             .Select(info => Version.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
-                        version.InheritsFrom ?? ApplicationContext.ProgramLocalization.Independent);
+                        version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
                 }
             }
         }
