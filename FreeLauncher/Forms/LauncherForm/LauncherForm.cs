@@ -95,11 +95,11 @@ namespace FreeLauncher.Forms
 
         #endregion
 
-        public LauncherForm(ref Configuration cfg)
+        public LauncherForm()
         {
             InitializeComponent();
             // Loading configuration
-            _cfg = cfg;
+            _cfg = Variables.Configuration;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             UseGamePrefix.Checked = _cfg.ShowGamePrefix;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
@@ -485,11 +485,15 @@ namespace FreeLauncher.Forms
             if (LangDropDownList.SelectedItem.Tag.ToString() == _cfg.SelectedLanguage) {
                 return;
             }
-            Variables.ProgramLocalization = LangDropDownList.SelectedIndex == 0
-                ? new Localization()
-                : Variables.LocalizationsList[LangDropDownList.SelectedItem.Tag.ToString()];
-            _cfg.SelectedLanguage = LangDropDownList.SelectedItem.Tag.ToString();
-            AppendLog($"Application language changed to {LangDropDownList.SelectedItem.Tag}");
+
+            var selectedLocalization = LangDropDownList.SelectedItem.Tag;
+            if (LangDropDownList.SelectedIndex == 0)
+                Variables.SetLocalization(string.Empty);
+            else
+                Variables.SetLocalization(selectedLocalization.ToString());
+
+            _cfg.SelectedLanguage = selectedLocalization.ToString();
+            AppendLog($"Application language changed to {selectedLocalization}");
             LoadLocalization();
         }
 
