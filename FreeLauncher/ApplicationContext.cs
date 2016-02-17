@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FreeLauncher
 {
-    public static class Variables
+    public static class ApplicationContext
     {
         private static string configurationFile;
 
@@ -27,7 +27,7 @@ namespace FreeLauncher
 
         public static Configuration Configuration { get; private set; }
 
-        static Variables()
+        static ApplicationContext()
         {
             Libraries = string.Empty;
             ProgramArguments = new Arguments();

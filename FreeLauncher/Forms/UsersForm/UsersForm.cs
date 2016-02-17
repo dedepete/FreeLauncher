@@ -21,8 +21,8 @@ namespace FreeLauncher.Forms
         {
             InitializeComponent();
             LoadLocalization();
-            _userManager = File.Exists(Variables.McLauncher + "users.json")
-                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(Variables.McLauncher + "users.json"))
+            _userManager = File.Exists(ApplicationContext.McLauncher + "users.json")
+                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(ApplicationContext.McLauncher + "users.json"))
                 : new UserManager();
             UpdateUsers();
         }
@@ -38,7 +38,7 @@ namespace FreeLauncher.Forms
             AddUserButton.Enabled =
                 UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
-            AddUserButton.Text = Variables.ProgramLocalization.PleaseWait;
+            AddUserButton.Text = ApplicationContext.ProgramLocalization.PleaseWait;
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 User user = new User {Username = UsernameTextBox.Text};
@@ -72,7 +72,7 @@ namespace FreeLauncher.Forms
                 catch (WebException ex) {
                     switch (ex.Status) {
                         case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show(Variables.ProgramLocalization.IncorrectLoginOrPassword, Variables.ProgramLocalization.Error, MessageBoxButtons.OK,
+                            RadMessageBox.Show(ApplicationContext.ProgramLocalization.IncorrectLoginOrPassword, ApplicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
                                 RadMessageIcon.Error);
                             return;
                         default:
@@ -89,7 +89,7 @@ namespace FreeLauncher.Forms
             bgw.RunWorkerCompleted += delegate {
                 UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
-                AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+                AddUserButton.Text = ApplicationContext.ProgramLocalization.AddNewUserButton;
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
             };
             bgw.RunWorkerAsync();
@@ -107,7 +107,7 @@ namespace FreeLauncher.Forms
 
         private void SaveUsers()
         {
-            File.WriteAllText(Variables.McLauncher + "users.json",
+            File.WriteAllText(ApplicationContext.McLauncher + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
                     new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
         }
@@ -141,12 +141,12 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            DeleteUserButton.Text = Variables.ProgramLocalization.RemoveSelectedUser;
-            AddNewUserBox.Text = Variables.ProgramLocalization.AddNewUserBox;
-            NicknameLabel.Text = Variables.ProgramLocalization.Nickname;
-            LicenseQuestionLabel.Text = Variables.ProgramLocalization.LicenseQuestion;
-            PasswordLabel.Text = Variables.ProgramLocalization.Password;
-            AddUserButton.Text = Variables.ProgramLocalization.AddNewUserButton;
+            DeleteUserButton.Text = ApplicationContext.ProgramLocalization.RemoveSelectedUser;
+            AddNewUserBox.Text = ApplicationContext.ProgramLocalization.AddNewUserBox;
+            NicknameLabel.Text = ApplicationContext.ProgramLocalization.Nickname;
+            LicenseQuestionLabel.Text = ApplicationContext.ProgramLocalization.LicenseQuestion;
+            PasswordLabel.Text = ApplicationContext.ProgramLocalization.Password;
+            AddUserButton.Text = ApplicationContext.ProgramLocalization.AddNewUserButton;
         }
     }
 

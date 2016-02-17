@@ -60,7 +60,7 @@ namespace FreeLauncher.Forms
                 GameDirectoryCheckBox.Checked = true;
                 gameDirectoryBox.Text = CurrentProfile.WorkingDirectory;
             } else {
-                gameDirectoryBox.Text = Variables.McDirectory;
+                gameDirectoryBox.Text = ApplicationContext.McDirectory;
             }
             if (CurrentProfile.WindowSize != null) {
                 xResolutionBox.Text = CurrentProfile.WindowSize.X.ToString();
@@ -83,8 +83,8 @@ namespace FreeLauncher.Forms
                     break;
             }
             if (Java.JavaExecutable == "\\bin\\java.exe") {
-                RadMessageBox.Show(this, Variables.ProgramLocalization.JavaDetectionFailed,
-                    Variables.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
+                RadMessageBox.Show(this, ApplicationContext.ProgramLocalization.JavaDetectionFailed,
+                    ApplicationContext.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
             }
             javaExecutableBox.Text = CurrentProfile.JavaExecutable ?? Java.JavaExecutable;
             JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
@@ -94,26 +94,26 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            ProfileNameLabel.Text = Variables.ProgramLocalization.ProfileName;
-            GameDirectoryCheckBox.Text = Variables.ProgramLocalization.WorkingDirectory;
-            WindowResolutionLabel.Text = Variables.ProgramLocalization.WindowResolution;
-            ActionAfterLaunchLabel.Text = Variables.ProgramLocalization.ActionAfterLaunch;
-            FastConnectCheckBox.Text = Variables.ProgramLocalization.Autoconnect;
-            snapshotsCheckBox.Text = Variables.ProgramLocalization.Snapshots;
-            betaCheckBox.Text = Variables.ProgramLocalization.Beta;
-            alphaCheckBox.Text = Variables.ProgramLocalization.Alpha;
-            otherCheckBox.Text = Variables.ProgramLocalization.Other;
-            JavaExecutableCheckBox.Text = Variables.ProgramLocalization.JavaExecutable;
-            JavaArgumentsCheckBox.Text = Variables.ProgramLocalization.JavaFlags;
-            cancelButton.Text = Variables.ProgramLocalization.Cancel;
-            openGameDirectoryButton.Text = Variables.ProgramLocalization.OpenDirectory;
-            saveProfileButton.Text = Variables.ProgramLocalization.Save;
+            ProfileNameLabel.Text = ApplicationContext.ProgramLocalization.ProfileName;
+            GameDirectoryCheckBox.Text = ApplicationContext.ProgramLocalization.WorkingDirectory;
+            WindowResolutionLabel.Text = ApplicationContext.ProgramLocalization.WindowResolution;
+            ActionAfterLaunchLabel.Text = ApplicationContext.ProgramLocalization.ActionAfterLaunch;
+            FastConnectCheckBox.Text = ApplicationContext.ProgramLocalization.Autoconnect;
+            snapshotsCheckBox.Text = ApplicationContext.ProgramLocalization.Snapshots;
+            betaCheckBox.Text = ApplicationContext.ProgramLocalization.Beta;
+            alphaCheckBox.Text = ApplicationContext.ProgramLocalization.Alpha;
+            otherCheckBox.Text = ApplicationContext.ProgramLocalization.Other;
+            JavaExecutableCheckBox.Text = ApplicationContext.ProgramLocalization.JavaExecutable;
+            JavaArgumentsCheckBox.Text = ApplicationContext.ProgramLocalization.JavaFlags;
+            cancelButton.Text = ApplicationContext.ProgramLocalization.Cancel;
+            openGameDirectoryButton.Text = ApplicationContext.ProgramLocalization.OpenDirectory;
+            saveProfileButton.Text = ApplicationContext.ProgramLocalization.Save;
         }
 
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != Variables.McDirectory &&
+            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != ApplicationContext.McDirectory &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {
@@ -201,9 +201,9 @@ namespace FreeLauncher.Forms
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
-            versionsDropDownList.Items.Add(Variables.ProgramLocalization.UseLatestVersion);
+            versionsDropDownList.Items.Add(ApplicationContext.ProgramLocalization.UseLatestVersion);
             List<string> list = new List<string>();
-            JObject json = JObject.Parse(File.ReadAllText(Variables.McVersions + "/versions.json"));
+            JObject json = JObject.Parse(File.ReadAllText(ApplicationContext.McVersions + "/versions.json"));
             foreach (JObject ver in json["versions"]) {
                 string id = ver["id"].ToString(),
                     type = ver["type"].ToString();
@@ -236,14 +236,14 @@ namespace FreeLauncher.Forms
                 }
             }
             if (otherCheckBox.Checked) {
-                foreach (Version version in from b in Directory.GetDirectories(Variables.McVersions)
-                    where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
+                foreach (Version version in from b in Directory.GetDirectories(ApplicationContext.McVersions)
+                    where File.Exists(string.Format("{0}/{1}/{1}.json", ApplicationContext.McVersions,
                         new DirectoryInfo(b).Name))
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
                     select
                         Version.ParseVersion(
-                            new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
+                            new DirectoryInfo(string.Format("{0}/{1}/", ApplicationContext.McVersions,
                                 new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId

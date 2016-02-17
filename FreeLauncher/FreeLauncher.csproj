@@ -134,7 +134,7 @@
     <Compile Include="Localization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Variables.cs" />
+    <Compile Include="ApplicationContext.cs" />
     <EmbeddedResource Include="Forms\LauncherForm\LauncherForm.resx">
       <DependentUpon>LauncherForm.cs</DependentUpon>
     </EmbeddedResource>
