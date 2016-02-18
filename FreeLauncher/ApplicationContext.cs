@@ -13,6 +13,8 @@ namespace FreeLauncher
     {
         private readonly string _configurationFile;
 
+        private readonly string _translationsDirectory;
+
         public Arguments ProgramArguments { get; private set; }
 
         public Localization ProgramLocalization { get; private set; }
@@ -31,8 +33,9 @@ namespace FreeLauncher
         {
             Libraries = string.Empty;
             ProgramArguments = new Arguments();
-            ProgramLocalization = new Localization();
+            ProgramLocalization = Localization.DefaultLocalization;
             LocalizationsList = new Dictionary<string, Localization>();
+
             Parser.Default.ParseArguments(args, ProgramArguments);
             McDirectory = ProgramArguments.WorkingDirectory ??
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -42,14 +45,15 @@ namespace FreeLauncher
             McLibs = Path.Combine(McDirectory, "libraries\\");
 
             _configurationFile = McLauncher + "\\configuration.json";
+            _translationsDirectory = Path.Combine(Application.StartupPath + "\\freelauncher-langs\\");
             Configuration = GetConfiguration();
-            LoadLocalization();
+            LoadLocalizations();
         }
 
         public void SetLocalization(string localizationName)
         {
             if (string.IsNullOrEmpty(localizationName))
-                ProgramLocalization = new Localization();
+                ProgramLocalization = Localization.DefaultLocalization;
             else {
                 ProgramLocalization = LocalizationsList[localizationName];
             }
@@ -68,9 +72,9 @@ namespace FreeLauncher
             return new Configuration();
         }
 
-        private void LoadLocalization()
+        private void LoadLocalizations()
         {
-            var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
+            var langsDirectory = new DirectoryInfo(_translationsDirectory);
             if (langsDirectory.Exists)
                 foreach (var local in langsDirectory
                             .GetFiles()
