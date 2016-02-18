@@ -100,6 +100,7 @@ namespace FreeLauncher.Forms
         {
             _applicationContext = appContext;
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterScreen;
             // Loading configuration
             _cfg = _applicationContext.Configuration;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
@@ -161,7 +162,7 @@ namespace FreeLauncher.Forms
             }
             _profileManager.LastUsedProfile = profilesDropDownBox.SelectedItem.Text;
             _selectedProfile = _profileManager.Profiles[profilesDropDownBox.SelectedItem.Text];
-            string path = Path.Combine(_applicationContext.McVersions,
+            string path = Path.Combine(_applicationContext.MinecraftVersionsDirectory,
                 _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
             string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
             if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
@@ -303,7 +304,7 @@ namespace FreeLauncher.Forms
                         SaveUsers();
                         UpdateUserList();
                         Version selectedVersion = Version.ParseVersion(
-                            new DirectoryInfo(_applicationContext.McVersions + (_versionToLaunch ?? (
+                            new DirectoryInfo(_applicationContext.MinecraftVersionsDirectory + (_versionToLaunch ?? (
                                 (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
@@ -398,7 +399,7 @@ namespace FreeLauncher.Forms
         {
             versionsListView.SelectedItem = e.Item;
             Version ver =
-                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\")), false);
+                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.MinecraftVersionsDirectory, versionsListView.SelectedItem[0].ToString() + "\\")), false);
             RadMenuItem launchVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.Launch };
             launchVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
@@ -427,7 +428,7 @@ namespace FreeLauncher.Forms
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
-                Process.Start(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
+                Process.Start(Path.Combine(_applicationContext.MinecraftVersionsDirectory, versionsListView.SelectedItem[0].ToString() + "\\"));
             };
             RadMenuItem delVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.DeleteVersion};
             delVerButton.Click += delegate {
@@ -445,14 +446,14 @@ namespace FreeLauncher.Forms
                 }
                 try {
                     Directory.Delete(
-                        Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"), true);
+                        Path.Combine(_applicationContext.MinecraftVersionsDirectory, versionsListView.SelectedItem[0].ToString() + "\\"), true);
                     AppendLog($"Version '{versionsListView.SelectedItem[0].ToString()}' has been deleted successfuly.");
                     UpdateVersionListView();
                 }
                 catch (Exception ex) {
                     AppendException($"An error has occurred during version deletion: {ex.ToString()}");
                 }
-                string path = Path.Combine(_applicationContext.McVersions,
+                string path = Path.Combine(_applicationContext.MinecraftVersionsDirectory,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
                 string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
                 if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
@@ -504,11 +505,11 @@ namespace FreeLauncher.Forms
             AppendLog("Checking version.json...");
             string jsonVersionList = new WebClient().DownloadString(
                 new Uri("https://s3.amazonaws.com/Minecraft.Download/versions/versions.json"));
-            if (!Directory.Exists(_applicationContext.McVersions)) {
-                Directory.CreateDirectory(_applicationContext.McVersions);
+            if (!Directory.Exists(_applicationContext.MinecraftVersionsDirectory)) {
+                Directory.CreateDirectory(_applicationContext.MinecraftVersionsDirectory);
             }
-            if (!File.Exists(_applicationContext.McVersions + "\\versions.json")) {
-                File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
+            if (!File.Exists(_applicationContext.MinecraftVersionsDirectory + "\\versions.json")) {
+                File.WriteAllText(_applicationContext.MinecraftVersionsDirectory + "\\versions.json", jsonVersionList);
                 return;
             }
             JObject jb =
@@ -517,7 +518,7 @@ namespace FreeLauncher.Forms
                 remoteReleaseVersion = jb["latest"]["release"].ToString();
             AppendLog("Latest snapshot: " + remoteSnapshotVersion);
             AppendLog("Latest release: " + remoteReleaseVersion);
-            JObject ver = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
+            JObject ver = JObject.Parse(File.ReadAllText(_applicationContext.MinecraftVersionsDirectory + "/versions.json"));
             string localSnapshotVersion = ver["latest"]["snapshot"].ToString(),
                 localReleaseVersion = ver["latest"]["release"].ToString();
             AppendLog("Local versions: " + ((JArray) jb["versions"]).Count + ". Remote versions: " +
@@ -528,7 +529,7 @@ namespace FreeLauncher.Forms
                 return;
             }
             AppendLog("Writting new list... ");
-            File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
+            File.WriteAllText(_applicationContext.MinecraftVersionsDirectory + "\\versions.json", jsonVersionList);
         }
 
         private void UpdateProfileList()
@@ -625,7 +626,7 @@ namespace FreeLauncher.Forms
             StatusBarValue = 0;
             UpdateStatusBarText(string.Format(_applicationContext.ProgramLocalization.CheckingVersionAvailability, version));
             AppendLog($"Checking '{version}' version availability...");
-            string path = Path.Combine(_applicationContext.McVersions, version + "\\");
+            string path = Path.Combine(_applicationContext.MinecraftVersionsDirectory, version + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
@@ -634,7 +635,7 @@ namespace FreeLauncher.Forms
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
-                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version));
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.MinecraftVersionsDirectory, version));
             } else {
                 state++;
             }
@@ -642,14 +643,14 @@ namespace FreeLauncher.Forms
             StatusBarValue = 0;
             while (state != 1) ;
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(_applicationContext.McVersions + version), false);
+                new DirectoryInfo(_applicationContext.MinecraftVersionsDirectory + version), false);
             if ((!File.Exists(path + "/" + version + ".jar") || _restoreVersion) &&
                 selectedVersion.InheritsFrom == null) {
                 filename = version + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version));
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.MinecraftVersionsDirectory, version));
             } else {
                 state++;
             }
@@ -658,26 +659,26 @@ namespace FreeLauncher.Forms
                 AppendLog("Finished checking version avalability.");
                 return;
             }
-            path = Path.Combine(_applicationContext.McVersions, selectedVersion.InheritsFrom + "\\");
+            path = Path.Combine(_applicationContext.MinecraftVersionsDirectory, selectedVersion.InheritsFrom + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
-            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
+            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.MinecraftVersionsDirectory, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom));
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.MinecraftVersionsDirectory, selectedVersion.InheritsFrom));
             } else {
                 state++;
             }
             while (state != 3) ;
-            if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
+            if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.MinecraftVersionsDirectory, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".json";
                 UpdateStatusBarAndLog("Downloading " + filename + "...");
                 downloader.DownloadFileAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom));
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.MinecraftVersionsDirectory, selectedVersion.InheritsFrom));
             } else {
                 state++;
             }
@@ -689,7 +690,7 @@ namespace FreeLauncher.Forms
         {
             string libraries = string.Empty;
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(_applicationContext.McVersions +
+                new DirectoryInfo(_applicationContext.MinecraftVersionsDirectory +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
@@ -731,7 +732,7 @@ namespace FreeLauncher.Forms
                 }
                 UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
-            libraries += string.Format("{0}{1}\\{1}.jar", _applicationContext.McVersions,
+            libraries += string.Format("{0}{1}\\{1}.jar", _applicationContext.MinecraftVersionsDirectory,
                 selectedVersion.InheritsFrom ??
                 (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
             _applicationContext.Libraries = libraries;
@@ -742,7 +743,7 @@ namespace FreeLauncher.Forms
         {
             UpdateStatusBarAndLog("Checking game assets...");
             Version selectedVersion = Version.ParseVersion(
-                new DirectoryInfo(_applicationContext.McVersions +
+                new DirectoryInfo(_applicationContext.MinecraftVersionsDirectory +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             string file = string.Format("{0}/assets/indexes/{1}.json", _applicationContext.MinecraftDirectory,
@@ -817,7 +818,7 @@ namespace FreeLauncher.Forms
 
         private string GetLatestVersion(Profile profile)
         {
-            JObject versionsList = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "\\versions.json"));
+            JObject versionsList = JObject.Parse(File.ReadAllText(_applicationContext.MinecraftVersionsDirectory + "\\versions.json"));
             return profile.AllowedReleaseTypes != null
                 ? profile.AllowedReleaseTypes.Contains("snapshot")
                     ? versionsList["latest"]["snapshot"].ToString()
@@ -901,7 +902,7 @@ namespace FreeLauncher.Forms
                 versionsListView.Items.Clear();
                 foreach (
                     Version version in
-                        Directory.GetDirectories(_applicationContext.McVersions)
+                        Directory.GetDirectories(_applicationContext.MinecraftVersionsDirectory)
                             .Select(versionDir => new DirectoryInfo(versionDir))
                             .Select(info => Version.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,

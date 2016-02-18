@@ -20,7 +20,7 @@ namespace FreeLauncher
 
         public string MinecraftDirectory { get; private set; }
         public string LauncherDirectory { get; private set; }
-        public string McVersions { get; private set; }
+        public string MinecraftVersionsDirectory { get; private set; }
         public string McLibs { get; private set; }
 
         public string Libraries { get; set; }
@@ -39,7 +39,7 @@ namespace FreeLauncher
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                    ".minecraft\\");
             LauncherDirectory = Path.Combine(MinecraftDirectory, "freelauncher\\");
-            McVersions = Path.Combine(MinecraftDirectory, "versions\\");
+            MinecraftVersionsDirectory = Path.Combine(MinecraftDirectory, "versions\\");
             McLibs = Path.Combine(MinecraftDirectory, "libraries\\");
 
             _translationsDirectory = Path.Combine(Application.StartupPath + "\\freelauncher-langs\\");
