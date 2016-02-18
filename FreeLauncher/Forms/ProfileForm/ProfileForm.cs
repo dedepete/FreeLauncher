@@ -63,7 +63,7 @@ namespace FreeLauncher.Forms
                 GameDirectoryCheckBox.Checked = true;
                 gameDirectoryBox.Text = CurrentProfile.WorkingDirectory;
             } else {
-                gameDirectoryBox.Text = _applicationContext.McDirectory;
+                gameDirectoryBox.Text = _applicationContext.MinecraftDirectory;
             }
             if (CurrentProfile.WindowSize != null) {
                 xResolutionBox.Text = CurrentProfile.WindowSize.X.ToString();
@@ -116,7 +116,7 @@ namespace FreeLauncher.Forms
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.McDirectory &&
+            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.MinecraftDirectory &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {

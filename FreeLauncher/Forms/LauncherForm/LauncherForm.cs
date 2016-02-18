@@ -131,11 +131,11 @@ namespace FreeLauncher.Forms
             } else {
                 LangDropDownList.Enabled = false;
             }
-            if (!Directory.Exists(_applicationContext.McDirectory)) {
-                Directory.CreateDirectory(_applicationContext.McDirectory);
+            if (!Directory.Exists(_applicationContext.MinecraftDirectory)) {
+                Directory.CreateDirectory(_applicationContext.MinecraftDirectory);
             }
-            if (!Directory.Exists(_applicationContext.McLauncher)) {
-                Directory.CreateDirectory(_applicationContext.McLauncher);
+            if (!Directory.Exists(_applicationContext.LauncherDirectory)) {
+                Directory.CreateDirectory(_applicationContext.LauncherDirectory);
             }
             Focus();
             if (!_applicationContext.ProgramArguments.NotAStandalone) {
@@ -329,9 +329,9 @@ namespace FreeLauncher.Forms
                             CreateNoWindow = true,
                             FileName = _selectedProfile.JavaExecutable ?? Java.JavaExecutable,
                             StandardErrorEncoding = Encoding.UTF8,
-                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory,
+                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.MinecraftDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.MinecraftDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.MinecraftDirectory}, {"assets_root", _applicationContext.MinecraftDirectory + "assets\\"}, {"game_assets", _applicationContext.MinecraftDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog(string.Format("Version {0} successfuly launched.",
@@ -536,7 +536,7 @@ namespace FreeLauncher.Forms
             profilesDropDownBox.Items.Clear();
             try {
                 _profileManager =
-                    ProfileManager.ParseProfile(_applicationContext.McDirectory +
+                    ProfileManager.ParseProfile(_applicationContext.MinecraftDirectory +
                                                       "/launcher_profiles.json");
                 if (!_profileManager.Profiles.Any()) {
                     throw new Exception("Someone broke my profiles>:(");
@@ -545,15 +545,15 @@ namespace FreeLauncher.Forms
             catch (Exception ex) {
                 AppendException("Reading profile list: an exception has occurred\n" + ex.Message +
                                 "\nCreating a new one.");
-                if (File.Exists(_applicationContext.McDirectory +
+                if (File.Exists(_applicationContext.MinecraftDirectory +
                                 "/launcher_profiles.json")) {
                     string fileName = "launcher_profiles-" + DateTime.Now.ToString("hhmmss") + ".bak.json";
                     AppendLog("A copy of old profile list has been created: " + fileName);
-                    File.Move(_applicationContext.McDirectory +
-                              "/launcher_profiles.json", _applicationContext.McDirectory +
+                    File.Move(_applicationContext.MinecraftDirectory +
+                              "/launcher_profiles.json", _applicationContext.MinecraftDirectory +
                                                          "/" + fileName);
                 }
-                File.WriteAllText(_applicationContext.McDirectory + "/launcher_profiles.json", new JObject {
+                File.WriteAllText(_applicationContext.MinecraftDirectory + "/launcher_profiles.json", new JObject {
                     {
                         "profiles", new JObject {
                             {
@@ -571,7 +571,7 @@ namespace FreeLauncher.Forms
                     },
                     {"selectedProfile", ProductName}
                 }.ToString());
-                _profileManager = ProfileManager.ParseProfile(_applicationContext.McDirectory +
+                _profileManager = ProfileManager.ParseProfile(_applicationContext.MinecraftDirectory +
                                                                     "/launcher_profiles.json");
                 SaveProfiles();
             }
@@ -584,8 +584,8 @@ namespace FreeLauncher.Forms
         {
             NicknameDropDownList.Items.Clear();
             try {
-                _userManager = File.Exists(_applicationContext.McLauncher + "users.json")
-                    ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.McLauncher + "users.json"))
+                _userManager = File.Exists(_applicationContext.LauncherDirectory + "users.json")
+                    ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.LauncherDirectory + "users.json"))
                     : new UserManager();
             }
             catch (Exception ex) {
@@ -605,7 +605,7 @@ namespace FreeLauncher.Forms
 
         private void SaveUsers()
         {
-            File.WriteAllText(_applicationContext.McLauncher + "users.json",
+            File.WriteAllText(_applicationContext.LauncherDirectory + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
                     new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
         }
@@ -718,7 +718,7 @@ namespace FreeLauncher.Forms
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
-                                entry.Extract(_applicationContext.McDirectory + "natives\\",
+                                entry.Extract(_applicationContext.MinecraftDirectory + "natives\\",
                                     ExtractExistingFileAction.OverwriteSilently);
                             }
                             catch (Exception ex) {
@@ -745,7 +745,7 @@ namespace FreeLauncher.Forms
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
-            string file = string.Format("{0}/assets/indexes/{1}.json", _applicationContext.McDirectory,
+            string file = string.Format("{0}/assets/indexes/{1}.json", _applicationContext.MinecraftDirectory,
                 selectedVersion.AssetsIndex ?? "legacy");
             if (!File.Exists(file)) {
                 if (!Directory.Exists(Path.GetDirectoryName(file))) {
@@ -760,14 +760,14 @@ namespace FreeLauncher.Forms
             StatusBarMaxValue = jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
-                .Count(filename => !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion) + 1;
+                .Count(filename => !File.Exists(_applicationContext.MinecraftDirectory + "\\assets\\objects\\" + filename) || _restoreVersion) + 1;
             foreach (string resourseFile in jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
                 .Where(
                     filename =>
-                        !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) || _restoreVersion)) {
-                string path = _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile[0] + resourseFile[1] +
+                        !File.Exists(_applicationContext.MinecraftDirectory + "\\assets\\objects\\" + filename) || _restoreVersion)) {
+                string path = _applicationContext.MinecraftDirectory + "\\assets\\objects\\" + resourseFile[0] + resourseFile[1] +
                               "\\";
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
@@ -775,7 +775,7 @@ namespace FreeLauncher.Forms
                 try {
                     AppendDebug("Downloading " + resourseFile + "...");
                     new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
-                        _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile);
+                        _applicationContext.MinecraftDirectory + "\\assets\\objects\\" + resourseFile);
                 }
                 catch (Exception ex) {
                     AppendException(ex.ToString());
@@ -786,24 +786,24 @@ namespace FreeLauncher.Forms
             if (selectedVersion.AssetsIndex == null) {
                 StatusBarValue = 0;
                 StatusBarMaxValue = jo["objects"].Cast<JProperty>()
-                    .Count(res => !File.Exists(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
+                    .Count(res => !File.Exists(_applicationContext.MinecraftDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
                 UpdateStatusBarAndLog("Converting assets...");
                 foreach (
                     JProperty res in
                         jo["objects"].Cast<JProperty>()
-                            .Where(res => !File.Exists(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name) || _restoreVersion)) {
+                            .Where(res => !File.Exists(_applicationContext.MinecraftDirectory + "\\assets\\legacy\\" + res.Name) || _restoreVersion)) {
                     try {
                         if (!Directory.Exists(
-                            new FileInfo(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName)) {
+                            new FileInfo(_applicationContext.MinecraftDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName)) {
                             Directory.CreateDirectory(
-                                new FileInfo(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName);
+                                new FileInfo(_applicationContext.MinecraftDirectory + "\\assets\\legacy\\" + res.Name).DirectoryName);
                         }
                         AppendDebug(
                             $"Converting \"{"\\assets\\objects\\" + res.Value["hash"].ToString()[0] + res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"]}\" to \"{"\\assets\\legacy\\" + res.Name}\"");
                         File.Copy(
-                            _applicationContext.McDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
+                            _applicationContext.MinecraftDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
                             res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"],
-                            _applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name);
+                            _applicationContext.MinecraftDirectory + "\\assets\\legacy\\" + res.Name);
                     }
                     catch (Exception ex) {
                         AppendLog(ex.ToString());

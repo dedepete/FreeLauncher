@@ -18,8 +18,8 @@ namespace FreeLauncher
         public Localization ProgramLocalization { get; private set; }
         public Dictionary<string, Localization> LocalizationsList { get; private set; }
 
-        public string McDirectory { get; private set; }
-        public string McLauncher { get; private set; }
+        public string MinecraftDirectory { get; private set; }
+        public string LauncherDirectory { get; private set; }
         public string McVersions { get; private set; }
         public string McLibs { get; private set; }
 
@@ -35,15 +35,15 @@ namespace FreeLauncher
             LocalizationsList = new Dictionary<string, Localization>();
 
             Parser.Default.ParseArguments(args, ProgramArguments);
-            McDirectory = ProgramArguments.WorkingDirectory ??
+            MinecraftDirectory = ProgramArguments.WorkingDirectory ??
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                    ".minecraft\\");
-            McLauncher = Path.Combine(McDirectory, "freelauncher\\");
-            McVersions = Path.Combine(McDirectory, "versions\\");
-            McLibs = Path.Combine(McDirectory, "libraries\\");
+            LauncherDirectory = Path.Combine(MinecraftDirectory, "freelauncher\\");
+            McVersions = Path.Combine(MinecraftDirectory, "versions\\");
+            McLibs = Path.Combine(MinecraftDirectory, "libraries\\");
 
             _translationsDirectory = Path.Combine(Application.StartupPath + "\\freelauncher-langs\\");
-            Configuration = Configuration.LoadFromFile(McLauncher + "\\configuration.json");
+            Configuration = Configuration.LoadFromFile(LauncherDirectory + "\\configuration.json");
             LoadLocalizations();
         }
 
