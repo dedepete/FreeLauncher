@@ -28,65 +28,83 @@ namespace FreeLauncher.Forms
             UpdateUsers();
         }
 
-        private void YesNoToggleSwitch_ValueChanged(object sender, EventArgs e)
+        private void IsLicenseAccountSwitch_ValueChanged(object sender, EventArgs e)
         {
-            PasswordTextBox.Enabled = YesNoToggleSwitch.Value;
+            PasswordTextBox.Enabled = IsLicenseAccountSwitch.Value;
             TextBox_TextChanged(this, EventArgs.Empty);
         }
 
         private void AddUserButton_Click(object sender, EventArgs e)
         {
-            AddUserButton.Enabled =
-                UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
+            AddUserButton.Enabled = false;
+            UsernameTextBox.Enabled = false;
+            PasswordTextBox.Enabled = false;
+            IsLicenseAccountSwitch.Enabled = false;
             ControlBox = false;
             AddUserButton.Text = _localization.PleaseWait;
             BackgroundWorker bgw = new BackgroundWorker();
-            bgw.DoWork += delegate {
-                User user = new User { Username = UsernameTextBox.Text };
-                if (!YesNoToggleSwitch.Value) {
-                    user.Type = "offline";
-                    _userManager.Accounts[user.Username] = user;
-                    _userManager.SelectedUsername = user.Username;
-                    _userManager.Save();
-                    UpdateUsers();
-                    return;
-                }
-                AuthManager auth = new AuthManager { Email = UsernameTextBox.Text, Password = PasswordTextBox.Text };
-                try {
-                    auth.Login();
-                    user.Type = auth.IsLegacy ? "legacy" : "mojang";
-                    user.AccessToken = auth.AccessToken;
-                    user.SessionToken = auth.SessionToken;
-                    user.Uuid = auth.Uuid;
-                    user.UserProperties = auth.UserProperties;
-                    _userManager.Accounts[user.Username] = user;
-                    _userManager.SelectedUsername = user.Username;
-                }
-                catch (WebException ex) {
-                    switch (ex.Status) {
-                        case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show(_localization.IncorrectLoginOrPassword, _localization.Error, MessageBoxButtons.OK,
-                                RadMessageIcon.Error);
-                            return;
-                        default:
-                            return;
-                    }
-                }
-                Invoke(new Action(() =>
-                {
-                    _userManager.Save();
-                    UpdateUsers();
-                    UsernameTextBox.Clear();
-                    PasswordTextBox.Clear();
-                }));
-            };
-            bgw.RunWorkerCompleted += delegate {
-                UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
-                ControlBox = true;
-                AddUserButton.Text = _localization.AddNewUserButton;
-                YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
-            };
+            bgw.DoWork += AddUserOnBackground;
+            bgw.RunWorkerCompleted += AddUserCompleted;
             bgw.RunWorkerAsync();
+        }
+
+        private void AddUserCompleted(Object sender, RunWorkerCompletedEventArgs runWorkerCompletedEventArgs)
+        {
+            UsernameTextBox.Enabled = true;
+            IsLicenseAccountSwitch.Enabled = true;
+            ControlBox = true;
+            AddUserButton.Text = _localization.AddNewUserButton;
+            IsLicenseAccountSwitch_ValueChanged(this, EventArgs.Empty);
+        }
+
+        private void AddUserOnBackground(Object sender, DoWorkEventArgs doWorkEventArgs)
+        {
+            User newUser = new User {
+                Username = UsernameTextBox.Text
+            };
+
+            if (!IsLicenseAccountSwitch.Value) {
+                newUser.Type = "offline";
+                _userManager.Accounts[newUser.Username] = newUser;
+                _userManager.SelectedUsername = newUser.Username;
+                _userManager.Save();
+                UpdateUsers();
+                return;
+            }
+
+            AuthManager auth = new AuthManager {
+                Email = UsernameTextBox.Text,
+                Password = PasswordTextBox.Text
+            };
+
+            try {
+                auth.Login();
+                newUser.Type = auth.IsLegacy ? "legacy" : "mojang";
+                newUser.AccessToken = auth.AccessToken;
+                newUser.SessionToken = auth.SessionToken;
+                newUser.Uuid = auth.Uuid;
+                newUser.UserProperties = auth.UserProperties;
+                _userManager.Accounts[newUser.Username] = newUser;
+                _userManager.SelectedUsername = newUser.Username;
+            }
+            catch (WebException ex) {
+                switch (ex.Status) {
+                    case WebExceptionStatus.ProtocolError:
+                        RadMessageBox.Show(_localization.IncorrectLoginOrPassword, _localization.Error, MessageBoxButtons.OK,
+                            RadMessageIcon.Error);
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            Invoke(new Action(() =>
+            {
+                _userManager.Save();
+                UpdateUsers();
+                UsernameTextBox.Clear();
+                PasswordTextBox.Clear();
+            }));
         }
 
         private void UpdateUsers()
@@ -114,16 +132,15 @@ namespace FreeLauncher.Forms
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(UsernameTextBox.Text)) {
-                if (!YesNoToggleSwitch.Value ||
-                    YesNoToggleSwitch.Value && !string.IsNullOrWhiteSpace(PasswordTextBox.Text)) {
-                    AddUserButton.Enabled = true;
-                } else if (YesNoToggleSwitch.Value && string.IsNullOrWhiteSpace(PasswordTextBox.Text)) {
-                    AddUserButton.Enabled = false;
-                }
-            } else {
+            var isUserNameEmpty = string.IsNullOrWhiteSpace(UsernameTextBox.Text);
+            if (isUserNameEmpty) {
                 AddUserButton.Enabled = false;
+                return;
             }
+
+            var isPasswordEmpty = string.IsNullOrWhiteSpace(PasswordTextBox.Text);
+            var isLicenseAccount = IsLicenseAccountSwitch.Value;
+            AddUserButton.Enabled = !isLicenseAccount || !isPasswordEmpty;
         }
 
         private void LoadLocalization()
@@ -135,21 +152,5 @@ namespace FreeLauncher.Forms
             PasswordLabel.Text = _localization.Password;
             AddUserButton.Text = _localization.AddNewUserButton;
         }
-    }
-
-    public class User
-    {
-        [JsonProperty("username")]
-        public string Username;
-        [JsonProperty("type")]
-        public string Type;
-        [JsonProperty("uuid")]
-        public string Uuid;
-        [JsonProperty("sessionToken")]
-        public string SessionToken;
-        [JsonProperty("accessToken")]
-        public string AccessToken;
-        [JsonProperty("properties")]
-        public JArray UserProperties;
     }
 }
