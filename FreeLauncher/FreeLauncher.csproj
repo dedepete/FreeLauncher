@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Java.cs" />
     <Compile Include="Localization.cs" />
+    <Compile Include="MinecraftProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApplicationContext.cs" />
