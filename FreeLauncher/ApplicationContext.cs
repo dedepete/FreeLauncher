@@ -11,8 +11,6 @@ namespace FreeLauncher
 {
     public class ApplicationContext
     {
-        private readonly string _configurationFile;
-
         private readonly string _translationsDirectory;
 
         public Arguments ProgramArguments { get; private set; }
@@ -44,9 +42,8 @@ namespace FreeLauncher
             McVersions = Path.Combine(McDirectory, "versions\\");
             McLibs = Path.Combine(McDirectory, "libraries\\");
 
-            _configurationFile = McLauncher + "\\configuration.json";
             _translationsDirectory = Path.Combine(Application.StartupPath + "\\freelauncher-langs\\");
-            Configuration = GetConfiguration();
+            Configuration = Configuration.LoadFromFile(McLauncher + "\\configuration.json");
             LoadLocalizations();
         }
 
@@ -58,20 +55,7 @@ namespace FreeLauncher
                 ProgramLocalization = LocalizationsList[localizationName];
             }
         }
-
-        public void SaveConfiguration()
-        {
-            File.WriteAllText(_configurationFile, JsonConvert.SerializeObject(Configuration, Formatting.Indented));
-        }
-
-        private Configuration GetConfiguration()
-        {
-            if (File.Exists(_configurationFile))
-                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile));
-
-            return new Configuration();
-        }
-
+        
         private void LoadLocalizations()
         {
             var langsDirectory = new DirectoryInfo(_translationsDirectory);

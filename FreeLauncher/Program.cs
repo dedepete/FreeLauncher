@@ -20,7 +20,7 @@ namespace FreeLauncher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LauncherForm(applicationContext));
-            applicationContext.SaveConfiguration();
+            applicationContext.Configuration.Save();
         }
     }
 }
