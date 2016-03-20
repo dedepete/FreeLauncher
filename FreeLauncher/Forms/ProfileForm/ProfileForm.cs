@@ -14,10 +14,13 @@ namespace FreeLauncher.Forms
 {
     public partial class ProfileForm : RadForm
     {
+        private readonly ApplicationContext _applicationContext;
+
         public Profile CurrentProfile;
 
-        public ProfileForm(Profile profile)
+        public ProfileForm(Profile profile, ApplicationContext appContext)
         {
+            _applicationContext = appContext;
             CurrentProfile = profile;
             InitializeComponent();
             LoadLocalization();
@@ -60,7 +63,7 @@ namespace FreeLauncher.Forms
                 GameDirectoryCheckBox.Checked = true;
                 gameDirectoryBox.Text = CurrentProfile.WorkingDirectory;
             } else {
-                gameDirectoryBox.Text = Variables.McDirectory;
+                gameDirectoryBox.Text = _applicationContext.McDirectory;
             }
             if (CurrentProfile.WindowSize != null) {
                 xResolutionBox.Text = CurrentProfile.WindowSize.X.ToString();
@@ -83,8 +86,8 @@ namespace FreeLauncher.Forms
                     break;
             }
             if (Java.JavaExecutable == "\\bin\\java.exe") {
-                RadMessageBox.Show(this, Variables.ProgramLocalization.JavaDetectionFailed,
-                    Variables.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
+                RadMessageBox.Show(this, _applicationContext.ProgramLocalization.JavaDetectionFailed,
+                    _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
             }
             javaExecutableBox.Text = CurrentProfile.JavaExecutable ?? Java.JavaExecutable;
             JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
@@ -94,26 +97,26 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            ProfileNameLabel.Text = Variables.ProgramLocalization.ProfileName;
-            GameDirectoryCheckBox.Text = Variables.ProgramLocalization.WorkingDirectory;
-            WindowResolutionLabel.Text = Variables.ProgramLocalization.WindowResolution;
-            ActionAfterLaunchLabel.Text = Variables.ProgramLocalization.ActionAfterLaunch;
-            FastConnectCheckBox.Text = Variables.ProgramLocalization.Autoconnect;
-            snapshotsCheckBox.Text = Variables.ProgramLocalization.Snapshots;
-            betaCheckBox.Text = Variables.ProgramLocalization.Beta;
-            alphaCheckBox.Text = Variables.ProgramLocalization.Alpha;
-            otherCheckBox.Text = Variables.ProgramLocalization.Other;
-            JavaExecutableCheckBox.Text = Variables.ProgramLocalization.JavaExecutable;
-            JavaArgumentsCheckBox.Text = Variables.ProgramLocalization.JavaFlags;
-            cancelButton.Text = Variables.ProgramLocalization.Cancel;
-            openGameDirectoryButton.Text = Variables.ProgramLocalization.OpenDirectory;
-            saveProfileButton.Text = Variables.ProgramLocalization.Save;
+            ProfileNameLabel.Text = _applicationContext.ProgramLocalization.ProfileName;
+            GameDirectoryCheckBox.Text = _applicationContext.ProgramLocalization.WorkingDirectory;
+            WindowResolutionLabel.Text = _applicationContext.ProgramLocalization.WindowResolution;
+            ActionAfterLaunchLabel.Text = _applicationContext.ProgramLocalization.ActionAfterLaunch;
+            FastConnectCheckBox.Text = _applicationContext.ProgramLocalization.Autoconnect;
+            snapshotsCheckBox.Text = _applicationContext.ProgramLocalization.Snapshots;
+            betaCheckBox.Text = _applicationContext.ProgramLocalization.Beta;
+            alphaCheckBox.Text = _applicationContext.ProgramLocalization.Alpha;
+            otherCheckBox.Text = _applicationContext.ProgramLocalization.Other;
+            JavaExecutableCheckBox.Text = _applicationContext.ProgramLocalization.JavaExecutable;
+            JavaArgumentsCheckBox.Text = _applicationContext.ProgramLocalization.JavaFlags;
+            cancelButton.Text = _applicationContext.ProgramLocalization.Cancel;
+            openGameDirectoryButton.Text = _applicationContext.ProgramLocalization.OpenDirectory;
+            saveProfileButton.Text = _applicationContext.ProgramLocalization.Save;
         }
 
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != Variables.McDirectory &&
+            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.McDirectory &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {
@@ -201,9 +204,9 @@ namespace FreeLauncher.Forms
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
-            versionsDropDownList.Items.Add(Variables.ProgramLocalization.UseLatestVersion);
+            versionsDropDownList.Items.Add(_applicationContext.ProgramLocalization.UseLatestVersion);
             List<string> list = new List<string>();
-            JObject json = JObject.Parse(File.ReadAllText(Variables.McVersions + "/versions.json"));
+            JObject json = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
             foreach (JObject ver in json["versions"]) {
                 string id = ver["id"].ToString(),
                     type = ver["type"].ToString();
@@ -236,14 +239,14 @@ namespace FreeLauncher.Forms
                 }
             }
             if (otherCheckBox.Checked) {
-                foreach (Version version in from b in Directory.GetDirectories(Variables.McVersions)
-                    where File.Exists(string.Format("{0}/{1}/{1}.json", Variables.McVersions,
+                foreach (Version version in from b in Directory.GetDirectories(_applicationContext.McVersions)
+                    where File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions,
                         new DirectoryInfo(b).Name))
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
                     select
                         Version.ParseVersion(
-                            new DirectoryInfo(string.Format("{0}/{1}/", Variables.McVersions,
+                            new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
                                 new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId

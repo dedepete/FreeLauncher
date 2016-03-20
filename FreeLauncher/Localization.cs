@@ -1,35 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using CommandLine;
+using System.Linq;
+using System.Text;
 
 namespace FreeLauncher
 {
-    public static class Variables
-    {
-        public static Arguments ProgramArguments = new Arguments();
-        public static Localization ProgramLocalization = new Localization();
-        public static Dictionary<string, Localization> LocalizationsList = new Dictionary<string, Localization>(); 
-
-        public static string McDirectory = ProgramArguments.WorkingDirectory ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft\\");
-        public static string McLauncher = Path.Combine(McDirectory, "freelauncher\\");
-        public static string McVersions = Path.Combine(McDirectory, "versions\\");
-        public static string McLibs = Path.Combine(McDirectory, "libraries\\");
-
-        public static string LastSnapshotVersion = "15w33c";
-        public static string LastReleaseVersion = "1.8.8";
-
-        public static string Libraries = string.Empty;
-    }
-
-    public class Arguments
-    {
-        [Option('d', "working-directory")]
-        public string WorkingDirectory { get; set; }
-        [Option("not-a-standalone")]
-        public bool NotAStandalone { get; set; }
-    }
-
     public class Localization
     {
         public string Name = "Русский";
@@ -49,7 +24,7 @@ namespace FreeLauncher
 
         #endregion
 
-         #region Main Controls
+        #region Main Controls
 
         public string LaunchButtonText = "Запуск игры";
         public string AddProfileButtonText = "Добавить профиль";
@@ -57,7 +32,7 @@ namespace FreeLauncher
 
         #endregion
 
-         #region About Tab
+        #region About Tab
 
         public string DevInfo = "Разработано dedepete из Space Earth Studio Minecraft\nИздано Space Earth Studio";
         public string GratitudesText = "Благодарности";
@@ -66,9 +41,9 @@ namespace FreeLauncher
         public string MCofflineDescription = "MCoffline - лучшая программа для серверных администраторов!";
         public string CopyrightInfo = "\"SESMC\" расшифровывается как Space Earth Studio Minecraft. Все права защищены святой водой.\n\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
 
-         #endregion
+        #endregion
 
-         #region Settings Tab
+        #region Settings Tab
 
         public string EnableMinecraftUpdateAlertsText = "Показывать уведомления о наличии новых версий Minecraft";
         public string EnableMinecraftLoggingText = "Выводить лог игры в консоль";
@@ -98,7 +73,7 @@ namespace FreeLauncher
 
         #region ProfileForm
 
-         #region Main Settings
+        #region Main Settings
 
         public string ProfileName = "Название профиля:";
         public string WorkingDirectory = "Рабочая директория:";
@@ -108,7 +83,7 @@ namespace FreeLauncher
 
         #endregion
 
-         #region Version Selection
+        #region Version Selection
 
         public string Snapshots = "Отображать экспериментальные сборки (\"snapshots\")";
         public string Beta = "Отображать старые \"Beta\" сборки(2010-2011)";
@@ -118,12 +93,12 @@ namespace FreeLauncher
 
         #endregion
 
-         #region Java Options
+        #region Java Options
 
         public string JavaExecutable = "Исполняемый файл:";
         public string JavaFlags = "Флаги JVM:";
 
-         #endregion
+        #endregion
 
         public string OpenDirectory = "Открыть раб. директорию";
 
