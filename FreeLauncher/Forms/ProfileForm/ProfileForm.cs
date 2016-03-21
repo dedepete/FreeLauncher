@@ -16,13 +16,17 @@ namespace FreeLauncher.Forms
     {
         private readonly ApplicationContext _applicationContext;
 
+        private readonly Localization _localization;
+
         public Profile CurrentProfile;
 
         public ProfileForm(Profile profile, ApplicationContext appContext)
         {
             _applicationContext = appContext;
+            _localization = _applicationContext.ProgramLocalization;
             CurrentProfile = profile;
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterParent;
             LoadLocalization();
             if (CurrentProfile.AllowedReleaseTypes != null) {
                 foreach (string item in CurrentProfile.AllowedReleaseTypes) {
@@ -57,23 +61,27 @@ namespace FreeLauncher.Forms
                     }
                 }
             }
+
             GetVersions();
             nameBox.Text = CurrentProfile.ProfileName;
             if (CurrentProfile.WorkingDirectory != null) {
                 GameDirectoryCheckBox.Checked = true;
                 gameDirectoryBox.Text = CurrentProfile.WorkingDirectory;
             } else {
-                gameDirectoryBox.Text = _applicationContext.McDirectory;
+                gameDirectoryBox.Text = _applicationContext.MinecraftDirectory;
             }
+
             if (CurrentProfile.WindowSize != null) {
                 xResolutionBox.Text = CurrentProfile.WindowSize.X.ToString();
                 yResolutionBox.Text = CurrentProfile.WindowSize.Y.ToString();
             }
+
             if (CurrentProfile.FastConnectionSettigs != null) {
                 FastConnectCheckBox.Checked = true;
                 ipTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerIP;
                 portTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerPort.ToString();
             }
+
             switch (CurrentProfile.LauncherVisibilityOnGameClose) {
                 case Profile.LauncherVisibility.HIDDEN:
                     stateBox.SelectedIndex = 1;
@@ -85,10 +93,12 @@ namespace FreeLauncher.Forms
                     stateBox.SelectedIndex = 0;
                     break;
             }
+
             if (Java.JavaExecutable == "\\bin\\java.exe") {
-                RadMessageBox.Show(this, _applicationContext.ProgramLocalization.JavaDetectionFailed,
-                    _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
+                RadMessageBox.Show(this, _localization.JavaDetectionFailed,
+                    _localization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
             }
+
             javaExecutableBox.Text = CurrentProfile.JavaExecutable ?? Java.JavaExecutable;
             JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
             javaArgumentsBox.Text = CurrentProfile.JavaArguments ?? "-Xmx1G";
@@ -97,31 +107,32 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            ProfileNameLabel.Text = _applicationContext.ProgramLocalization.ProfileName;
-            GameDirectoryCheckBox.Text = _applicationContext.ProgramLocalization.WorkingDirectory;
-            WindowResolutionLabel.Text = _applicationContext.ProgramLocalization.WindowResolution;
-            ActionAfterLaunchLabel.Text = _applicationContext.ProgramLocalization.ActionAfterLaunch;
-            FastConnectCheckBox.Text = _applicationContext.ProgramLocalization.Autoconnect;
-            snapshotsCheckBox.Text = _applicationContext.ProgramLocalization.Snapshots;
-            betaCheckBox.Text = _applicationContext.ProgramLocalization.Beta;
-            alphaCheckBox.Text = _applicationContext.ProgramLocalization.Alpha;
-            otherCheckBox.Text = _applicationContext.ProgramLocalization.Other;
-            JavaExecutableCheckBox.Text = _applicationContext.ProgramLocalization.JavaExecutable;
-            JavaArgumentsCheckBox.Text = _applicationContext.ProgramLocalization.JavaFlags;
-            cancelButton.Text = _applicationContext.ProgramLocalization.Cancel;
-            openGameDirectoryButton.Text = _applicationContext.ProgramLocalization.OpenDirectory;
-            saveProfileButton.Text = _applicationContext.ProgramLocalization.Save;
+            ProfileNameLabel.Text = _localization.ProfileName;
+            GameDirectoryCheckBox.Text = _localization.WorkingDirectory;
+            WindowResolutionLabel.Text = _localization.WindowResolution;
+            ActionAfterLaunchLabel.Text = _localization.ActionAfterLaunch;
+            FastConnectCheckBox.Text = _localization.Autoconnect;
+            snapshotsCheckBox.Text = _localization.Snapshots;
+            betaCheckBox.Text = _localization.Beta;
+            alphaCheckBox.Text = _localization.Alpha;
+            otherCheckBox.Text = _localization.Other;
+            JavaExecutableCheckBox.Text = _localization.JavaExecutable;
+            JavaArgumentsCheckBox.Text = _localization.JavaFlags;
+            cancelButton.Text = _localization.Cancel;
+            openGameDirectoryButton.Text = _localization.OpenDirectory;
+            saveProfileButton.Text = _localization.Save;
         }
 
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.McDirectory &&
+            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.MinecraftDirectory &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {
                 CurrentProfile.WorkingDirectory = null;
             }
+
             if ((xResolutionBox.Text != "854" || yResolutionBox.Text != "480") && xResolutionBox.Text != string.Empty &&
                 yResolutionBox.Text != string.Empty) {
                 MinecraftWindowSize winSize = new MinecraftWindowSize {
@@ -132,6 +143,7 @@ namespace FreeLauncher.Forms
             } else {
                 CurrentProfile.WindowSize = null;
             }
+
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
                 CurrentProfile.FastConnectionSettigs = new ConnectionSettings() {
                     ServerIP = ipTextBox.Text,
@@ -142,6 +154,7 @@ namespace FreeLauncher.Forms
             } else {
                 CurrentProfile.FastConnectionSettigs = null;
             }
+
             switch (stateBox.SelectedItem.Tag.ToString()) {
                 case "hide launcher and re-open when game closes":
                     CurrentProfile.LauncherVisibilityOnGameClose = Profile.LauncherVisibility.HIDDEN;
@@ -153,37 +166,48 @@ namespace FreeLauncher.Forms
                     CurrentProfile.LauncherVisibilityOnGameClose = Profile.LauncherVisibility.VISIBLE;
                     break;
             }
+
             List<string> types = new List<string>();
             if (snapshotsCheckBox.Checked) {
                 types.Add("snapshot");
             }
+
             if (betaCheckBox.Checked) {
                 types.Add("old_beta");
             }
+
             if (alphaCheckBox.Checked) {
                 types.Add("old_alpha");
             }
+
             if (otherCheckBox.Checked) {
                 types.Add("other");
             }
+
             if (VersionSelector.SelectedPage == modVersionsPage) {
                 if (forgeCheckBox.Checked) {
                     types.Add("forge");
                 }
+
                 if (liteCheckBox.Checked) {
                     types.Add("liteloader");
                 }
+
                 if (optifineCheckBox.Checked) {
                     types.Add("optifine");
                 }
+
                 if (combinedCheckBox.Checked) {
                     types.Add("combined");
                 }
+
                 types.Add("modified");
             }
+
             if (types.Count == 0) {
                 types = null;
             }
+
             CurrentProfile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
             CurrentProfile.AllowedReleaseTypes = types?.ToArray();
             if (JavaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
@@ -192,6 +216,7 @@ namespace FreeLauncher.Forms
             } else {
                 CurrentProfile.JavaArguments = null;
             }
+
             if (JavaExecutableCheckBox.Checked && javaExecutableBox.Text != Java.JavaExecutable &&
                 javaExecutableBox.Text != string.Empty) {
                 CurrentProfile.JavaExecutable = javaExecutableBox.Text;
@@ -204,14 +229,18 @@ namespace FreeLauncher.Forms
         private void GetVersions()
         {
             versionsDropDownList.Items.Clear();
-            versionsDropDownList.Items.Add(_applicationContext.ProgramLocalization.UseLatestVersion);
-            List<string> list = new List<string>();
-            JObject json = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
-            foreach (JObject ver in json["versions"]) {
-                string id = ver["id"].ToString(),
-                    type = ver["type"].ToString();
-                list.Add(string.Format("{0} {1}", type, id));
-                RadListDataItem ritem = new RadListDataItem {Text = type + " " + id, Tag = id};
+            versionsDropDownList.Items.Add(_localization.UseLatestVersion);
+            List<string> versionsForAdding = new List<string>();
+            JObject versionsFile = JObject.Parse(File.ReadAllText(_applicationContext.MinecraftVersionsDirectory + "/versions.json"));
+            foreach (JObject ver in versionsFile["versions"]) {
+                string id = ver["id"].ToString();
+                string type = ver["type"].ToString();
+                versionsForAdding.Add($"{type} {id}");
+                RadListDataItem ritem = new RadListDataItem {
+                    Text = type + " " + id,
+                    Tag = id
+                };
+
                 switch (type) {
                     case "snapshot":
                         if (snapshotsCheckBox.Checked) {
@@ -238,29 +267,35 @@ namespace FreeLauncher.Forms
                         break;
                 }
             }
+
             if (otherCheckBox.Checked) {
-                foreach (Version version in from b in Directory.GetDirectories(_applicationContext.McVersions)
-                    where File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions,
-                        new DirectoryInfo(b).Name))
-                    let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
-                    where add
-                    select
-                        Version.ParseVersion(
-                            new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
-                                new DirectoryInfo(b).Name)), false)) {
-                    versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
+                var versionsDirectory = new DirectoryInfo(_applicationContext.MinecraftVersionsDirectory);
+                Func<DirectoryInfo, bool> isVersionCorrected = vd =>
+                {
+                    var versionFile = Path.Combine(_applicationContext.MinecraftVersionsDirectory, vd.Name, vd.Name + ".json");
+                    return File.Exists(versionFile);
+                };
+
+                var correctedVersions = versionsDirectory.GetDirectories().Where(vd => isVersionCorrected(vd));
+                var modifiedVersionsDirectories = correctedVersions.Where(cv => versionsForAdding.All(vfa => !vfa.Contains(cv.Name)));
+                var modifiedVersions = modifiedVersionsDirectories.Select(vd => Version.ParseVersion(new DirectoryInfo(vd.FullName), false)).ToList();
+                foreach (var version in modifiedVersions) {
+                    var newItem = new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId
-                    });
+                    };
+
+                    versionsDropDownList.Items.Add(newItem);
                 }
             }
+
             if (CurrentProfile.SelectedVersion != null) {
-                foreach (
-                    RadListDataItem a in
-                        versionsDropDownList.Items.Where(a => a.Text.Contains(CurrentProfile.SelectedVersion))) {
-                    versionsDropDownList.SelectedItem = a;
+                var requiredItem = versionsDropDownList.Items.FirstOrDefault(item => item.Text.Contains(CurrentProfile.SelectedVersion));
+                if (requiredItem != null) {
+                    versionsDropDownList.SelectedItem = requiredItem;
                     return;
                 }
             }
+
             versionsDropDownList.SelectedIndex = 0;
         }
 

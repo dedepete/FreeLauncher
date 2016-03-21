@@ -132,9 +132,12 @@
     </Compile>
     <Compile Include="Java.cs" />
     <Compile Include="Localization.cs" />
+    <Compile Include="MinecraftProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApplicationContext.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserManager.cs" />
     <EmbeddedResource Include="Forms\LauncherForm\LauncherForm.resx">
       <DependentUpon>LauncherForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -166,8 +169,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Translations\lang.en-UK.json" />
-    <None Include="Translations\lang.ru-RU.json" />
+    <None Include="Translations\lang.en_UK.json" />
     <None Include="Translations\lang.uk_UA.json" />
   </ItemGroup>
   <ItemGroup>
@@ -182,7 +184,9 @@
   <ItemGroup>
     <None Include="Resources\edit.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Translations\lang.ru_RU.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

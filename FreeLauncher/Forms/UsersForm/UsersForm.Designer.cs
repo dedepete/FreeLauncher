@@ -38,7 +38,7 @@
             this.LicenseQuestionLabel = new Telerik.WinControls.UI.RadLabel();
             this.UsernameTextBox = new Telerik.WinControls.UI.RadTextBox();
             this.NicknameLabel = new Telerik.WinControls.UI.RadLabel();
-            this.YesNoToggleSwitch = new Telerik.WinControls.UI.RadToggleSwitch();
+            this.IsLicenseAccountSwitch = new Telerik.WinControls.UI.RadToggleSwitch();
             this.vs2012theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             ((System.ComponentModel.ISupportInitialize)(this.UsersListControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeleteUserButton)).BeginInit();
@@ -50,7 +50,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LicenseQuestionLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UsernameTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NicknameLabel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.YesNoToggleSwitch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IsLicenseAccountSwitch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,7 +97,7 @@
             this.AddNewUserBox.Controls.Add(this.LicenseQuestionLabel);
             this.AddNewUserBox.Controls.Add(this.UsernameTextBox);
             this.AddNewUserBox.Controls.Add(this.NicknameLabel);
-            this.AddNewUserBox.Controls.Add(this.YesNoToggleSwitch);
+            this.AddNewUserBox.Controls.Add(this.IsLicenseAccountSwitch);
             this.AddNewUserBox.HeaderText = "Добавление нового аккаунта";
             this.AddNewUserBox.Location = new System.Drawing.Point(216, -1);
             this.AddNewUserBox.Name = "AddNewUserBox";
@@ -165,18 +165,18 @@
             this.NicknameLabel.Text = "Логин/Ник:";
             this.NicknameLabel.ThemeName = "VisualStudio2012Dark";
             // 
-            // YesNoToggleSwitch
+            // IsLicenseAccountSwitch
             // 
-            this.YesNoToggleSwitch.Location = new System.Drawing.Point(190, 50);
-            this.YesNoToggleSwitch.Name = "YesNoToggleSwitch";
-            this.YesNoToggleSwitch.OffText = "NO";
-            this.YesNoToggleSwitch.OnText = "YES";
-            this.YesNoToggleSwitch.Size = new System.Drawing.Size(41, 20);
-            this.YesNoToggleSwitch.TabIndex = 0;
-            this.YesNoToggleSwitch.ThemeName = "VisualStudio2012Dark";
-            this.YesNoToggleSwitch.ThumbTickness = 15;
-            this.YesNoToggleSwitch.Value = false;
-            this.YesNoToggleSwitch.ValueChanged += new System.EventHandler(this.YesNoToggleSwitch_ValueChanged);
+            this.IsLicenseAccountSwitch.Location = new System.Drawing.Point(190, 50);
+            this.IsLicenseAccountSwitch.Name = "IsLicenseAccountSwitch";
+            this.IsLicenseAccountSwitch.OffText = "NO";
+            this.IsLicenseAccountSwitch.OnText = "YES";
+            this.IsLicenseAccountSwitch.Size = new System.Drawing.Size(41, 20);
+            this.IsLicenseAccountSwitch.TabIndex = 0;
+            this.IsLicenseAccountSwitch.ThemeName = "VisualStudio2012Dark";
+            this.IsLicenseAccountSwitch.ThumbTickness = 15;
+            this.IsLicenseAccountSwitch.Value = false;
+            this.IsLicenseAccountSwitch.ValueChanged += new System.EventHandler(this.IsLicenseAccountSwitch_ValueChanged);
             // 
             // UsersForm
             // 
@@ -209,7 +209,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LicenseQuestionLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UsernameTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NicknameLabel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.YesNoToggleSwitch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IsLicenseAccountSwitch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -222,7 +222,7 @@
         private Telerik.WinControls.UI.RadListControl UsersListControl;
         private Telerik.WinControls.UI.RadButton DeleteUserButton;
         private Telerik.WinControls.UI.RadGroupBox AddNewUserBox;
-        private Telerik.WinControls.UI.RadToggleSwitch YesNoToggleSwitch;
+        private Telerik.WinControls.UI.RadToggleSwitch IsLicenseAccountSwitch;
         private Telerik.WinControls.UI.RadButton AddUserButton;
         private Telerik.WinControls.UI.RadTextBox PasswordTextBox;
         private Telerik.WinControls.UI.RadLabel PasswordLabel;

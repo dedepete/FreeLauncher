@@ -1,73 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace FreeLauncher
 {
     public class Localization
     {
-        public string Name = "Русский";
-        public string LanguageTag = "ru-RU";
-        public string Authors = "dedepete";
+        private static Localization _defaultLocalization;
+
+        public static Localization DefaultLocalization
+        {
+            get {
+                if (_defaultLocalization == null) {
+                    var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FreeLauncher.Translations.lang.ru_RU.json");
+                    using (var sr = new StreamReader(stream)) {
+                        var content = sr.ReadToEnd();
+                        _defaultLocalization = JsonConvert.DeserializeObject<Localization>(content);
+                    }
+                }
+
+                return _defaultLocalization;
+            }
+        }
+
+        protected Localization() { }
+
+        public string Name { get; set; }
+        public string LanguageTag { get; set; }
+        public string Authors { get; set; }
 
         #region LauncherForm
 
         #region Tabs
 
-        public string NewsTabText = "НОВОСТИ";
-        public string ConsoleTabText = "КОНСОЛЬ";
-        public string ManageVersionsTabText = "УПРАВЛЕНИЕ ВЕРСИЯМИ";
-        public string AboutTabText = "О ЛАУНЧЕРЕ";
-        public string LicensesTabText = "ЛИЦЕНЗИИ";
-        public string SettingsTabText = "НАСТРОЙКИ";
+        public string NewsTabText { get; set; }
+        public string ConsoleTabText { get; set; }
+        public string ManageVersionsTabText { get; set; }
+        public string AboutTabText { get; set; }
+        public string LicensesTabText { get; set; }
+        public string SettingsTabText { get; set; }
 
         #endregion
 
         #region Main Controls
 
-        public string LaunchButtonText = "Запуск игры";
-        public string AddProfileButtonText = "Добавить профиль";
-        public string EditProfileButtonText = "Изменить профиль";
+        public string LaunchButtonText { get; set; }
+        public string AddProfileButtonText { get; set; }
+        public string EditProfileButtonText { get; set; }
 
         #endregion
 
         #region About Tab
 
-        public string DevInfo = "Разработано dedepete из Space Earth Studio Minecraft\nИздано Space Earth Studio";
-        public string GratitudesText = "Благодарности";
-        public string GratitudesDescription = "Большое спасибо администрации портала ru-minecraft.ru за содействие в развитии проекта!";
-        public string PartnersText = "Партнёры";
-        public string MCofflineDescription = "MCoffline - лучшая программа для серверных администраторов!";
-        public string CopyrightInfo = "\"SESMC\" расшифровывается как Space Earth Studio Minecraft. Все права защищены святой водой.\n\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
+        public string DevInfo { get; set; }
+        public string GratitudesText { get; set; }
+        public string GratitudesDescription { get; set; }
+        public string PartnersText { get; set; }
+        public string MCofflineDescription { get; set; }
+        public string CopyrightInfo { get; set; }
 
         #endregion
 
         #region Settings Tab
 
-        public string EnableMinecraftUpdateAlertsText = "Показывать уведомления о наличии новых версий Minecraft";
-        public string EnableMinecraftLoggingText = "Выводить лог игры в консоль";
-        public string UseGamePrefixText = "Использовать префикс [GAME] для логов Minecraft";
-        public string CloseGameOutputText = "Закрывать вкладку, если завершение было вызвано\nпринудительно или прошло без ошибок";
+        public string EnableMinecraftUpdateAlertsText { get; set; }
+        public string EnableMinecraftLoggingText { get; set; }
+        public string UseGamePrefixText { get; set; }
+        public string CloseGameOutputText { get; set; }
 
         #endregion
 
-        public string Launch = "Запустить";
-        public string OpenLocation = "Открыть расположение";
-        public string DeleteVersion = "Удалить версию";
-        public string DeleteConfirmationTitle = "Подтверждение удаления";
-        public string DeleteConfirmationText = "Вы действительно хотите удалить версию {0}?";
-        public string ReadyToLaunch = "Готов к запуску версии {0}";
-        public string ReadyToDownload = "Готов к загрузке версии {0}";
-        public string EditingProfileTitle = "Редактирование профиля";
-        public string ProfileAlreadyExistsErrorText = "Данный профиль уже существует в списке!";
-        public string ProfileDeleteConfirmationText = "Вы действительно хотите удалить профиль '{0}'?";
-        public string AddingProfileTitle = "Добавление профиля";
-        public string CheckingVersionAvailability = "Выполняется проверка доступности версии '{0}'";
-        public string CheckingLibraries = "Выполняется проверка библиотек";
-        public string GameOutput = "ВЫВОД ИГРЫ";
-        public string KillProcess = "Убить процесс";
-        public string Independent = "Независимая";
+        public string Launch { get; set; }
+        public string OpenLocation { get; set; }
+        public string DeleteVersion { get; set; }
+        public string DeleteConfirmationTitle { get; set; }
+        public string DeleteConfirmationText { get; set; }
+        public string ReadyToLaunch { get; set; }
+        public string ReadyToDownload { get; set; }
+        public string EditingProfileTitle { get; set; }
+        public string ProfileAlreadyExistsErrorText { get; set; }
+        public string ProfileDeleteConfirmationText { get; set; }
+        public string AddingProfileTitle { get; set; }
+        public string CheckingVersionAvailability { get; set; }
+        public string CheckingLibraries { get; set; }
+        public string GameOutput { get; set; }
+        public string KillProcess { get; set; }
+        public string Independent { get; set; }
 
         #endregion
 
@@ -75,54 +97,53 @@ namespace FreeLauncher
 
         #region Main Settings
 
-        public string ProfileName = "Название профиля:";
-        public string WorkingDirectory = "Рабочая директория:";
-        public string WindowResolution = "Разрешение окна:";
-        public string ActionAfterLaunch = "Действие после запуска:";
-        public string Autoconnect = "Автоподключение:";
+        public string ProfileName { get; set; }
+        public string WorkingDirectory { get; set; }
+        public string WindowResolution { get; set; }
+        public string ActionAfterLaunch { get; set; }
+        public string Autoconnect { get; set; }
 
         #endregion
 
         #region Version Selection
 
-        public string Snapshots = "Отображать экспериментальные сборки (\"snapshots\")";
-        public string Beta = "Отображать старые \"Beta\" сборки(2010-2011)";
-        public string Alpha = "Отображать старые \"Alpha\" сборки(от 2010)";
-        public string Other = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
-        public string UseLatestVersion = "Использовать последнюю версию";
+        public string Snapshots { get; set; }
+        public string Beta { get; set; }
+        public string Alpha { get; set; }
+        public string Other { get; set; }
+        public string UseLatestVersion { get; set; }
 
         #endregion
 
         #region Java Options
 
-        public string JavaExecutable = "Исполняемый файл:";
-        public string JavaFlags = "Флаги JVM:";
+        public string JavaExecutable { get; set; }
+        public string JavaFlags { get; set; }
 
         #endregion
 
-        public string OpenDirectory = "Открыть раб. директорию";
+        public string OpenDirectory { get; set; }
 
-        public string JavaDetectionFailed =
-            "Не удалось определить путь до Java! Пожалуйста, укажите путь к исполняемому файлу вручную.";
+        public string JavaDetectionFailed { get; set; }
 
         #endregion
 
         #region UsersForm
 
-        public string AddNewUserBox = "Добавление нового пользователя";
-        public string Nickname = "Ник/Логин:";
-        public string LicenseQuestion = "У вас лицензионный аккаунт?";
-        public string Password = "Пароль:";
-        public string AddNewUserButton = "Добавить нового пользователя";
-        public string RemoveSelectedUser = "Удалить выбранного пользователя";
-        public string IncorrectLoginOrPassword = "Логин и/или пароль введены неверно!";
-        public string PleaseWait = "Пожалуйста, подождите";
+        public string AddNewUserBox { get; set; }
+        public string Nickname { get; set; }
+        public string LicenseQuestion { get; set; }
+        public string Password { get; set; }
+        public string AddNewUserButton { get; set; }
+        public string RemoveSelectedUser { get; set; }
+        public string IncorrectLoginOrPassword { get; set; }
+        public string PleaseWait { get; set; }
 
         #endregion
 
-        public string Error = "Ошибка";
-        public string Cancel = "Отмена";
-        public string Close = "Закрыть";
-        public string Save = "Сохранить";
+        public string Error { get; set; }
+        public string Cancel { get; set; }
+        public string Close { get; set; }
+        public string Save { get; set; }
     }
 }

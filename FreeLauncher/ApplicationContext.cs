@@ -11,16 +11,16 @@ namespace FreeLauncher
 {
     public class ApplicationContext
     {
-        private readonly string _configurationFile;
+        private readonly string _translationsDirectory;
 
         public Arguments ProgramArguments { get; private set; }
 
         public Localization ProgramLocalization { get; private set; }
         public Dictionary<string, Localization> LocalizationsList { get; private set; }
 
-        public string McDirectory { get; private set; }
-        public string McLauncher { get; private set; }
-        public string McVersions { get; private set; }
+        public string MinecraftDirectory { get; private set; }
+        public string LauncherDirectory { get; private set; }
+        public string MinecraftVersionsDirectory { get; private set; }
         public string McLibs { get; private set; }
 
         public string Libraries { get; set; }
@@ -31,46 +31,34 @@ namespace FreeLauncher
         {
             Libraries = string.Empty;
             ProgramArguments = new Arguments();
-            ProgramLocalization = new Localization();
+            ProgramLocalization = Localization.DefaultLocalization;
             LocalizationsList = new Dictionary<string, Localization>();
+
             Parser.Default.ParseArguments(args, ProgramArguments);
-            McDirectory = ProgramArguments.WorkingDirectory ??
+            MinecraftDirectory = ProgramArguments.WorkingDirectory ??
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                    ".minecraft\\");
-            McLauncher = Path.Combine(McDirectory, "freelauncher\\");
-            McVersions = Path.Combine(McDirectory, "versions\\");
-            McLibs = Path.Combine(McDirectory, "libraries\\");
+            LauncherDirectory = Path.Combine(MinecraftDirectory, "freelauncher\\");
+            MinecraftVersionsDirectory = Path.Combine(MinecraftDirectory, "versions\\");
+            McLibs = Path.Combine(MinecraftDirectory, "libraries\\");
 
-            _configurationFile = McLauncher + "\\configuration.json";
-            Configuration = GetConfiguration();
-            LoadLocalization();
+            _translationsDirectory = Path.Combine(Application.StartupPath + "\\freelauncher-langs\\");
+            Configuration = Configuration.LoadFromFile(LauncherDirectory + "\\configuration.json");
+            LoadLocalizations();
         }
 
         public void SetLocalization(string localizationName)
         {
             if (string.IsNullOrEmpty(localizationName))
-                ProgramLocalization = new Localization();
+                ProgramLocalization = Localization.DefaultLocalization;
             else {
                 ProgramLocalization = LocalizationsList[localizationName];
             }
         }
-
-        public void SaveConfiguration()
+        
+        private void LoadLocalizations()
         {
-            File.WriteAllText(_configurationFile, JsonConvert.SerializeObject(Configuration, Formatting.Indented));
-        }
-
-        private Configuration GetConfiguration()
-        {
-            if (File.Exists(_configurationFile))
-                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile));
-
-            return new Configuration();
-        }
-
-        private void LoadLocalization()
-        {
-            var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
+            var langsDirectory = new DirectoryInfo(_translationsDirectory);
             if (langsDirectory.Exists)
                 foreach (var local in langsDirectory
                             .GetFiles()
