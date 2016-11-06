@@ -1,4 +1,6 @@
 # FreeLauncher
+![Screenshot](http://img04.imgland.net/KS3BisZ.png)
+
 This is open source unofficial Minecraft launcher, based on dotMCLauncher. Feel free to contibute.
 
 Requires **.NET Framework 4.0**
