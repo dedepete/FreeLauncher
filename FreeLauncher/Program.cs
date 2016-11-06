@@ -1,11 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using CommandLine;
 using FreeLauncher.Forms;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 
 namespace FreeLauncher

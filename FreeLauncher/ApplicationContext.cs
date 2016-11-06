@@ -48,11 +48,7 @@ namespace FreeLauncher
 
         public void SetLocalization(string localizationName)
         {
-            if (string.IsNullOrEmpty(localizationName))
-                ProgramLocalization = new Localization();
-            else {
-                ProgramLocalization = LocalizationsList[localizationName];
-            }
+            ProgramLocalization = string.IsNullOrEmpty(localizationName) ? new Localization() : LocalizationsList[localizationName];
         }
 
         public void SaveConfiguration()
@@ -62,26 +58,25 @@ namespace FreeLauncher
 
         private Configuration GetConfiguration()
         {
-            if (File.Exists(_configurationFile))
-                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile));
-
-            return new Configuration();
+            return File.Exists(_configurationFile) ? JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile)) : new Configuration();
         }
 
         private void LoadLocalization()
         {
             var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
-            if (langsDirectory.Exists)
-                foreach (var local in langsDirectory
-                            .GetFiles()
-                            .Where(file => file.Name.Contains("lang"))
-                            .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
-                            .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
-                    LocalizationsList.Add(local.LanguageTag, local);
-                    if (local.LanguageTag == Configuration.SelectedLanguage) {
-                        ProgramLocalization = local;
-                    }
+            if (!langsDirectory.Exists) {
+                return;
+            }
+            foreach (var local in langsDirectory
+                .GetFiles()
+                .Where(file => file.Name.Contains("lang"))
+                .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
+                .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
+                LocalizationsList.Add(local.LanguageTag, local);
+                if (local.LanguageTag == Configuration.SelectedLanguage) {
+                    ProgramLocalization = local;
                 }
+            }
         }
     }
 }

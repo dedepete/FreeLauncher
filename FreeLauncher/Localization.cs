@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FreeLauncher
+﻿namespace FreeLauncher
 {
     public class Localization
     {
@@ -34,12 +29,12 @@ namespace FreeLauncher
 
         #region About Tab
 
-        public string DevInfo = "Разработано dedepete из Space Earth Studio Minecraft\nИздано Space Earth Studio";
+        public string DevInfo = "Разработано dedepete";
         public string GratitudesText = "Благодарности";
         public string GratitudesDescription = "Большое спасибо администрации портала ru-minecraft.ru за содействие в развитии проекта!";
         public string PartnersText = "Партнёры";
         public string MCofflineDescription = "MCoffline - лучшая программа для серверных администраторов!";
-        public string CopyrightInfo = "\"SESMC\" расшифровывается как Space Earth Studio Minecraft. Все права защищены святой водой.\n\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
+        public string CopyrightInfo = "\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
 
         #endregion
 

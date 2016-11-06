@@ -45,13 +45,11 @@ namespace FreeLauncher.Forms
 
         private int StatusBarMaxValue
         {
-            get { return StatusBar.Maximum; }
             set { SetStatusBarMaxValue(value); }
         }
 
         private bool StatusBarVisible
         {
-            get { return StatusBar.Visible; }
             set { SetStatusBarVisibility(value); }
         }
 
@@ -100,17 +98,16 @@ namespace FreeLauncher.Forms
         {
             _applicationContext = appContext;
             InitializeComponent();
-            // Loading configuration
+
             _cfg = _applicationContext.Configuration;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             UseGamePrefix.Checked = _cfg.ShowGamePrefix;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
-            //
+
             Text = ProductName + " " + ProductVersion;
             AboutVersion.Text = ProductVersion;
-            AppendLog($"Application: {ProductName} v.{ProductVersion}" +
-                      (!_applicationContext.ProgramArguments.NotAStandalone ? "-standalone" : string.Empty));
+            AppendLog($"Application: {ProductName} v.{ProductVersion}");
             AppendLog($"Application language: {_applicationContext.ProgramLocalization.Name}({_applicationContext.ProgramLocalization.LanguageTag})");
             AppendLog("==============");
             AppendLog("System info:");
@@ -118,6 +115,7 @@ namespace FreeLauncher.Forms
             AppendLog($"Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
             AppendLog("==============");
+
             if (_applicationContext.LocalizationsList.Count != 0) {
                 foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
                     LangDropDownList.Items.Add(new RadListDataItem {
@@ -131,19 +129,22 @@ namespace FreeLauncher.Forms
             } else {
                 LangDropDownList.Enabled = false;
             }
+
             if (!Directory.Exists(_applicationContext.McDirectory)) {
                 Directory.CreateDirectory(_applicationContext.McDirectory);
             }
             if (!Directory.Exists(_applicationContext.McLauncher)) {
                 Directory.CreateDirectory(_applicationContext.McLauncher);
             }
-            Focus();
+
             if (!_applicationContext.ProgramArguments.NotAStandalone) {
                 UpdateVersions();
             }
+
             UpdateProfileList();
             UpdateVersionListView();
             UpdateUserList();
+            Focus();
         }
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -251,7 +252,7 @@ namespace FreeLauncher.Forms
         {
             BlockControls = true;
             if (string.IsNullOrWhiteSpace(NicknameDropDownList.Text)) {
-                NicknameDropDownList.Text = $"Player{DateTime.Now.ToString("hhmmss")}";
+                NicknameDropDownList.Text = $"Player{DateTime.Now:hhmmss}";
             }
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
@@ -331,11 +332,10 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, { "version_type", selectedVersion.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
-                        AppendLog(string.Format("Version {0} successfuly launched.",
-                            selectedVersion.VersionId));
+                        AppendLog($"Version {selectedVersion.VersionId} successfuly launched.");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
                             _selectedProfile).Launch();
                         BlockControls = false;
@@ -489,10 +489,9 @@ namespace FreeLauncher.Forms
             }
 
             var selectedLocalization = LangDropDownList.SelectedItem.Tag;
-            if (LangDropDownList.SelectedIndex == 0)
-                _applicationContext.SetLocalization(string.Empty);
-            else
-                _applicationContext.SetLocalization(selectedLocalization.ToString());
+            _applicationContext.SetLocalization(LangDropDownList.SelectedIndex == 0
+                ? string.Empty
+                : selectedLocalization.ToString());
 
             _cfg.SelectedLanguage = selectedLocalization.ToString();
             AppendLog($"Application language changed to {selectedLocalization}");
@@ -1025,12 +1024,11 @@ namespace FreeLauncher.Forms
             _outputReader?.Abort();
             _errorReader.Abort();
             AppendLog(
-                string.Format("Process exited with error code {0}. Session since {1}({2} total)",
+                string.Format("Process exited with error code {0}. Session since {1:HH:mm:ss}({2} total)",
                     _minecraftProcess.ExitCode +
                     (_minecraftProcess.ExitCode == 0
                         ? "(Stable)"
-                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(There could be problems)"),
-                    _minecraftProcess.StartTime.ToString("HH:mm:ss"),
+                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(There could be problems)"), _minecraftProcess.StartTime,
                     Math.Round(_minecraftProcess.StartTime.Subtract(DateTime.Now).TotalMinutes, 2)
                         .ToString(CultureInfo.InvariantCulture)
                         .Replace('-', ' ') + " min."), false);
