@@ -135,7 +135,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox3.RootElement.AngleTransform = 0F;
             this.radGroupBox3.RootElement.FlipText = false;
             this.radGroupBox3.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox3.RootElement.Text = null;
             this.radGroupBox3.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox3.Size = new System.Drawing.Size(330, 75);
             this.radGroupBox3.TabIndex = 7;
@@ -156,9 +155,8 @@ namespace FreeLauncher.Forms
             this.javaExecutableBox.RootElement.AngleTransform = 0F;
             this.javaExecutableBox.RootElement.FlipText = false;
             this.javaExecutableBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.javaExecutableBox.RootElement.Text = null;
             this.javaExecutableBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.javaExecutableBox.Size = new System.Drawing.Size(177, 24);
+            this.javaExecutableBox.Size = new System.Drawing.Size(177, 21);
             this.javaExecutableBox.TabIndex = 7;
             this.javaExecutableBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -175,7 +173,6 @@ namespace FreeLauncher.Forms
             this.JavaExecutableCheckBox.RootElement.AngleTransform = 0F;
             this.JavaExecutableCheckBox.RootElement.FlipText = false;
             this.JavaExecutableCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.JavaExecutableCheckBox.RootElement.Text = null;
             this.JavaExecutableCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.JavaExecutableCheckBox.Size = new System.Drawing.Size(128, 18);
             this.JavaExecutableCheckBox.TabIndex = 6;
@@ -199,9 +196,8 @@ namespace FreeLauncher.Forms
             this.javaArgumentsBox.RootElement.AngleTransform = 0F;
             this.javaArgumentsBox.RootElement.FlipText = false;
             this.javaArgumentsBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.javaArgumentsBox.RootElement.Text = null;
             this.javaArgumentsBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.javaArgumentsBox.Size = new System.Drawing.Size(177, 24);
+            this.javaArgumentsBox.Size = new System.Drawing.Size(177, 21);
             this.javaArgumentsBox.TabIndex = 5;
             this.javaArgumentsBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -218,7 +214,6 @@ namespace FreeLauncher.Forms
             this.JavaArgumentsCheckBox.RootElement.AngleTransform = 0F;
             this.JavaArgumentsCheckBox.RootElement.FlipText = false;
             this.JavaArgumentsCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.JavaArgumentsCheckBox.RootElement.Text = null;
             this.JavaArgumentsCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.JavaArgumentsCheckBox.Size = new System.Drawing.Size(81, 18);
             this.JavaArgumentsCheckBox.TabIndex = 4;
@@ -245,7 +240,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox2.RootElement.AngleTransform = 0F;
             this.radGroupBox2.RootElement.FlipText = false;
             this.radGroupBox2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox2.RootElement.Text = null;
             this.radGroupBox2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox2.Size = new System.Drawing.Size(330, 177);
             this.radGroupBox2.TabIndex = 6;
@@ -295,7 +289,6 @@ namespace FreeLauncher.Forms
             this.snapshotsCheckBox.RootElement.AngleTransform = 0F;
             this.snapshotsCheckBox.RootElement.FlipText = false;
             this.snapshotsCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.snapshotsCheckBox.RootElement.Text = null;
             this.snapshotsCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.snapshotsCheckBox.Size = new System.Drawing.Size(304, 18);
             this.snapshotsCheckBox.TabIndex = 3;
@@ -318,7 +311,6 @@ namespace FreeLauncher.Forms
             this.otherCheckBox.RootElement.AngleTransform = 0F;
             this.otherCheckBox.RootElement.FlipText = false;
             this.otherCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.otherCheckBox.RootElement.Text = null;
             this.otherCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.otherCheckBox.Size = new System.Drawing.Size(301, 18);
             this.otherCheckBox.TabIndex = 7;
@@ -341,7 +333,6 @@ namespace FreeLauncher.Forms
             this.betaCheckBox.RootElement.AngleTransform = 0F;
             this.betaCheckBox.RootElement.FlipText = false;
             this.betaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.betaCheckBox.RootElement.Text = null;
             this.betaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.betaCheckBox.Size = new System.Drawing.Size(261, 18);
             this.betaCheckBox.TabIndex = 4;
@@ -367,7 +358,6 @@ namespace FreeLauncher.Forms
             this.versionsDropDownList.RootElement.AngleTransform = 0F;
             this.versionsDropDownList.RootElement.FlipText = false;
             this.versionsDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.versionsDropDownList.RootElement.Text = null;
             this.versionsDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.versionsDropDownList.Size = new System.Drawing.Size(310, 24);
             this.versionsDropDownList.TabIndex = 6;
@@ -386,7 +376,6 @@ namespace FreeLauncher.Forms
             this.alphaCheckBox.RootElement.AngleTransform = 0F;
             this.alphaCheckBox.RootElement.FlipText = false;
             this.alphaCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.alphaCheckBox.RootElement.Text = null;
             this.alphaCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.alphaCheckBox.Size = new System.Drawing.Size(253, 18);
             this.alphaCheckBox.TabIndex = 5;
@@ -422,7 +411,6 @@ namespace FreeLauncher.Forms
             this.combinedCheckBox.RootElement.AngleTransform = 0F;
             this.combinedCheckBox.RootElement.FlipText = false;
             this.combinedCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.combinedCheckBox.RootElement.Text = null;
             this.combinedCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.combinedCheckBox.Size = new System.Drawing.Size(229, 18);
             this.combinedCheckBox.TabIndex = 13;
@@ -444,7 +432,6 @@ namespace FreeLauncher.Forms
             this.forgeCheckBox.RootElement.AngleTransform = 0F;
             this.forgeCheckBox.RootElement.FlipText = false;
             this.forgeCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.forgeCheckBox.RootElement.Text = null;
             this.forgeCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.forgeCheckBox.Size = new System.Drawing.Size(218, 18);
             this.forgeCheckBox.TabIndex = 10;
@@ -466,7 +453,6 @@ namespace FreeLauncher.Forms
             this.liteCheckBox.RootElement.AngleTransform = 0F;
             this.liteCheckBox.RootElement.FlipText = false;
             this.liteCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.liteCheckBox.RootElement.Text = null;
             this.liteCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.liteCheckBox.Size = new System.Drawing.Size(191, 18);
             this.liteCheckBox.TabIndex = 11;
@@ -488,7 +474,6 @@ namespace FreeLauncher.Forms
             this.optifineCheckBox.RootElement.AngleTransform = 0F;
             this.optifineCheckBox.RootElement.FlipText = false;
             this.optifineCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.optifineCheckBox.RootElement.Text = null;
             this.optifineCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.optifineCheckBox.Size = new System.Drawing.Size(179, 18);
             this.optifineCheckBox.TabIndex = 12;
@@ -513,7 +498,6 @@ namespace FreeLauncher.Forms
             this.modVersionsDropDownList.RootElement.AngleTransform = 0F;
             this.modVersionsDropDownList.RootElement.FlipText = false;
             this.modVersionsDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.modVersionsDropDownList.RootElement.Text = null;
             this.modVersionsDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.modVersionsDropDownList.Size = new System.Drawing.Size(310, 24);
             this.modVersionsDropDownList.TabIndex = 8;
@@ -548,7 +532,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.RootElement.AngleTransform = 0F;
             this.radGroupBox1.RootElement.FlipText = false;
             this.radGroupBox1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox1.RootElement.Text = null;
             this.radGroupBox1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox1.Size = new System.Drawing.Size(330, 156);
             this.radGroupBox1.TabIndex = 5;
@@ -559,7 +542,7 @@ namespace FreeLauncher.Forms
             // 
             this.radButton1.Location = new System.Drawing.Point(280, 72);
             this.radButton1.Name = "radButton1";
-            this.radButton1.Size = new System.Drawing.Size(42, 24);
+            this.radButton1.Size = new System.Drawing.Size(42, 20);
             this.radButton1.TabIndex = 13;
             this.radButton1.Text = "...";
             this.radButton1.ThemeName = "VisualStudio2012Dark";
@@ -579,9 +562,8 @@ namespace FreeLauncher.Forms
             this.portTextBox.RootElement.AngleTransform = 0F;
             this.portTextBox.RootElement.FlipText = false;
             this.portTextBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.portTextBox.RootElement.Text = null;
             this.portTextBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.portTextBox.Size = new System.Drawing.Size(42, 24);
+            this.portTextBox.Size = new System.Drawing.Size(42, 21);
             this.portTextBox.TabIndex = 12;
             this.portTextBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -600,9 +582,8 @@ namespace FreeLauncher.Forms
             this.ipTextBox.RootElement.AngleTransform = 0F;
             this.ipTextBox.RootElement.FlipText = false;
             this.ipTextBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ipTextBox.RootElement.Text = null;
             this.ipTextBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.ipTextBox.Size = new System.Drawing.Size(129, 24);
+            this.ipTextBox.Size = new System.Drawing.Size(129, 21);
             this.ipTextBox.TabIndex = 11;
             this.ipTextBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -619,7 +600,6 @@ namespace FreeLauncher.Forms
             this.FastConnectCheckBox.RootElement.AngleTransform = 0F;
             this.FastConnectCheckBox.RootElement.FlipText = false;
             this.FastConnectCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.FastConnectCheckBox.RootElement.Text = null;
             this.FastConnectCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.FastConnectCheckBox.Size = new System.Drawing.Size(122, 18);
             this.FastConnectCheckBox.TabIndex = 10;
@@ -643,7 +623,6 @@ namespace FreeLauncher.Forms
             this.ActionAfterLaunchLabel.RootElement.AngleTransform = 0F;
             this.ActionAfterLaunchLabel.RootElement.FlipText = false;
             this.ActionAfterLaunchLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ActionAfterLaunchLabel.RootElement.Text = null;
             this.ActionAfterLaunchLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.ActionAfterLaunchLabel.Size = new System.Drawing.Size(134, 18);
             this.ActionAfterLaunchLabel.TabIndex = 9;
@@ -666,7 +645,6 @@ namespace FreeLauncher.Forms
             this.radLabel3.RootElement.AngleTransform = 0F;
             this.radLabel3.RootElement.FlipText = false;
             this.radLabel3.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel3.RootElement.Text = null;
             this.radLabel3.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel3.Size = new System.Drawing.Size(13, 18);
             this.radLabel3.TabIndex = 8;
@@ -688,9 +666,8 @@ namespace FreeLauncher.Forms
             this.yResolutionBox.RootElement.AngleTransform = 0F;
             this.yResolutionBox.RootElement.FlipText = false;
             this.yResolutionBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.yResolutionBox.RootElement.Text = null;
             this.yResolutionBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.yResolutionBox.Size = new System.Drawing.Size(52, 24);
+            this.yResolutionBox.Size = new System.Drawing.Size(52, 21);
             this.yResolutionBox.TabIndex = 7;
             this.yResolutionBox.Text = "480";
             this.yResolutionBox.ThemeName = "VisualStudio2012Dark";
@@ -708,9 +685,8 @@ namespace FreeLauncher.Forms
             this.xResolutionBox.RootElement.AngleTransform = 0F;
             this.xResolutionBox.RootElement.FlipText = false;
             this.xResolutionBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.xResolutionBox.RootElement.Text = null;
             this.xResolutionBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.xResolutionBox.Size = new System.Drawing.Size(52, 24);
+            this.xResolutionBox.Size = new System.Drawing.Size(52, 21);
             this.xResolutionBox.TabIndex = 6;
             this.xResolutionBox.Text = "854";
             this.xResolutionBox.ThemeName = "VisualStudio2012Dark";
@@ -729,7 +705,6 @@ namespace FreeLauncher.Forms
             this.WindowResolutionLabel.RootElement.AngleTransform = 0F;
             this.WindowResolutionLabel.RootElement.FlipText = false;
             this.WindowResolutionLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.WindowResolutionLabel.RootElement.Text = null;
             this.WindowResolutionLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.WindowResolutionLabel.Size = new System.Drawing.Size(85, 18);
             this.WindowResolutionLabel.TabIndex = 5;
@@ -763,7 +738,6 @@ namespace FreeLauncher.Forms
             this.stateBox.RootElement.AngleTransform = 0F;
             this.stateBox.RootElement.FlipText = false;
             this.stateBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.stateBox.RootElement.Text = null;
             this.stateBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.stateBox.Size = new System.Drawing.Size(177, 24);
             this.stateBox.TabIndex = 4;
@@ -783,9 +757,8 @@ namespace FreeLauncher.Forms
             this.gameDirectoryBox.RootElement.AngleTransform = 0F;
             this.gameDirectoryBox.RootElement.FlipText = false;
             this.gameDirectoryBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.gameDirectoryBox.RootElement.Text = null;
             this.gameDirectoryBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.gameDirectoryBox.Size = new System.Drawing.Size(177, 24);
+            this.gameDirectoryBox.Size = new System.Drawing.Size(177, 21);
             this.gameDirectoryBox.TabIndex = 3;
             this.gameDirectoryBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -802,7 +775,6 @@ namespace FreeLauncher.Forms
             this.GameDirectoryCheckBox.RootElement.AngleTransform = 0F;
             this.GameDirectoryCheckBox.RootElement.FlipText = false;
             this.GameDirectoryCheckBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.GameDirectoryCheckBox.RootElement.Text = null;
             this.GameDirectoryCheckBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.GameDirectoryCheckBox.Size = new System.Drawing.Size(133, 18);
             this.GameDirectoryCheckBox.TabIndex = 2;
@@ -826,7 +798,6 @@ namespace FreeLauncher.Forms
             this.ProfileNameLabel.RootElement.AngleTransform = 0F;
             this.ProfileNameLabel.RootElement.FlipText = false;
             this.ProfileNameLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ProfileNameLabel.RootElement.Text = null;
             this.ProfileNameLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.ProfileNameLabel.Size = new System.Drawing.Size(107, 18);
             this.ProfileNameLabel.TabIndex = 1;
@@ -848,9 +819,8 @@ namespace FreeLauncher.Forms
             this.nameBox.RootElement.AngleTransform = 0F;
             this.nameBox.RootElement.FlipText = false;
             this.nameBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.nameBox.RootElement.Text = null;
             this.nameBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.nameBox.Size = new System.Drawing.Size(177, 24);
+            this.nameBox.Size = new System.Drawing.Size(177, 21);
             this.nameBox.TabIndex = 0;
             this.nameBox.ThemeName = "VisualStudio2012Dark";
             // 
@@ -880,7 +850,6 @@ namespace FreeLauncher.Forms
             this.openGameDirectoryButton.RootElement.AngleTransform = 0F;
             this.openGameDirectoryButton.RootElement.FlipText = false;
             this.openGameDirectoryButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.openGameDirectoryButton.RootElement.Text = null;
             this.openGameDirectoryButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.openGameDirectoryButton.Size = new System.Drawing.Size(111, 34);
             this.openGameDirectoryButton.TabIndex = 10;
@@ -904,7 +873,6 @@ namespace FreeLauncher.Forms
             this.saveProfileButton.RootElement.AngleTransform = 0F;
             this.saveProfileButton.RootElement.FlipText = false;
             this.saveProfileButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.saveProfileButton.RootElement.Text = null;
             this.saveProfileButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.saveProfileButton.Size = new System.Drawing.Size(117, 34);
             this.saveProfileButton.TabIndex = 9;

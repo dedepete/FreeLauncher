@@ -274,7 +274,7 @@ namespace FreeLauncher.Forms
             // 
             this.logBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.logBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.logBox.Location = new System.Drawing.Point(0, 0);
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
@@ -403,7 +403,6 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
-            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -629,7 +628,6 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
-            this.LicensesPage.ItemSize = new System.Drawing.SizeF(279F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -662,7 +660,6 @@ namespace FreeLauncher.Forms
             // 
             this.FreeLauncherLicense.AutoScroll = true;
             this.FreeLauncherLicense.Controls.Add(this.FreeLauncherLicenseText);
-            this.FreeLauncherLicense.ItemSize = new System.Drawing.SizeF(94F, 26F);
             this.FreeLauncherLicense.Location = new System.Drawing.Point(155, 4);
             this.FreeLauncherLicense.Name = "FreeLauncherLicense";
             this.FreeLauncherLicense.Size = new System.Drawing.Size(679, 285);
@@ -673,7 +670,7 @@ namespace FreeLauncher.Forms
             this.FreeLauncherLicenseText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FreeLauncherLicenseText.Location = new System.Drawing.Point(0, 0);
             this.FreeLauncherLicenseText.Name = "FreeLauncherLicenseText";
-            this.FreeLauncherLicenseText.Size = new System.Drawing.Size(477, 324);
+            this.FreeLauncherLicenseText.Size = new System.Drawing.Size(679, 285);
             this.FreeLauncherLicenseText.TabIndex = 2;
             this.FreeLauncherLicenseText.Text = resources.GetString("FreeLauncherLicenseText.Text");
             this.FreeLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
@@ -684,7 +681,6 @@ namespace FreeLauncher.Forms
             // 
             this.dotMCLauncherLicense.AutoScroll = true;
             this.dotMCLauncherLicense.Controls.Add(this.dotMCLauncherLicenseText);
-            this.dotMCLauncherLicense.ItemSize = new System.Drawing.SizeF(94F, 26F);
             this.dotMCLauncherLicense.Location = new System.Drawing.Point(155, 4);
             this.dotMCLauncherLicense.Name = "dotMCLauncherLicense";
             this.dotMCLauncherLicense.Size = new System.Drawing.Size(679, 285);
@@ -695,7 +691,7 @@ namespace FreeLauncher.Forms
             this.dotMCLauncherLicenseText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dotMCLauncherLicenseText.Location = new System.Drawing.Point(0, 0);
             this.dotMCLauncherLicenseText.Name = "dotMCLauncherLicenseText";
-            this.dotMCLauncherLicenseText.Size = new System.Drawing.Size(477, 324);
+            this.dotMCLauncherLicenseText.Size = new System.Drawing.Size(679, 285);
             this.dotMCLauncherLicenseText.TabIndex = 1;
             this.dotMCLauncherLicenseText.Text = resources.GetString("dotMCLauncherLicenseText.Text");
             this.dotMCLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
@@ -705,7 +701,6 @@ namespace FreeLauncher.Forms
             // SettingsPage
             // 
             this.SettingsPage.Controls.Add(this.radScrollablePanel1);
-            this.SettingsPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.SettingsPage.Location = new System.Drawing.Point(5, 5);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Size = new System.Drawing.Size(838, 293);

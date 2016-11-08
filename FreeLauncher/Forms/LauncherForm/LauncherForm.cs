@@ -107,14 +107,15 @@ namespace FreeLauncher.Forms
 
             Text = ProductName + " " + ProductVersion;
             AboutVersion.Text = ProductVersion;
-            AppendLog($"Application: {ProductName} v.{ProductVersion}");
-            AppendLog($"Application language: {_applicationContext.ProgramLocalization.Name}({_applicationContext.ProgramLocalization.LanguageTag})");
-            AppendLog("==============");
+            AppendLog($"Application: {ProductName}");
+            AppendLog($"Version: {ProductVersion}");
+            AppendLog($"Loaded language: {_applicationContext.ProgramLocalization.Name}({_applicationContext.ProgramLocalization.LanguageTag})");
+            AppendLog($"{new string('=', 12)}");
             AppendLog("System info:");
-            AppendLog($"Operating system: {Environment.OSVersion}({new ComputerInfo().OSFullName})");
-            AppendLog($"Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
-            AppendLog($"Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
-            AppendLog("==============");
+            AppendLog($"{new string(' ', 2)}Operating system: {Environment.OSVersion}({new ComputerInfo().OSFullName})");
+            AppendLog($"{new string(' ', 2)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
+            AppendLog($"{new string(' ', 2)}Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
+            AppendLog($"{new string('=', 12)}");
 
             if (_applicationContext.LocalizationsList.Count != 0) {
                 foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
@@ -611,14 +612,12 @@ namespace FreeLauncher.Forms
 
         private void CheckVersionAvailability()
         {
-            long state = 0;
             string filename,
                 version = _versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile));
             WebClient downloader = new WebClient();
             downloader.DownloadProgressChanged += (sender, e) => {
                 StatusBarValue = e.ProgressPercentage;
             };
-            downloader.DownloadFileCompleted += delegate { state++; };
             StatusBarVisible = true;
             StatusBarMaxValue = 100;
             StatusBarValue = 0;
@@ -631,28 +630,21 @@ namespace FreeLauncher.Forms
             if (!File.Exists(path + "/" + version + ".json") || _restoreVersion) {
                 filename = version + ".json";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
-                downloader.DownloadFileAsync(new Uri(string.Format(
+                downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
-                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version));
-            } else {
-                state++;
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version)).Wait();
             }
-            StatusBarValue++;
             StatusBarValue = 0;
-            while (state != 1) ;
             Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions + version), false);
             if ((!File.Exists(path + "/" + version + ".jar") || _restoreVersion) &&
                 selectedVersion.InheritsFrom == null) {
                 filename = version + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
-                downloader.DownloadFileAsync(new Uri(string.Format(
+                downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version));
-            } else {
-                state++;
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
             }
-            while (state != 2) ;
             if (selectedVersion.InheritsFrom == null) {
                 AppendLog("Finished checking version avalability.");
                 return;
@@ -664,23 +656,17 @@ namespace FreeLauncher.Forms
             if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".jar";
                 UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
-                downloader.DownloadFileAsync(new Uri(string.Format(
+                downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom));
-            } else {
-                state++;
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
             }
-            while (state != 3) ;
             if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".json";
                 UpdateStatusBarAndLog("Downloading " + filename + "...");
-                downloader.DownloadFileAsync(new Uri(string.Format(
+                downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom));
-            } else {
-                state++;
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
             }
-            while (state != 4) ;
             AppendLog("Finished checking version avalability.");
         }
 

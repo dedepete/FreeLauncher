@@ -10,6 +10,8 @@ namespace FreeLauncher
 
         public static string JavaInstallationPath => GetJavaInstallationPath();
 
+        private static bool _isNotWow6432Installation;
+
         public static string JavaBitInstallation
         {
             get {
@@ -26,8 +28,6 @@ namespace FreeLauncher
                 return "null";
             }
         }
-
-        private static bool _isNotWow6432Installation;
 
         private static string GetJavaInstallationPath()
         {
