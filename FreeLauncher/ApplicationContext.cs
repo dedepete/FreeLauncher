@@ -23,13 +23,10 @@ namespace FreeLauncher
         public string McVersions { get; private set; }
         public string McLibs { get; private set; }
 
-        public string Libraries { get; set; }
-
         public Configuration Configuration { get; private set; }
 
         public ApplicationContext(string[] args)
         {
-            Libraries = string.Empty;
             ProgramArguments = new Arguments();
             ProgramLocalization = new Localization();
             LocalizationsList = new Dictionary<string, Localization>();

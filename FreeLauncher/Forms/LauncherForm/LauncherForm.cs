@@ -37,6 +37,8 @@ namespace FreeLauncher.Forms
         private string _versionToLaunch;
         private bool _restoreVersion;
 
+        public int LinuxTimeStamp => (int) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
         private int StatusBarValue
         {
             get { return StatusBar.Value1; }
@@ -209,8 +211,7 @@ namespace FreeLauncher.Forms
         private void AddProfile_Click(object sender, EventArgs e)
         {
             Profile editedProfile = Profile.ParseProfile(_selectedProfile.ToString());
-            editedProfile.ProfileName = "Copy of '" + _selectedProfile.ProfileName + "'(" +
-                                        DateTime.Now.ToString("HH:mm:ss") + ")";
+            editedProfile.ProfileName = $"Copy of '{_selectedProfile.ProfileName}'({LinuxTimeStamp})";
             ProfileForm pf = new ProfileForm(editedProfile, _applicationContext) {Text = _applicationContext.ProgramLocalization.AddingProfileTitle};
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
@@ -253,7 +254,7 @@ namespace FreeLauncher.Forms
         {
             BlockControls = true;
             if (string.IsNullOrWhiteSpace(NicknameDropDownList.Text)) {
-                NicknameDropDownList.Text = $"Player{DateTime.Now:hhmmss}";
+                NicknameDropDownList.Text = $"Player{LinuxTimeStamp}";
             }
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
@@ -261,8 +262,9 @@ namespace FreeLauncher.Forms
                 UpdateVersionListView();
             };
             bgw.RunWorkerCompleted += delegate {
+                string libraries = string.Empty;
                 BackgroundWorker bgw1 = new BackgroundWorker();
-                bgw1.DoWork += delegate { CheckLibraries(); };
+                bgw1.DoWork += delegate { libraries = GetLibraries(); };
                 bgw1.RunWorkerCompleted += delegate {
                     BackgroundWorker bgw2 = new BackgroundWorker();
                     bgw2.DoWork += delegate { CheckGameResources(); };
@@ -333,7 +335,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(_applicationContext.Libraries.Contains(' ') ? "\"" + _applicationContext.Libraries + "\"" : _applicationContext.Libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, { "version_type", selectedVersion.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, { "version_type", selectedVersion.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         AppendLog($"Version {selectedVersion.VersionId} successfuly launched.");
@@ -670,9 +672,10 @@ namespace FreeLauncher.Forms
             AppendLog("Finished checking version avalability.");
         }
 
-        private void CheckLibraries()
+        private string GetLibraries()
         {
             string libraries = string.Empty;
+            DownloadsData.OperatingSystems os = DownloadsData.OperatingSystems.WINDOWS;
             Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
@@ -687,19 +690,26 @@ namespace FreeLauncher.Forms
                     selectedVersion
                         .Libs.Where(a => a.IsForWindows())) {
                 StatusBarValue++;
-                if (!File.Exists(_applicationContext.McLibs + lib.ToPath()) || _restoreVersion) {
+                if (!File.Exists(_applicationContext.McLibs + lib.GetPath(os)) ||
+                    _restoreVersion) {
                     UpdateStatusBarAndLog("Downloading " + lib.Name + "...");
-                    AppendDebug("Url: " + (lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath());
-                    string directory = Path.GetDirectoryName(_applicationContext.McLibs + lib.ToPath());
+                    AppendDebug("Url: " +
+                                (lib.DownloadsData?.GetUrl(os) ??
+                                 @"https://libraries.minecraft.net/") +
+                                lib.GetPath(os));
+                    string directory =
+                        Path.GetDirectoryName(_applicationContext.McLibs +
+                                              lib.GetPath(os));
                     if (!File.Exists(directory)) {
                         Directory.CreateDirectory(directory);
                     }
-                    new WebClient().DownloadFile((lib.Url ?? @"https://libraries.minecraft.net/") + lib.ToPath(),
-                        _applicationContext.McLibs + lib.ToPath());
+                    new WebClient().DownloadFile(
+                        (lib.DownloadsData?.GetUrl(os) ?? @"https://libraries.minecraft.net/") + lib.GetPath(os),
+                        _applicationContext.McLibs + lib.GetPath(os));
                 }
                 if (lib.IsNative != null) {
                     UpdateStatusBarAndLog("Unpacking " + lib.Name + "...");
-                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.ToPath())) {
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(DownloadsData.OperatingSystems.WINDOWS))) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
@@ -712,15 +722,15 @@ namespace FreeLauncher.Forms
                         }
                     }
                 } else {
-                    libraries += _applicationContext.McLibs + lib.ToPath() + ";";
+                    libraries += _applicationContext.McLibs + lib.GetPath() + ";";
                 }
                 UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
             libraries += string.Format("{0}{1}\\{1}.jar", _applicationContext.McVersions,
                 selectedVersion.InheritsFrom ??
                 (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
-            _applicationContext.Libraries = libraries;
             AppendLog("Finished checking libraries.");
+            return libraries;
         }
 
         private void CheckGameResources()

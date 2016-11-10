@@ -135,7 +135,7 @@ namespace FreeLauncher.Forms
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
                 CurrentProfile.FastConnectionSettigs = new ConnectionSettings() {
                     ServerIP = ipTextBox.Text,
-                    ServerPort = Convert.ToInt32((portTextBox.Text != string.Empty
+                    ServerPort = Convert.ToUInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text
                         : "25565"))
                 };
