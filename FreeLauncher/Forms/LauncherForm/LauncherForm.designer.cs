@@ -77,7 +77,6 @@ namespace FreeLauncher.Forms
             this.radScrollablePanel1 = new Telerik.WinControls.UI.RadScrollablePanel();
             this.radGroupBox2 = new Telerik.WinControls.UI.RadGroupBox();
             this.CloseGameOutput = new Telerik.WinControls.UI.RadCheckBox();
-            this.UseGamePrefix = new Telerik.WinControls.UI.RadCheckBox();
             this.EnableMinecraftLogging = new Telerik.WinControls.UI.RadCheckBox();
             this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
             this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
@@ -134,7 +133,6 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).BeginInit();
             this.radGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseGameOutput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UseGamePrefix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftLogging)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
             this.radGroupBox1.SuspendLayout();
@@ -735,7 +733,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox2.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
             this.radGroupBox2.BackColor = System.Drawing.Color.Transparent;
             this.radGroupBox2.Controls.Add(this.CloseGameOutput);
-            this.radGroupBox2.Controls.Add(this.UseGamePrefix);
             this.radGroupBox2.Controls.Add(this.EnableMinecraftLogging);
             this.radGroupBox2.HeaderText = "Логирование";
             this.radGroupBox2.Location = new System.Drawing.Point(402, 18);
@@ -769,25 +766,6 @@ namespace FreeLauncher.Forms
             this.CloseGameOutput.TabIndex = 2;
             this.CloseGameOutput.Text = "Закрывать вкладку, если завершение прошло без ошибок";
             this.CloseGameOutput.ThemeName = "VisualStudio2012Dark";
-            // 
-            // UseGamePrefix
-            // 
-            this.UseGamePrefix.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseGamePrefix.Location = new System.Drawing.Point(5, 45);
-            this.UseGamePrefix.Name = "UseGamePrefix";
-            // 
-            // 
-            // 
-            this.UseGamePrefix.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.UseGamePrefix.RootElement.AngleTransform = 0F;
-            this.UseGamePrefix.RootElement.FlipText = false;
-            this.UseGamePrefix.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.UseGamePrefix.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.UseGamePrefix.Size = new System.Drawing.Size(288, 18);
-            this.UseGamePrefix.TabIndex = 1;
-            this.UseGamePrefix.Text = "Использовать префикс [GAME] для логов Minecraft";
-            this.UseGamePrefix.ThemeName = "VisualStudio2012Dark";
-            this.UseGamePrefix.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
             // 
             // EnableMinecraftLogging
             // 
@@ -1169,7 +1147,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox2.ResumeLayout(false);
             this.radGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseGameOutput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UseGamePrefix)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftLogging)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
             this.radGroupBox1.ResumeLayout(false);
@@ -1228,7 +1205,6 @@ namespace FreeLauncher.Forms
         private RadPageViewPage SettingsPage;
         private RadScrollablePanel radScrollablePanel1;
         private RadGroupBox radGroupBox2;
-        public RadCheckBox UseGamePrefix;
         public RadCheckBox EnableMinecraftLogging;
         private RadGroupBox radGroupBox1;
         public RadLabel radLabel4;

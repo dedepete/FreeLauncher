@@ -103,7 +103,6 @@ namespace FreeLauncher.Forms
 
             _cfg = _applicationContext.Configuration;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
-            UseGamePrefix.Checked = _cfg.ShowGamePrefix;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
 
@@ -112,12 +111,12 @@ namespace FreeLauncher.Forms
             AppendLog($"Application: {ProductName}");
             AppendLog($"Version: {ProductVersion}");
             AppendLog($"Loaded language: {_applicationContext.ProgramLocalization.Name}({_applicationContext.ProgramLocalization.LanguageTag})");
-            AppendLog($"{new string('=', 12)}");
+            AppendLog(new string('=', 12));
             AppendLog("System info:");
             AppendLog($"{new string(' ', 2)}Operating system: {Environment.OSVersion}({new ComputerInfo().OSFullName})");
             AppendLog($"{new string(' ', 2)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"{new string(' ', 2)}Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
-            AppendLog($"{new string('=', 12)}");
+            AppendLog(new string('=', 12));
 
             if (_applicationContext.LocalizationsList.Count != 0) {
                 foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
@@ -153,7 +152,6 @@ namespace FreeLauncher.Forms
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _cfg.EnableGameLogging = EnableMinecraftLogging.Checked;
-            _cfg.ShowGamePrefix = UseGamePrefix.Checked;
             _cfg.CloseTabAfterSuccessfulExitCode = CloseGameOutput.Checked;
         }
 
@@ -258,7 +256,7 @@ namespace FreeLauncher.Forms
             }
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
-                CheckVersionAvailability();
+                GetVersion();
                 UpdateVersionListView();
             };
             bgw.RunWorkerCompleted += delegate {
@@ -267,7 +265,7 @@ namespace FreeLauncher.Forms
                 bgw1.DoWork += delegate { libraries = GetLibraries(); };
                 bgw1.RunWorkerCompleted += delegate {
                     BackgroundWorker bgw2 = new BackgroundWorker();
-                    bgw2.DoWork += delegate { CheckGameResources(); };
+                    bgw2.DoWork += delegate { GetAssets(); };
                     bgw2.RunWorkerCompleted += delegate {
                         if (!_userManager.Accounts.ContainsKey(NicknameDropDownList.Text)) {
                             User user = new User {
@@ -297,7 +295,7 @@ namespace FreeLauncher.Forms
                                 } else {
                                     Refresh refresh = new Refresh(_selectedUser.SessionToken,
                                         _selectedUser.AccessToken);
-                                    _selectedUser.UserProperties = (JArray) refresh.user["properties"];
+                                    _selectedUser.UserProperties = (JArray) refresh.user?["properties"];
                                     _selectedUser.SessionToken = refresh.accessToken;
                                     _userManager.Accounts[NicknameDropDownList.Text] = _selectedUser;
                                 }
@@ -612,7 +610,7 @@ namespace FreeLauncher.Forms
                     new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
         }
 
-        private void CheckVersionAvailability()
+        private void GetVersion()
         {
             string filename,
                 version = _versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile));
@@ -704,7 +702,7 @@ namespace FreeLauncher.Forms
                         Directory.CreateDirectory(directory);
                     }
                     new WebClient().DownloadFile(
-                        (lib.DownloadsData?.GetUrl(os) ?? @"https://libraries.minecraft.net/") + lib.GetPath(os),
+                        lib.DownloadsData?.GetUrl(os) ?? @"https://libraries.minecraft.net/" + lib.GetPath(os),
                         _applicationContext.McLibs + lib.GetPath(os));
                 }
                 if (lib.IsNative != null) {
@@ -733,7 +731,7 @@ namespace FreeLauncher.Forms
             return libraries;
         }
 
-        private void CheckGameResources()
+        private void GetAssets()
         {
             UpdateStatusBarAndLog("Checking game assets...");
             Version selectedVersion = Version.ParseVersion(
@@ -884,7 +882,6 @@ namespace FreeLauncher.Forms
 
             EnableMinecraftUpdateAlerts.Text = _applicationContext.ProgramLocalization.EnableMinecraftUpdateAlertsText;
             EnableMinecraftLogging.Text = _applicationContext.ProgramLocalization.EnableMinecraftLoggingText;
-            UseGamePrefix.Text = _applicationContext.ProgramLocalization.UseGamePrefixText;
             CloseGameOutput.Text = _applicationContext.ProgramLocalization.CloseGameOutputText;
         }
 
@@ -986,10 +983,14 @@ namespace FreeLauncher.Forms
         {
             if (_profile.LauncherVisibilityOnGameClose != Profile.LauncherVisibility.CLOSED) {
                 if (_launcherForm.EnableMinecraftLogging.Checked) {
-                    _outputReader = new Thread(o_reader);
+                    _outputReader = new Thread(Reader) {
+                        Name = "OUTPUT"
+                    };
                     _outputReader.Start();
                 }
-                _errorReader = new Thread(e_reader);
+                _errorReader = new Thread(Reader) {
+                    Name = "ERROR"
+                };
                 _errorReader.Start();
                 object[] obj = _launcherForm.AddNewPage();
                 _gameLoggingBox = (RichTextBox) obj[0];
@@ -1047,10 +1048,7 @@ namespace FreeLauncher.Forms
                 _gameLoggingBox.Invoke(new Action<string, bool>(AppendLog), text, iserror);
             } else {
                 Color color = iserror ? Color.Red : Color.DarkSlateGray;
-                string line = (_launcherForm.UseGamePrefix.ToggleState ==
-                               ToggleState.On
-                    ? "[GAME]"
-                    : string.Empty) + text + "\n";
+                string line = text + "\n";
                 int start = _gameLoggingBox.TextLength;
                 _gameLoggingBox.AppendText(line);
                 int end = _gameLoggingBox.TextLength;
@@ -1061,34 +1059,18 @@ namespace FreeLauncher.Forms
             }
         }
 
-        private void o_reader()
+        private void Reader()
         {
             while (true) {
                 while (IsRunning(_minecraftProcess)) {
-                    string line = _minecraftProcess.StandardOutput.ReadLine();
+                    string line =
+                    (Thread.CurrentThread.Name == "ERROR"
+                        ? _minecraftProcess.StandardError
+                        : _minecraftProcess.StandardOutput).ReadLine();
                     if (string.IsNullOrEmpty(line)) {
                         continue;
                     }
-                    AppendLog(line, false);
-                }
-                if (_gameLoggingBox == null || !_gameLoggingBox.IsDisposed) {
-                    continue;
-                }
-                _minecraftProcess.EnableRaisingEvents = false;
-                _outputReader.Abort();
-                _errorReader.Abort();
-            }
-        }
-
-        private void e_reader()
-        {
-            while (true) {
-                while (IsRunning(_minecraftProcess)) {
-                    string line = _minecraftProcess.StandardError.ReadLine();
-                    if (string.IsNullOrEmpty(line)) {
-                        continue;
-                    }
-                    AppendLog(line, true);
+                    AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "ERROR");
                 }
                 if (_gameLoggingBox == null || !_gameLoggingBox.IsDisposed) {
                     continue;

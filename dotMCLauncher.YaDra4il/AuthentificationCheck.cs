@@ -3,10 +3,10 @@
     public class AuthentificationCheck : Request
     {
         public bool valid;
-        public AuthentificationCheck(string session)
+        public AuthentificationCheck(string accessToken)
         {
             Url = Urls.Validate;
-            ToPost = "{\"accessToken\":\"" + session + "\"}";
+            ToPost = "{\"accessToken\":\"" + accessToken + "\"}";
         }
         public override Request DoPost()
         {
