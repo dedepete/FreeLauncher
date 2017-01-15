@@ -81,8 +81,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
             this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
             this.LangDropDownList = new Telerik.WinControls.UI.RadDropDownList();
-            this.EnableMinecraftUpdateAlerts = new Telerik.WinControls.UI.RadCheckBox();
-            this.radCheckBox1 = new Telerik.WinControls.UI.RadCheckBox();
+            this.DownloadAssets = new Telerik.WinControls.UI.RadCheckBox();
             this.StatusBar = new Telerik.WinControls.UI.RadProgressBar();
             this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
             this.DeleteProfileButton = new Telerik.WinControls.UI.RadButton();
@@ -138,8 +137,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftUpdateAlerts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radCheckBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssets)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
             this.radPanel1.SuspendLayout();
@@ -401,6 +399,7 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
+            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -626,6 +625,7 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
+            this.LicensesPage.ItemSize = new System.Drawing.SizeF(279F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -699,6 +699,7 @@ namespace FreeLauncher.Forms
             // SettingsPage
             // 
             this.SettingsPage.Controls.Add(this.radScrollablePanel1);
+            this.SettingsPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.SettingsPage.Location = new System.Drawing.Point(5, 5);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Size = new System.Drawing.Size(838, 293);
@@ -752,7 +753,7 @@ namespace FreeLauncher.Forms
             // 
             // CloseGameOutput
             // 
-            this.CloseGameOutput.Location = new System.Drawing.Point(5, 69);
+            this.CloseGameOutput.Location = new System.Drawing.Point(5, 45);
             this.CloseGameOutput.Name = "CloseGameOutput";
             // 
             // 
@@ -792,8 +793,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.BackColor = System.Drawing.Color.Transparent;
             this.radGroupBox1.Controls.Add(this.radLabel4);
             this.radGroupBox1.Controls.Add(this.LangDropDownList);
-            this.radGroupBox1.Controls.Add(this.EnableMinecraftUpdateAlerts);
-            this.radGroupBox1.Controls.Add(this.radCheckBox1);
+            this.radGroupBox1.Controls.Add(this.DownloadAssets);
             this.radGroupBox1.HeaderText = "Основные";
             this.radGroupBox1.Location = new System.Drawing.Point(17, 18);
             this.radGroupBox1.Name = "radGroupBox1";
@@ -812,7 +812,7 @@ namespace FreeLauncher.Forms
             // 
             // radLabel4
             // 
-            this.radLabel4.Location = new System.Drawing.Point(5, 69);
+            this.radLabel4.Location = new System.Drawing.Point(5, 21);
             this.radLabel4.Name = "radLabel4";
             // 
             // 
@@ -837,7 +837,7 @@ namespace FreeLauncher.Forms
             radListDataItem1.Tag = "ru-RU";
             radListDataItem1.Text = "Русский (ru-default)";
             this.LangDropDownList.Items.Add(radListDataItem1);
-            this.LangDropDownList.Location = new System.Drawing.Point(150, 69);
+            this.LangDropDownList.Location = new System.Drawing.Point(150, 21);
             this.LangDropDownList.Name = "LangDropDownList";
             // 
             // 
@@ -853,43 +853,22 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.ThemeName = "VisualStudio2012Dark";
             this.LangDropDownList.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.LangDropDownList_SelectedIndexChanged);
             // 
-            // EnableMinecraftUpdateAlerts
+            // DownloadAssets
             // 
-            this.EnableMinecraftUpdateAlerts.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.EnableMinecraftUpdateAlerts.Enabled = false;
-            this.EnableMinecraftUpdateAlerts.Location = new System.Drawing.Point(5, 45);
-            this.EnableMinecraftUpdateAlerts.Name = "EnableMinecraftUpdateAlerts";
+            this.DownloadAssets.Location = new System.Drawing.Point(5, 45);
+            this.DownloadAssets.Name = "DownloadAssets";
             // 
             // 
             // 
-            this.EnableMinecraftUpdateAlerts.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.EnableMinecraftUpdateAlerts.RootElement.AngleTransform = 0F;
-            this.EnableMinecraftUpdateAlerts.RootElement.FlipText = false;
-            this.EnableMinecraftUpdateAlerts.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EnableMinecraftUpdateAlerts.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.EnableMinecraftUpdateAlerts.Size = new System.Drawing.Size(340, 18);
-            this.EnableMinecraftUpdateAlerts.TabIndex = 2;
-            this.EnableMinecraftUpdateAlerts.Text = "Показывать уведомления о наличии новых версий Minecraft";
-            this.EnableMinecraftUpdateAlerts.ThemeName = "VisualStudio2012Dark";
-            this.EnableMinecraftUpdateAlerts.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
-            // 
-            // radCheckBox1
-            // 
-            this.radCheckBox1.Enabled = false;
-            this.radCheckBox1.Location = new System.Drawing.Point(5, 21);
-            this.radCheckBox1.Name = "radCheckBox1";
-            // 
-            // 
-            // 
-            this.radCheckBox1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radCheckBox1.RootElement.AngleTransform = 0F;
-            this.radCheckBox1.RootElement.FlipText = false;
-            this.radCheckBox1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radCheckBox1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radCheckBox1.Size = new System.Drawing.Size(257, 18);
-            this.radCheckBox1.TabIndex = 0;
-            this.radCheckBox1.Text = "Проверять наличие обновлений программы";
-            this.radCheckBox1.ThemeName = "VisualStudio2012Dark";
+            this.DownloadAssets.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
+            this.DownloadAssets.RootElement.AngleTransform = 0F;
+            this.DownloadAssets.RootElement.FlipText = false;
+            this.DownloadAssets.RootElement.Margin = new System.Windows.Forms.Padding(0);
+            this.DownloadAssets.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
+            this.DownloadAssets.Size = new System.Drawing.Size(181, 18);
+            this.DownloadAssets.TabIndex = 0;
+            this.DownloadAssets.Text = "Пропускать загрузку ресурсов";
+            this.DownloadAssets.ThemeName = "VisualStudio2012Dark";
             // 
             // StatusBar
             // 
@@ -1153,8 +1132,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftUpdateAlerts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radCheckBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssets)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
             this.radPanel1.ResumeLayout(false);
@@ -1209,8 +1187,7 @@ namespace FreeLauncher.Forms
         private RadGroupBox radGroupBox1;
         public RadLabel radLabel4;
         private RadDropDownList LangDropDownList;
-        public RadCheckBox EnableMinecraftUpdateAlerts;
-        public RadCheckBox radCheckBox1;
+        public RadCheckBox DownloadAssets;
         private RadPanel radPanel1;
         private RadButton ManageUsersButton;
         public RadDropDownList NicknameDropDownList;

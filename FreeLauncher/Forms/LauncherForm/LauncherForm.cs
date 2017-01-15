@@ -19,6 +19,7 @@ using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 using Telerik.WinControls.UI.Data;
+using OperatingSystem = dotMCLauncher.Core.OperatingSystem;
 using Version = dotMCLauncher.Core.Version;
 
 namespace FreeLauncher.Forms
@@ -101,6 +102,7 @@ namespace FreeLauncher.Forms
             InitializeComponent();
 
             _cfg = _applicationContext.Configuration;
+            DownloadAssets.Checked = _cfg.SkipAssetsDownload;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
@@ -150,6 +152,7 @@ namespace FreeLauncher.Forms
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _cfg.SkipAssetsDownload = DownloadAssets.Checked;
             _cfg.EnableGameLogging = EnableMinecraftLogging.Checked;
             _cfg.CloseTabAfterSuccessfulExitCode = CloseGameOutput.Checked;
         }
@@ -264,7 +267,14 @@ namespace FreeLauncher.Forms
                 bgw1.DoWork += delegate { libraries = GetLibraries(); };
                 bgw1.RunWorkerCompleted += delegate {
                     BackgroundWorker bgw2 = new BackgroundWorker();
-                    bgw2.DoWork += delegate { GetAssets(); };
+                    bgw2.DoWork += delegate {
+                        if (!DownloadAssets.Checked) {
+                            GetAssets();
+                        } else {
+                            AppendLog("Assets download skipped.");
+                        }
+                        StatusBarVisible = false;
+                    };
                     bgw2.RunWorkerCompleted += delegate {
                         if (!_userManager.Accounts.ContainsKey(NicknameDropDownList.Text)) {
                             User user = new User {
@@ -519,14 +529,14 @@ namespace FreeLauncher.Forms
             JObject ver = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
             string localSnapshotVersion = ver["latest"]["snapshot"].ToString(),
                 localReleaseVersion = ver["latest"]["release"].ToString();
-            AppendLog("Local versions: " + ((JArray) jb["versions"]).Count + ". Remote versions: " +
-                      ((JArray) ver["versions"]).Count);
+            AppendLog($"Local versions: {((JArray) jb["versions"]).Count}. "
+                + $"Remote versions: {((JArray) ver["versions"]).Count}");
             if (((JArray) jb["versions"]).Count == ((JArray) ver["versions"]).Count &&
                 remoteReleaseVersion == localReleaseVersion && remoteSnapshotVersion == localSnapshotVersion) {
                 AppendLog("No update found.");
                 return;
             }
-            AppendLog("Writting new list... ");
+            AppendLog("Writting new list...");
             File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
         }
 
@@ -542,11 +552,10 @@ namespace FreeLauncher.Forms
                 }
             }
             catch (Exception ex) {
-                AppendException("Reading profile list: an exception has occurred\n" + ex.Message +
-                                "\nCreating a new one.");
+                AppendException($"Reading profile list: an exception has occurred\n{ex.Message}\nCreating a new one.");
                 if (File.Exists(_applicationContext.McDirectory +
                                 "/launcher_profiles.json")) {
-                    string fileName = "launcher_profiles-" + DateTime.Now.ToString("hhmmss") + ".bak.json";
+                    string fileName = $"launcher_profiles-{LinuxTimeStamp}.bak.json";
                     AppendLog("A copy of old profile list has been created: " + fileName);
                     File.Move(_applicationContext.McDirectory +
                               "/launcher_profiles.json", _applicationContext.McDirectory +
@@ -621,14 +630,14 @@ namespace FreeLauncher.Forms
             StatusBarMaxValue = 100;
             StatusBarValue = 0;
             UpdateStatusBarText(string.Format(_applicationContext.ProgramLocalization.CheckingVersionAvailability, version));
-            AppendLog($"Checking '{version}' version availability...");
+            AppendLog($@"Checking ""{version}"" version availability...");
             string path = Path.Combine(_applicationContext.McVersions, version + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
             if (!File.Exists(path + "/" + version + ".json") || _restoreVersion) {
                 filename = version + ".json";
-                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
+                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
                     string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version)).Wait();
@@ -639,7 +648,7 @@ namespace FreeLauncher.Forms
             if ((!File.Exists(path + "/" + version + ".jar") || _restoreVersion) &&
                 selectedVersion.InheritsFrom == null) {
                 filename = version + ".jar";
-                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
+                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
                     string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
@@ -654,14 +663,14 @@ namespace FreeLauncher.Forms
             }
             if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".jar";
-                UpdateStatusBarAndLog("Downloading " + filename + "...", new StackFrame().GetMethod().Name);
+                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
                     string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
             }
             if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
                 filename = selectedVersion.InheritsFrom + ".json";
-                UpdateStatusBarAndLog("Downloading " + filename + "...");
+                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
                     string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
@@ -672,7 +681,7 @@ namespace FreeLauncher.Forms
         private string GetLibraries()
         {
             string libraries = string.Empty;
-            OperatingSystems os = OperatingSystems.WINDOWS;
+            const OperatingSystem os = OperatingSystem.WINDOWS;
             Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
@@ -689,9 +698,9 @@ namespace FreeLauncher.Forms
                 StatusBarValue++;
                 if (!File.Exists(_applicationContext.McLibs + lib.GetPath(os)) ||
                     _restoreVersion) {
-                    UpdateStatusBarAndLog("Downloading " + lib.Name + "...");
+                    UpdateStatusBarAndLog($"Downloading {lib.Name}...");
                     AppendDebug("Url: " +
-                                (lib.DownloadsData?.GetUrl(os) ??
+                                (lib.DownloadInfo?.GetUrl(os) ??
                                  @"https://libraries.minecraft.net/") +
                                 lib.GetPath(os));
                     string directory =
@@ -701,12 +710,12 @@ namespace FreeLauncher.Forms
                         Directory.CreateDirectory(directory);
                     }
                     new WebClient().DownloadFile(
-                        lib.DownloadsData?.GetUrl(os) ?? @"https://libraries.minecraft.net/" + lib.GetPath(os),
+                        lib.DownloadInfo?.GetUrl(os) ?? @"https://libraries.minecraft.net/" + lib.GetPath(os),
                         _applicationContext.McLibs + lib.GetPath(os));
                 }
                 if (lib.IsNative != null) {
-                    UpdateStatusBarAndLog("Unpacking " + lib.Name + "...");
-                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OperatingSystems.WINDOWS))) {
+                    UpdateStatusBarAndLog($"Unpacking {lib.Name}...");
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OperatingSystem.WINDOWS))) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
@@ -765,7 +774,7 @@ namespace FreeLauncher.Forms
                     Directory.CreateDirectory(path);
                 }
                 try {
-                    AppendDebug("Downloading " + resourseFile + "...");
+                    AppendDebug($"Downloading {resourseFile}...");
                     new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
                         _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile);
                 }
@@ -879,7 +888,7 @@ namespace FreeLauncher.Forms
             MCofflineDescLabel.Text = _applicationContext.ProgramLocalization.MCofflineDescription;
             CopyrightInfoLabel.Text = _applicationContext.ProgramLocalization.CopyrightInfo;
 
-            EnableMinecraftUpdateAlerts.Text = _applicationContext.ProgramLocalization.EnableMinecraftUpdateAlertsText;
+            DownloadAssets.Text = _applicationContext.ProgramLocalization.SkipAssetsDownload;
             EnableMinecraftLogging.Text = _applicationContext.ProgramLocalization.EnableMinecraftLoggingText;
             CloseGameOutput.Text = _applicationContext.ProgramLocalization.CloseGameOutputText;
         }
@@ -921,17 +930,17 @@ namespace FreeLauncher.Forms
             }
         }
 
-        private void AppendText(string text, string logLevel = "INFO", string methodName = null)
+        private void AppendText(string text, string logLevel, string methodName)
         {
             if (logBox.InvokeRequired) {
                 logBox.Invoke(new Action<string, string, string>(AppendText), text, logLevel,
-                    new StackFrame(1).GetMethod().Name);
+                    methodName);
             } else {
                 logBox.AppendText(string.Format(
                     (string.IsNullOrEmpty(logBox.Text) ? string.Empty : Environment.NewLine) +
                     "[{0}][{1}][{2}] {3}",
                     DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), logLevel,
-                    methodName ?? new StackFrame(1, false).GetMethod().Name, text));
+                    methodName, text));
             }
         }
 
@@ -1012,14 +1021,11 @@ namespace FreeLauncher.Forms
                 _launcherForm.Invoke((MethodInvoker) (() => _launcherForm.Show()));
             }
             AppendLog(
-                string.Format("Process exited with error code {0}. Session since {1:HH:mm:ss}({2} total)",
+                string.Format("Process exited with error code {0}. Session duration: {1} sec(s).",
                     _minecraftProcess.ExitCode +
                     (_minecraftProcess.ExitCode == 0
                         ? "(Stable)"
-                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(There could be problems)"), _minecraftProcess.StartTime,
-                    Math.Round(_minecraftProcess.StartTime.Subtract(DateTime.Now).TotalMinutes, 2)
-                        .ToString(CultureInfo.InvariantCulture)
-                        .Replace('-', ' ') + " min."), false);
+                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(Crashed)"), _minecraftProcess.TotalProcessorTime.TotalSeconds), false);
             _launcherForm.Invoke((MethodInvoker) delegate {
                 _closePageButton.Enabled = true;
                 if (_launcherForm.CloseGameOutput.Checked &&

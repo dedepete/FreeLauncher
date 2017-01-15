@@ -65,9 +65,9 @@ namespace FreeLauncher.Forms
             } else {
                 gameDirectoryBox.Text = _applicationContext.McDirectory;
             }
-            if (CurrentProfile.WindowSize != null) {
-                xResolutionBox.Text = CurrentProfile.WindowSize.X.ToString();
-                yResolutionBox.Text = CurrentProfile.WindowSize.Y.ToString();
+            if (CurrentProfile.WindowInfo != null) {
+                xResolutionBox.Text = CurrentProfile.WindowInfo.X.ToString();
+                yResolutionBox.Text = CurrentProfile.WindowInfo.Y.ToString();
             }
             if (CurrentProfile.FastConnectionSettigs != null) {
                 FastConnectCheckBox.Checked = true;
@@ -124,16 +124,16 @@ namespace FreeLauncher.Forms
             }
             if ((xResolutionBox.Text != "854" || yResolutionBox.Text != "480") && xResolutionBox.Text != string.Empty &&
                 yResolutionBox.Text != string.Empty) {
-                MinecraftWindowSize winSize = new MinecraftWindowSize {
+                WindowInfo winInfo = new WindowInfo {
                     X = Convert.ToInt32(xResolutionBox.Text),
                     Y = Convert.ToInt32(yResolutionBox.Text)
                 };
-                CurrentProfile.WindowSize = winSize;
+                CurrentProfile.WindowInfo = winInfo;
             } else {
-                CurrentProfile.WindowSize = null;
+                CurrentProfile.WindowInfo = null;
             }
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
-                CurrentProfile.FastConnectionSettigs = new ConnectionSettings() {
+                CurrentProfile.FastConnectionSettigs = new ServerInfo() {
                     ServerIP = ipTextBox.Text,
                     ServerPort = Convert.ToUInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text

@@ -40,9 +40,8 @@
 
         #region Settings Tab
 
-        public string EnableMinecraftUpdateAlertsText = "Показывать уведомления о наличии новых версий Minecraft";
+        public string SkipAssetsDownload = "Пропускать загрузку ресурсов";
         public string EnableMinecraftLoggingText = "Выводить лог игры в консоль";
-        public string UseGamePrefixText = "Использовать префикс [GAME] для логов Minecraft";
         public string CloseGameOutputText = "Закрывать вкладку, если завершение было вызвано\nпринудительно или прошло без ошибок";
 
         #endregion
