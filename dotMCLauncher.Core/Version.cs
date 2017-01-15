@@ -148,8 +148,7 @@ namespace dotMCLauncher.Core
         /// </summary>
         /// <param name="generate">При True генерирует значение из названия библиотеки.</param>
         /// <param name="os">Требуемая операционная система.</param>
-        public string GetPath(bool generate = false,
-            DownloadsData.OperatingSystems os = DownloadsData.OperatingSystems.OTHER)
+        public string GetPath(bool generate = false, OperatingSystems os = OperatingSystems.OTHER)
         {
             string[] s = Name.Split(':');
             return (generate || DownloadsData == null)
@@ -163,7 +162,7 @@ namespace dotMCLauncher.Core
         /// Возвращает путь к библиотеке.
         /// </summary>
         /// <param name="os">Требуемая операционная система.</param>
-        public string GetPath(DownloadsData.OperatingSystems os)
+        public string GetPath(OperatingSystems os)
         {
             return GetPath(false, os);
         }
@@ -180,13 +179,7 @@ namespace dotMCLauncher.Core
         [JsonProperty("classifiers")] public Dictionary<string, DownloadsEntry> Classifiers;
         [JsonProperty("artifact")] public DownloadsEntry Artifact;
 
-        public enum OperatingSystems
-        {
-            WINDOWS,
-            LINUX,
-            MACOS,
-            OTHER
-        }
+        [JsonIgnore] public Lib ParentLib;
 
         public DownloadsEntry GetDownloadsEntry(OperatingSystems os)
         {
@@ -205,7 +198,11 @@ namespace dotMCLauncher.Core
                     dictEntry = "natives-osx";
                     break;
             }
-            return Classifiers.ContainsKey(dictEntry) ? Classifiers[dictEntry] : Artifact;
+            return Classifiers.ContainsKey(dictEntry) 
+                ? Classifiers[dictEntry] 
+                : Classifiers.ContainsKey(dictEntry + (IntPtr.Size == 8 ? "-64" : "-32")) 
+                    ? Classifiers[dictEntry + (IntPtr.Size == 8 ? "-64" : "-32")]
+                    : Artifact;
         }
 
         public string GetPath(OperatingSystems os = OperatingSystems.OTHER) => GetDownloadsEntry(os).Path;
@@ -296,5 +293,13 @@ namespace dotMCLauncher.Core
     {
         public string Version;
         public VersionIsNotExists(string message) : base(message) {}
+    }
+
+    public enum OperatingSystems
+    {
+        WINDOWS,
+        LINUX,
+        MACOS,
+        OTHER
     }
 }

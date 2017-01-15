@@ -17,7 +17,6 @@ using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
-using Telerik.WinControls.Enumerations;
 using Telerik.WinControls.UI;
 using Telerik.WinControls.UI.Data;
 using Version = dotMCLauncher.Core.Version;
@@ -399,7 +398,7 @@ namespace FreeLauncher.Forms
         {
             versionsListView.SelectedItem = e.Item;
             Version ver =
-                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\")), false);
+                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + "\\")), false);
             RadMenuItem launchVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.Launch };
             launchVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
@@ -428,7 +427,7 @@ namespace FreeLauncher.Forms
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
-                Process.Start(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"));
+                Process.Start(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + "\\"));
             };
             RadMenuItem delVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.DeleteVersion};
             delVerButton.Click += delegate {
@@ -438,7 +437,7 @@ namespace FreeLauncher.Forms
                 DialogResult dr =
                     RadMessageBox.Show(
                         string.Format(_applicationContext.ProgramLocalization.DeleteConfirmationText,
-                            versionsListView.SelectedItem[0].ToString()),
+                            versionsListView.SelectedItem[0]),
                         _applicationContext.ProgramLocalization.DeleteConfirmationTitle,
                         MessageBoxButtons.YesNo, RadMessageIcon.Question);
                 if (dr != DialogResult.Yes) {
@@ -446,12 +445,12 @@ namespace FreeLauncher.Forms
                 }
                 try {
                     Directory.Delete(
-                        Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0].ToString() + "\\"), true);
-                    AppendLog($"Version '{versionsListView.SelectedItem[0].ToString()}' has been deleted successfuly.");
+                        Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + "\\"), true);
+                    AppendLog($"Version '{versionsListView.SelectedItem[0]}' has been deleted successfuly.");
                     UpdateVersionListView();
                 }
                 catch (Exception ex) {
-                    AppendException($"An error has occurred during version deletion: {ex.ToString()}");
+                    AppendException($"An error has occurred during version deletion: {ex}");
                 }
                 string path = Path.Combine(_applicationContext.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
@@ -673,7 +672,7 @@ namespace FreeLauncher.Forms
         private string GetLibraries()
         {
             string libraries = string.Empty;
-            DownloadsData.OperatingSystems os = DownloadsData.OperatingSystems.WINDOWS;
+            OperatingSystems os = OperatingSystems.WINDOWS;
             Version selectedVersion = Version.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
@@ -707,7 +706,7 @@ namespace FreeLauncher.Forms
                 }
                 if (lib.IsNative != null) {
                     UpdateStatusBarAndLog("Unpacking " + lib.Name + "...");
-                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(DownloadsData.OperatingSystems.WINDOWS))) {
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OperatingSystems.WINDOWS))) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
@@ -922,28 +921,28 @@ namespace FreeLauncher.Forms
             }
         }
 
-        private void AppendLog(string text, string methodName = null)
+        private void AppendText(string text, string logLevel = "INFO", string methodName = null)
         {
             if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<string, string>(AppendLog), text, new StackFrame(1).GetMethod().Name);
+                logBox.Invoke(new Action<string, string, string>(AppendText), text, logLevel,
+                    new StackFrame(1).GetMethod().Name);
             } else {
                 logBox.AppendText(string.Format(
-                    string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
-                    DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "INFO",
+                    (string.IsNullOrEmpty(logBox.Text) ? string.Empty : Environment.NewLine) +
+                    "[{0}][{1}][{2}] {3}",
+                    DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), logLevel,
                     methodName ?? new StackFrame(1, false).GetMethod().Name, text));
             }
         }
 
+        private void AppendLog(string text, string methodName = null)
+        {
+            AppendText(text, "INFO", methodName ?? new StackFrame(1).GetMethod().Name);
+        }
+
         private void AppendException(string text, string methodName = null)
         {
-            if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<string, string>(AppendException), text, new StackFrame(1).GetMethod().Name);
-            } else {
-                logBox.AppendText(string.Format(
-                    string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
-                    DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "ERR",
-                    methodName ?? new StackFrame(1, false).GetMethod().Name, text));
-            }
+            AppendText(text, "ERR", methodName ?? new StackFrame(1).GetMethod().Name);
         }
 
         private void AppendDebug(string text, string methodName = null)
@@ -951,14 +950,7 @@ namespace FreeLauncher.Forms
             if (!DebugModeButton.IsChecked) {
                 return;
             }
-            if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<string, string>(AppendDebug), text, new StackFrame(1).GetMethod().Name);
-            } else {
-                logBox.AppendText(string.Format(
-                    string.IsNullOrEmpty(logBox.Text) ? "[{0}][{1}][{2}] {3}" : "\n[{0}][{1}][{2}] {3}",
-                    DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), "DEBUG",
-                    methodName ?? new StackFrame(1, false).GetMethod().Name, text));
-            }
+            AppendText(text, "DEBUG", methodName ?? new StackFrame(1).GetMethod().Name);
         }
 
     }
@@ -986,12 +978,10 @@ namespace FreeLauncher.Forms
                     _outputReader = new Thread(Reader) {
                         Name = "OUTPUT"
                     };
-                    _outputReader.Start();
                 }
                 _errorReader = new Thread(Reader) {
                     Name = "ERROR"
                 };
-                _errorReader.Start();
                 object[] obj = _launcherForm.AddNewPage();
                 _gameLoggingBox = (RichTextBox) obj[0];
                 _closePageButton = (RadButton) obj[2];
@@ -1002,6 +992,9 @@ namespace FreeLauncher.Forms
             _minecraftProcess.Start();
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.CLOSED) {
                 _launcherForm.Close();
+            } else {
+                _outputReader.Start();
+                _errorReader.Start();
             }
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Hide();
@@ -1018,8 +1011,6 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Invoke((MethodInvoker) (() => _launcherForm.Show()));
             }
-            _outputReader?.Abort();
-            _errorReader.Abort();
             AppendLog(
                 string.Format("Process exited with error code {0}. Session since {1:HH:mm:ss}({2} total)",
                     _minecraftProcess.ExitCode +
@@ -1061,35 +1052,16 @@ namespace FreeLauncher.Forms
 
         private void Reader()
         {
-            while (true) {
-                while (IsRunning(_minecraftProcess)) {
-                    string line =
-                    (Thread.CurrentThread.Name == "ERROR"
-                        ? _minecraftProcess.StandardError
-                        : _minecraftProcess.StandardOutput).ReadLine();
-                    if (string.IsNullOrEmpty(line)) {
-                        continue;
-                    }
-                    AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "ERROR");
-                }
-                if (_gameLoggingBox == null || !_gameLoggingBox.IsDisposed) {
+            while (!_minecraftProcess.StandardOutput.EndOfStream) {
+                string line =
+                (Thread.CurrentThread.Name == "ERROR"
+                    ? _minecraftProcess.StandardError
+                    : _minecraftProcess.StandardOutput).ReadLine();
+                if (string.IsNullOrEmpty(line)) {
                     continue;
                 }
-                _minecraftProcess.EnableRaisingEvents = false;
-                _outputReader.Abort();
-                _errorReader.Abort();
+                AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "ERROR");
             }
-        }
-
-        private static bool IsRunning(Process process)
-        {
-            try {
-                Process.GetProcessById(process.Id);
-            }
-            catch {
-                return false;
-            }
-            return true;
         }
     }
 }

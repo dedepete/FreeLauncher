@@ -256,7 +256,7 @@ namespace FreeLauncher.Forms
             if (CurrentProfile.SelectedVersion != null) {
                 foreach (
                     RadListDataItem a in
-                        versionsDropDownList.Items.Where(a => a.Text.Contains(CurrentProfile.SelectedVersion))) {
+                    versionsDropDownList.Items.Where(a => a.Tag?.ToString() == CurrentProfile.SelectedVersion)) {
                     versionsDropDownList.SelectedItem = a;
                     return;
                 }
