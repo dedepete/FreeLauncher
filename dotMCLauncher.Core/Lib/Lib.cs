@@ -17,7 +17,7 @@ namespace dotMCLauncher.Core
         /// Информация для загрузки файла.
         /// </summary>
         [JsonProperty("downloads")]
-        public DownloadInfo DownloadInfo;
+        public LibDownloadInfo DownloadInfo;
 
         [JsonProperty("natives")]
         private JObject _natives;

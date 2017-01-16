@@ -80,16 +80,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentCollection.cs" />
-    <Compile Include="Lib\DownloadEntry.cs" />
-    <Compile Include="Lib\DownloadInfo.cs" />
+    <Compile Include="DownloadEntry.cs" />
+    <Compile Include="Lib\LibDownloadInfo.cs" />
     <Compile Include="Lib\Lib.cs" />
     <Compile Include="Lib\Rule.cs" />
     <Compile Include="OperatingSystem.cs" />
@@ -97,7 +92,12 @@
     <Compile Include="ProfileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Profile\ServerInfo.cs" />
+    <Compile Include="RawVersionList\RawVersionListManifest.cs" />
+    <Compile Include="RawVersionList\RawVersionListManifestEntry.cs" />
+    <Compile Include="RawVersionList\RawVersionListManifestLatest.cs" />
     <Compile Include="Version.cs" />
+    <Compile Include="VersionDownloadInfo.cs" />
+    <Compile Include="VersionManifest.cs" />
     <Compile Include="Profile\WindowInfo.cs" />
   </ItemGroup>
   <ItemGroup>

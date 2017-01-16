@@ -8,7 +8,6 @@ using dotMCLauncher.Core;
 using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
-using Version = dotMCLauncher.Core.Version;
 
 namespace FreeLauncher.Forms
 {
@@ -239,13 +238,13 @@ namespace FreeLauncher.Forms
                 }
             }
             if (otherCheckBox.Checked) {
-                foreach (Version version in from b in Directory.GetDirectories(_applicationContext.McVersions)
+                foreach (VersionManifest version in from b in Directory.GetDirectories(_applicationContext.McVersions)
                     where File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions,
                         new DirectoryInfo(b).Name))
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
                     select
-                        Version.ParseVersion(
+                        VersionManifest.ParseVersion(
                             new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
                                 new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {

@@ -399,7 +399,6 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
-            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -625,7 +624,6 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
-            this.LicensesPage.ItemSize = new System.Drawing.SizeF(279F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -699,7 +697,6 @@ namespace FreeLauncher.Forms
             // SettingsPage
             // 
             this.SettingsPage.Controls.Add(this.radScrollablePanel1);
-            this.SettingsPage.ItemSize = new System.Drawing.SizeF(284F, 24F);
             this.SettingsPage.Location = new System.Drawing.Point(5, 5);
             this.SettingsPage.Name = "SettingsPage";
             this.SettingsPage.Size = new System.Drawing.Size(838, 293);

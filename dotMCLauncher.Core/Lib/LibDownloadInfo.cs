@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace dotMCLauncher.Core
 {
-    public class DownloadInfo
+    public class LibDownloadInfo
     {
         [JsonProperty("classifiers")] public Dictionary<string, DownloadEntry> Classifiers;
         [JsonProperty("artifact")] public DownloadEntry Artifact;

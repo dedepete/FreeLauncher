@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,7 +19,6 @@ using Telerik.WinControls;
 using Telerik.WinControls.UI;
 using Telerik.WinControls.UI.Data;
 using OperatingSystem = dotMCLauncher.Core.OperatingSystem;
-using Version = dotMCLauncher.Core.Version;
 
 namespace FreeLauncher.Forms
 {
@@ -313,16 +311,16 @@ namespace FreeLauncher.Forms
                         _userManager.SelectedUsername = _selectedUser.Username;
                         SaveUsers();
                         UpdateUserList();
-                        Version selectedVersion = Version.ParseVersion(
+                        VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                             new DirectoryInfo(_applicationContext.McVersions + (_versionToLaunch ?? (
                                 (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
                         };
                         if (_selectedProfile.FastConnectionSettigs != null) {
-                            selectedVersion.ArgumentCollection.Add("server",
+                            selectedVersionManifest.ArgumentCollection.Add("server",
                                 _selectedProfile.FastConnectionSettigs.ServerIP);
-                            selectedVersion.ArgumentCollection.Add("port",
+                            selectedVersionManifest.ArgumentCollection.Add("port",
                                 _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
                         }
                         string javaArgumentsTemp = _selectedProfile.JavaArguments == null
@@ -342,10 +340,10 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory,
                             Arguments =
-                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersion.MainClass} {selectedVersion.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersion.AssetsIndex}, { "version_type", selectedVersion.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersionManifest.AssetsIndex}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
-                        AppendLog($"Version {selectedVersion.VersionId} successfuly launched.");
+                        AppendLog($"Version {selectedVersionManifest.VersionId} successfuly launched.");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
                             _selectedProfile).Launch();
                         BlockControls = false;
@@ -407,8 +405,8 @@ namespace FreeLauncher.Forms
         private void versionsListView_ItemMouseClick(object sender, ListViewItemEventArgs e)
         {
             versionsListView.SelectedItem = e.Item;
-            Version ver =
-                Version.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + "\\")), false);
+            VersionManifest ver =
+                VersionManifest.ParseVersion(new DirectoryInfo(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + "\\")), false);
             RadMenuItem launchVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.Launch };
             launchVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
@@ -511,33 +509,28 @@ namespace FreeLauncher.Forms
         private void UpdateVersions()
         {
             AppendLog("Checking version.json...");
-            string jsonVersionList = new WebClient().DownloadString(
-                new Uri("https://s3.amazonaws.com/Minecraft.Download/versions/versions.json"));
+            RawVersionListManifest remoteManifest = RawVersionListManifest.ParseList(new WebClient().DownloadString(
+                new Uri("https://launchermeta.mojang.com/mc/game/version_manifest.json")));
             if (!Directory.Exists(_applicationContext.McVersions)) {
                 Directory.CreateDirectory(_applicationContext.McVersions);
             }
             if (!File.Exists(_applicationContext.McVersions + "\\versions.json")) {
-                File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
+                File.WriteAllText(_applicationContext.McVersions + "\\versions.json", remoteManifest.ToString());
                 return;
             }
-            JObject jb =
-                JObject.Parse(jsonVersionList);
-            string remoteSnapshotVersion = jb["latest"]["snapshot"].ToString(),
-                remoteReleaseVersion = jb["latest"]["release"].ToString();
-            AppendLog("Latest snapshot: " + remoteSnapshotVersion);
-            AppendLog("Latest release: " + remoteReleaseVersion);
-            JObject ver = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
-            string localSnapshotVersion = ver["latest"]["snapshot"].ToString(),
-                localReleaseVersion = ver["latest"]["release"].ToString();
-            AppendLog($"Local versions: {((JArray) jb["versions"]).Count}. "
-                + $"Remote versions: {((JArray) ver["versions"]).Count}");
-            if (((JArray) jb["versions"]).Count == ((JArray) ver["versions"]).Count &&
-                remoteReleaseVersion == localReleaseVersion && remoteSnapshotVersion == localSnapshotVersion) {
+            AppendLog("Latest snapshot: " + remoteManifest.LatestVersions.Snapshot);
+            AppendLog("Latest release: " + remoteManifest.LatestVersions.Release);
+            RawVersionListManifest localManifest = RawVersionListManifest.ParseList(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
+            AppendLog($"Local versions: {localManifest.Versions.Count}. "
+                + $"Remote versions: {remoteManifest.Versions.Count}");
+            if (remoteManifest.Versions.Count == localManifest.Versions.Count &&
+                remoteManifest.LatestVersions.Release == localManifest.LatestVersions.Release &&
+                remoteManifest.LatestVersions.Snapshot == localManifest.LatestVersions.Snapshot) {
                 AppendLog("No update found.");
                 return;
             }
             AppendLog("Writting new list...");
-            File.WriteAllText(_applicationContext.McVersions + "\\versions.json", jsonVersionList);
+            File.WriteAllText(_applicationContext.McVersions + "\\versions.json", remoteManifest.ToString());
         }
 
         private void UpdateProfileList()
@@ -643,37 +636,37 @@ namespace FreeLauncher.Forms
                     string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, version)).Wait();
             }
             StatusBarValue = 0;
-            Version selectedVersion = Version.ParseVersion(
+            VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions + version), false);
             if ((!File.Exists(path + "/" + version + ".jar") || _restoreVersion) &&
-                selectedVersion.InheritsFrom == null) {
+                selectedVersionManifest.InheritsFrom == null) {
                 filename = version + ".jar";
                 UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
                     "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
                     string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
             }
-            if (selectedVersion.InheritsFrom == null) {
+            if (selectedVersionManifest.InheritsFrom == null) {
                 AppendLog("Finished checking version avalability.");
                 return;
             }
-            path = Path.Combine(_applicationContext.McVersions, selectedVersion.InheritsFrom + "\\");
+            path = Path.Combine(_applicationContext.McVersions, selectedVersionManifest.InheritsFrom + "\\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
-            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
-                filename = selectedVersion.InheritsFrom + ".jar";
+            if (!File.Exists(string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersionManifest.InheritsFrom)) || _restoreVersion) {
+                filename = selectedVersionManifest.InheritsFrom + ".jar";
                 UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
-                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
+                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", selectedVersionManifest.InheritsFrom)),
+                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, selectedVersionManifest.InheritsFrom)).Wait();
             }
-            if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)) || _restoreVersion) {
-                filename = selectedVersion.InheritsFrom + ".json";
+            if (!File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersionManifest.InheritsFrom)) || _restoreVersion) {
+                filename = selectedVersionManifest.InheritsFrom + ".json";
                 UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                 downloader.DownloadFileTaskAsync(new Uri(string.Format(
-                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersion.InheritsFrom)),
-                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersion.InheritsFrom)).Wait();
+                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", selectedVersionManifest.InheritsFrom)),
+                    string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions, selectedVersionManifest.InheritsFrom)).Wait();
             }
             AppendLog("Finished checking version avalability.");
         }
@@ -682,18 +675,18 @@ namespace FreeLauncher.Forms
         {
             string libraries = string.Empty;
             const OperatingSystem os = OperatingSystem.WINDOWS;
-            Version selectedVersion = Version.ParseVersion(
+            VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
             StatusBarValue = 0;
-            StatusBarMaxValue = selectedVersion.Libs.Count(a => a.IsForWindows()) + 1;
+            StatusBarMaxValue = selectedVersionManifest.Libs.Count(a => a.IsForWindows()) + 1;
             UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             AppendLog("Checking libraries...");
             foreach (
                 Lib lib in
-                    selectedVersion
+                    selectedVersionManifest
                         .Libs.Where(a => a.IsForWindows())) {
                 StatusBarValue++;
                 if (!File.Exists(_applicationContext.McLibs + lib.GetPath(os)) ||
@@ -733,7 +726,7 @@ namespace FreeLauncher.Forms
                 UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
             libraries += string.Format("{0}{1}\\{1}.jar", _applicationContext.McVersions,
-                selectedVersion.InheritsFrom ??
+                selectedVersionManifest.InheritsFrom ??
                 (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))));
             AppendLog("Finished checking libraries.");
             return libraries;
@@ -742,19 +735,19 @@ namespace FreeLauncher.Forms
         private void GetAssets()
         {
             UpdateStatusBarAndLog("Checking game assets...");
-            Version selectedVersion = Version.ParseVersion(
+            VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             string file = string.Format("{0}/assets/indexes/{1}.json", _applicationContext.McDirectory,
-                selectedVersion.AssetsIndex ?? "legacy");
+                selectedVersionManifest.AssetsIndex ?? "legacy");
             if (!File.Exists(file)) {
                 if (!Directory.Exists(Path.GetDirectoryName(file))) {
                     Directory.CreateDirectory(Path.GetDirectoryName(file));
                 }
                 new WebClient().DownloadFile(
                     string.Format("https://s3.amazonaws.com/Minecraft.Download/indexes/{0}.json",
-                        selectedVersion.AssetsIndex ?? "legacy"), file);
+                        selectedVersionManifest.AssetsIndex ?? "legacy"), file);
             }
             JObject jo = JObject.Parse(File.ReadAllText(file));
             StatusBarValue = 0;
@@ -784,7 +777,7 @@ namespace FreeLauncher.Forms
                 StatusBarValue++;
             }
             AppendLog("Finished checking game assets.");
-            if (selectedVersion.AssetsIndex == null) {
+            if (selectedVersionManifest.AssetsIndex == null) {
                 StatusBarValue = 0;
                 StatusBarMaxValue = jo["objects"].Cast<JProperty>()
                     .Count(res => !File.Exists(_applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name)) + 1;
@@ -900,10 +893,10 @@ namespace FreeLauncher.Forms
             } else {
                 versionsListView.Items.Clear();
                 foreach (
-                    Version version in
+                    VersionManifest version in
                         Directory.GetDirectories(_applicationContext.McVersions)
                             .Select(versionDir => new DirectoryInfo(versionDir))
-                            .Select(info => Version.ParseVersion(info, false))) {
+                            .Select(info => VersionManifest.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
                 }
