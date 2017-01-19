@@ -210,6 +210,9 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+# Custom files
+/FreeLauncher/Properties/licenses.licx
 /FreeLauncher.sln.ide
 /FreeLauncher_Report.htm
 /FreeLauncher_Backup_2015.12.20_11.34.13/
