@@ -20,6 +20,13 @@ namespace dotMCLauncher.Core
                 ? types.Contains(x.ReleaseType)
                 : !types.Contains(x.ReleaseType)).ToList();
 
+        public RawVersionListManifestEntry GetVersion(string version)
+        {
+            return Versions.Count(x => x.VersionId == version) == 1
+                ? Versions.Where(x => x.VersionId == version).ToArray()[0]
+                : null;
+        }
+
         public static RawVersionListManifest ParseList(string content)
         {
             RawVersionListManifest manifest =
