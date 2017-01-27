@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 using Telerik.WinControls.UI.Data;
-using OperatingSystem = dotMCLauncher.Core.OperatingSystem;
+using OS = dotMCLauncher.Core.OperatingSystem;
 
 namespace FreeLauncher.Forms
 {
@@ -166,15 +166,7 @@ namespace FreeLauncher.Forms
             }
             _profileManager.LastUsedProfile = profilesDropDownBox.SelectedItem.Text;
             _selectedProfile = _profileManager.Profiles[profilesDropDownBox.SelectedItem.Text];
-            string path = Path.Combine(_applicationContext.McVersions,
-                _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-            string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
-            if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
-                                                                 GetLatestVersion(_selectedProfile)))) {
-                state = _applicationContext.ProgramLocalization.ReadyToDownload;
-            }
-            SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
-                                                         GetLatestVersion(_selectedProfile)));
+            UpdateVersionListView();
             SaveProfiles();
         }
 
@@ -278,6 +270,14 @@ namespace FreeLauncher.Forms
                         StatusBarVisible = false;
                     };
                     bgw2.RunWorkerCompleted += delegate {
+                        if (_restoreVersion) {
+                            AppendLog($"Successfully restored \"{_versionToLaunch}\" version.");
+                            _restoreVersion = false;
+                            BlockControls = false;
+                            UpdateVersionListView();
+                            _versionToLaunch = null;
+                            return;
+                        }
                         if (!_userManager.Accounts.ContainsKey(NicknameDropDownList.Text)) {
                             User user = new User {
                                 Username = NicknameDropDownList.Text,
@@ -347,13 +347,12 @@ namespace FreeLauncher.Forms
                                 $"{javaArgumentsTemp}-Djava.library.path={_applicationContext.McDirectory + "natives\\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory}, {"assets_root", _applicationContext.McDirectory + "assets\\"}, {"game_assets", _applicationContext.McDirectory + "assets\\legacy\\"}, {"assets_index_name", selectedVersionManifest.InheritableVersionManifest?.AssetsIndex ?? selectedVersionManifest.AssetsIndex}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
-                        AppendLog($"Version {selectedVersionManifest.VersionId} successfuly launched.");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
                             _selectedProfile).Launch();
+                        AppendLog($"Version {selectedVersionManifest.VersionId} successfuly launched.");
                         BlockControls = false;
                         UpdateVersionListView();
                         _versionToLaunch = null;
-                        _restoreVersion = false;
                     };
                     bgw2.RunWorkerAsync();
                 };
@@ -428,7 +427,7 @@ namespace FreeLauncher.Forms
                     enableRestoreButton = true;
                     break;
             }
-            RadMenuItem restoreVerButton = new RadMenuItem { Text = "Restore and launch", Enabled = enableRestoreButton };
+            RadMenuItem restoreVerButton = new RadMenuItem { Text = "Restore", Enabled = enableRestoreButton };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;
                 _versionToLaunch = versionsListView.SelectedItem[0].ToString();
@@ -464,15 +463,6 @@ namespace FreeLauncher.Forms
                 catch (Exception ex) {
                     AppendException($"An error has occurred during version deletion: {ex}");
                 }
-                string path = Path.Combine(_applicationContext.McVersions,
-                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
-                string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
-                if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
-                                                                     GetLatestVersion(_selectedProfile)))) {
-                    state = _applicationContext.ProgramLocalization.ReadyToDownload;
-                }
-                SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
-                                                             GetLatestVersion(_selectedProfile)));
             };
             RadContextMenu verListMenuStrip = new RadContextMenu();
             verListMenuStrip.Items.Add(launchVerButton);
@@ -663,7 +653,7 @@ namespace FreeLauncher.Forms
         private string GetLibraries()
         {
             string libraries = string.Empty;
-            const OperatingSystem os = OperatingSystem.WINDOWS;
+            const OS os = OS.WINDOWS;
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
@@ -710,7 +700,7 @@ namespace FreeLauncher.Forms
                 }
                 if (lib.IsNative != null) {
                     UpdateStatusBarAndLog($"Unpacking {lib.Name}...");
-                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OperatingSystem.WINDOWS))) {
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OS.WINDOWS))) {
                         foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
                             AppendDebug($"Unzipping {entry.FileName}");
                             try {
@@ -758,20 +748,17 @@ namespace FreeLauncher.Forms
             StatusBarValue = 0;
             StatusBarMaxValue = jo["objects"].Cast<JProperty>()
                                     .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
-                                    .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
-                                    .Count(
-                                        filename =>
+                                    .Select(c => c.Substring(0, 2) + "\\" + c)
+                                    .Count(filename =>
                                             !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" +
                                                          filename) || _restoreVersion) + 1;
             foreach (string resourseFile in jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
-                .Select(c => c[0].ToString() + c[1].ToString() + "\\" + c)
-                .Where(
-                    filename =>
-                        !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) ||
-                        _restoreVersion)) {
-                string path = _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile[0] +
-                              resourseFile[1] +
+                .Select(c => c.Substring(0, 2) + "\\" + c)
+                .Where(filename =>
+                    !File.Exists(_applicationContext.McDirectory + "\\assets\\objects\\" + filename) ||
+                    _restoreVersion)) {
+                string path = _applicationContext.McDirectory + "\\assets\\objects\\" + resourseFile.Substring(0, 2) +
                               "\\";
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
@@ -811,10 +798,10 @@ namespace FreeLauncher.Forms
                                     .DirectoryName);
                         }
                         AppendDebug(
-                            $"Converting \"{"\\assets\\objects\\" + res.Value["hash"].ToString()[0] + res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"]}\" to \"{"\\assets\\legacy\\" + res.Name}\"");
+                            $"Converting \"{"\\assets\\objects\\" + res.Value["hash"].ToString().Substring(0, 2) + "\\" + res.Value["hash"]}\" to \"{"\\assets\\legacy\\" + res.Name}\"");
                         File.Copy(
-                            _applicationContext.McDirectory + "\\assets\\objects\\" + res.Value["hash"].ToString()[0] +
-                            res.Value["hash"].ToString()[1] + "\\" + res.Value["hash"],
+                            _applicationContext.McDirectory + "\\assets\\objects\\" +
+                            res.Value["hash"].ToString().Substring(0, 2) + "\\" + res.Value["hash"],
                             _applicationContext.McDirectory + "\\assets\\legacy\\" + res.Name);
                     }
                     catch (Exception ex) {
@@ -836,11 +823,11 @@ namespace FreeLauncher.Forms
                 : _versionList.LatestVersions.Release;
         }
 
-        public object[] AddNewPage()
+        public LauncherFormOutput AddOutputPage()
         {
             RadPageViewPage outputPage = new RadPageViewPage {
                 Text =
-                    string.Format("{0} ({1})", _applicationContext.ProgramLocalization.GameOutput,
+                    string.Format("{0} ({1})", _applicationContext.ProgramLocalization.GameOutput.ToUpper(),
                         _versionToLaunch ?? _selectedProfile.ProfileName)
             };
             RadButton killProcessButton = new RadButton {
@@ -848,8 +835,6 @@ namespace FreeLauncher.Forms
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
             RadPanel panel = new RadPanel {
-                Text = (_versionToLaunch ?? (
-                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))),
                 Dock = DockStyle.Top
             };
             panel.Size = new Size(panel.Size.Width, 60);
@@ -870,10 +855,13 @@ namespace FreeLauncher.Forms
             mainPageView.Pages.Add(outputPage);
             mainPageView.SelectedPage = outputPage;
             reportBox.LinkClicked += (sender, e) => Process.Start(e.LinkText);
-            return new object[] {
-                reportBox,
-                killProcessButton,
-                closeButton
+            return new LauncherFormOutput {
+                OutputBox = reportBox,
+                CloseButton = closeButton,
+                KillButton = killProcessButton,
+                McVersion = _versionToLaunch ?? (
+                           _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
+                Panel = panel
             };
         }
 
@@ -917,6 +905,16 @@ namespace FreeLauncher.Forms
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
                 }
+                string path = Path.Combine(_applicationContext.McVersions,
+                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + "\\");
+                string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
+                if (!File.Exists(string.Format("{0}/{1}.json", path, _selectedProfile.SelectedVersion ??
+                                                                     GetLatestVersion(_selectedProfile))))
+                {
+                    state = _applicationContext.ProgramLocalization.ReadyToDownload;
+                }
+                SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
+                                                             GetLatestVersion(_selectedProfile)));
             }
         }
 
@@ -979,8 +977,7 @@ namespace FreeLauncher.Forms
         private readonly LauncherForm _launcherForm;
         private readonly Profile _profile;
         private readonly Process _minecraftProcess;
-        private RichTextBox _gameLoggingBox;
-        private RadButton _closePageButton, _killProcessButton;
+        private LauncherFormOutput _output;
         private static Thread _outputReader, _errorReader;
 
         public MinecraftProcess(Process minecraftProcess, LauncherForm launcherForm, Profile profile)
@@ -1001,11 +998,10 @@ namespace FreeLauncher.Forms
                 _errorReader = new Thread(Reader) {
                     Name = "ERROR"
                 };
-                object[] obj = _launcherForm.AddNewPage();
-                _gameLoggingBox = (RichTextBox) obj[0];
-                _closePageButton = (RadButton) obj[2];
-                _killProcessButton = (RadButton) obj[1];
-                _killProcessButton.Click += KillProcessButton_Click;
+                _output = _launcherForm.AddOutputPage();
+                _output.Panel.Text = $"Minecraft version: {_output.McVersion}\n" +
+                                     "Status: Running";
+                _output.KillButton.Click += KillProcessButton_Click;
                 _minecraftProcess.Exited += MinecraftProcess_Exited;
             }
             _minecraftProcess.Start();
@@ -1030,40 +1026,40 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Invoke((MethodInvoker) (() => _launcherForm.Show()));
             }
-            AppendLog(
-                string.Format("Process exited with error code {0}. Session duration: {1} sec(s).",
-                    _minecraftProcess.ExitCode +
-                    (_minecraftProcess.ExitCode == 0
-                        ? "(Stable)"
-                        : _minecraftProcess.ExitCode == -1 ? "(Killed)" : "(Crashed)"),
-                    _minecraftProcess.TotalProcessorTime.TotalSeconds), false);
+            string reason = _minecraftProcess.ExitCode == 0
+                ? "Stable closure"
+                : _minecraftProcess.ExitCode == -1 ? "Process killed" : "Crashed";
             _launcherForm.Invoke((MethodInvoker) delegate {
-                _closePageButton.Enabled = true;
+                _output.Panel.Text = $"Minecraft version: {_output.McVersion}\n" +
+                                 "Status: Stopped\n" +
+                                 $"Exit code: {_minecraftProcess.ExitCode} (Reason: {reason})\n" +
+                                 $"Session duration: {_minecraftProcess.TotalProcessorTime:g}";
+                _output.CloseButton.Enabled = true;
                 if (_launcherForm.CloseGameOutput.Checked &&
                     (_minecraftProcess.ExitCode == 0 || _minecraftProcess.ExitCode == -1)) {
-                    _closePageButton.PerformClick();
+                    _output.CloseButton.PerformClick();
                 }
-                _killProcessButton.Enabled = false;
+                _output.KillButton.Enabled = false;
             });
         }
 
         private void AppendLog(string text, bool iserror)
         {
-            if (_gameLoggingBox.IsDisposed) {
+            if (_output.OutputBox.IsDisposed) {
                 return;
             }
-            if (_gameLoggingBox.InvokeRequired) {
-                _gameLoggingBox.Invoke(new Action<string, bool>(AppendLog), text, iserror);
+            if (_output.OutputBox.InvokeRequired) {
+                _output.OutputBox.Invoke(new Action<string, bool>(AppendLog), text, iserror);
             } else {
                 Color color = iserror ? Color.Red : Color.DarkSlateGray;
                 string line = text + "\n";
-                int start = _gameLoggingBox.TextLength;
-                _gameLoggingBox.AppendText(line);
-                int end = _gameLoggingBox.TextLength;
-                _gameLoggingBox.Select(start, end - start);
-                _gameLoggingBox.SelectionColor = color;
-                _gameLoggingBox.SelectionLength = 0;
-                _gameLoggingBox.ScrollToCaret();
+                int start = _output.OutputBox.TextLength;
+                _output.OutputBox.AppendText(line);
+                int end = _output.OutputBox.TextLength;
+                _output.OutputBox.Select(start, end - start);
+                _output.OutputBox.SelectionColor = color;
+                _output.OutputBox.SelectionLength = 0;
+                _output.OutputBox.ScrollToCaret();
             }
         }
 
@@ -1080,5 +1076,14 @@ namespace FreeLauncher.Forms
                 AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "ERROR");
             }
         }
+    }
+
+    public struct LauncherFormOutput
+    {
+        public RichTextBox OutputBox;
+        public RadButton CloseButton;
+        public RadButton KillButton;
+        public RadPanel Panel;
+        public string McVersion;
     }
 }
