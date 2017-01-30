@@ -31,7 +31,7 @@
 
         public string DevInfo = "Разработано dedepete";
         public string GratitudesText = "Благодарности";
-        public string GratitudesDescription = "Большое спасибо администрации портала ru-minecraft.ru за содействие в развитии проекта!";
+        public string GratitudesDescription = "Администрации портала ru-minecraft.ru за содействие в развитии проекта!";
         public string PartnersText = "Партнёры";
         public string MCofflineDescription = "MCoffline - лучшая программа для серверных администраторов!";
         public string CopyrightInfo = "\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
