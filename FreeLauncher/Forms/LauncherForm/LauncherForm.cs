@@ -116,7 +116,7 @@ namespace FreeLauncher.Forms
             AppendLog($"{new string(' ', 2)}Operating system:");
             AppendLog($"{new string(' ', 4)}OSFullName: {new ComputerInfo().OSFullName}");
             AppendLog($"{new string(' ', 4)}Build: {Environment.OSVersion.Version.Build}");
-            AppendLog($"{new string(' ', 2)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
+            AppendLog($"{new string(' ', 4)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"{new string(' ', 2)}Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
             AppendLog(new string('=', 12));
 
