@@ -1,5 +1,5 @@
 language: csharp
-solution: "./FreeLauncher/FreeLauncher.sln"
+solution: FreeLauncher.sln
 install:
 - travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./FreeLauncher/FreeLauncher.sln
 script:
