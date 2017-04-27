@@ -1,6 +1,6 @@
 language: csharp
 solution: FreeLauncher.sln
 install:
-- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./FreeLauncher/FreeLauncher.sln
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" FreeLauncher.sln
 script:
-- xbuild ./FreeLauncher/FreeLauncher.sln
+- xbuild FreeLauncher.sln
