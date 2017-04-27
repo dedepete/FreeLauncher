@@ -1,3 +1,6 @@
 language: csharp
-solution: FreeLauncher.sln
-script: make build
+solution: "./FreeLauncher/FreeLauncher.sln"
+install:
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./FreeLauncher/FreeLauncher.sln
+script:
+- xbuild ./FreeLauncher/FreeLauncher.sln
