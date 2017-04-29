@@ -237,13 +237,15 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /F "$(ProjectDir)Translations\*" "$(TargetDir)freelauncher-langs\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target> -->
   <Target Name="AfterBuild">
+    <Exec Command="xcopy /Y /F &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) == 'Windows_NT'"/>
+    <Exec Command="cp -v &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) != 'Windows_NT'"/>
   </Target>
-  -->
 </Project>
