@@ -371,25 +371,25 @@ namespace FreeLauncher.Forms
 
         private void newsBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (newsBrowser.Url != new Uri("http://mcupdate.tumblr.com/")) {
+            if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
-                webPanel.Text = newsBrowser.Url.ToString();
-                webPanel.Visible = true;
+                navBar.Text = newsBrowser.Url.ToString();
+                navBar.Visible = true;
             } else {
-                webPanel.Visible = false;
+                navBar.Visible = false;
             }
         }
 
         private void newsBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            if (newsBrowser.Url != new Uri("http://mcupdate.tumblr.com/")) {
+            if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
-                webPanel.Text = newsBrowser.Url.ToString();
-                webPanel.Visible = true;
+                navBar.Text = newsBrowser.Url.ToString();
+                navBar.Visible = true;
             } else {
-                webPanel.Visible = false;
+                navBar.Visible = false;
             }
         }
 
@@ -968,7 +968,6 @@ namespace FreeLauncher.Forms
             }
             AppendText(text, "DEBUG", methodName ?? new StackFrame(1).GetMethod().Name);
         }
-
     }
 
     internal class MinecraftProcess

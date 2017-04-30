@@ -42,7 +42,7 @@ namespace FreeLauncher.Forms
             this.mainPageView = new Telerik.WinControls.UI.RadPageView();
             this.News = new Telerik.WinControls.UI.RadPageViewPage();
             this.newsBrowser = new System.Windows.Forms.WebBrowser();
-            this.webPanel = new Telerik.WinControls.UI.RadPanel();
+            this.navBar = new Telerik.WinControls.UI.RadPanel();
             this.BackWebButton = new Telerik.WinControls.UI.RadButton();
             this.ForwardWebButton = new Telerik.WinControls.UI.RadButton();
             this.ConsolePage = new Telerik.WinControls.UI.RadPageViewPage();
@@ -65,13 +65,13 @@ namespace FreeLauncher.Forms
             this.LangDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.DownloadAssets = new Telerik.WinControls.UI.RadCheckBox();
             this.AboutVersion = new Telerik.WinControls.UI.RadLabel();
-            this.label6 = new System.Windows.Forms.Label();
+            this.mcOfflineURL = new System.Windows.Forms.Label();
             this.MCofflineDescLabel = new System.Windows.Forms.Label();
             this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
             this.PartnersLabel = new Telerik.WinControls.UI.RadLabel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.gitURL = new System.Windows.Forms.Label();
             this.DevInfoLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.ruMcURL = new System.Windows.Forms.Label();
             this.GratitudesDescLabel = new System.Windows.Forms.Label();
             this.GratitudesLabel = new Telerik.WinControls.UI.RadLabel();
             this.LicensesPage = new Telerik.WinControls.UI.RadPageViewPage();
@@ -94,8 +94,8 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.mainPageView)).BeginInit();
             this.mainPageView.SuspendLayout();
             this.News.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webPanel)).BeginInit();
-            this.webPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.navBar)).BeginInit();
+            this.navBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackWebButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ForwardWebButton)).BeginInit();
             this.ConsolePage.SuspendLayout();
@@ -155,14 +155,6 @@ namespace FreeLauncher.Forms
             this.mainPageView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPageView.Location = new System.Drawing.Point(0, 0);
             this.mainPageView.Name = "mainPageView";
-            // 
-            // 
-            // 
-            this.mainPageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.mainPageView.RootElement.AngleTransform = 0F;
-            this.mainPageView.RootElement.FlipText = false;
-            this.mainPageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.mainPageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.mainPageView.SelectedPage = this.News;
             this.mainPageView.Size = new System.Drawing.Size(858, 363);
             this.mainPageView.TabIndex = 2;
@@ -172,7 +164,7 @@ namespace FreeLauncher.Forms
             // News
             // 
             this.News.Controls.Add(this.newsBrowser);
-            this.News.Controls.Add(this.webPanel);
+            this.News.Controls.Add(this.navBar);
             this.News.ItemSize = new System.Drawing.SizeF(65F, 24F);
             this.News.Location = new System.Drawing.Point(5, 30);
             this.News.Name = "News";
@@ -186,46 +178,30 @@ namespace FreeLauncher.Forms
             this.newsBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.newsBrowser.Name = "newsBrowser";
             this.newsBrowser.ScriptErrorsSuppressed = true;
-            this.newsBrowser.Size = new System.Drawing.Size(848, 308);
+            this.newsBrowser.Size = new System.Drawing.Size(848, 299);
             this.newsBrowser.TabIndex = 0;
-            this.newsBrowser.Url = new System.Uri("http://mcupdate.tumblr.com/", System.UriKind.Absolute);
+            this.newsBrowser.Url = new System.Uri("https://mcupdate.tumblr.com/", System.UriKind.Absolute);
             this.newsBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.newsBrowser_Navigated);
             this.newsBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.newsBrowser_Navigating);
             // 
-            // webPanel
+            // navBar
             // 
-            this.webPanel.Controls.Add(this.BackWebButton);
-            this.webPanel.Controls.Add(this.ForwardWebButton);
-            this.webPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.webPanel.Location = new System.Drawing.Point(0, 308);
-            this.webPanel.Name = "webPanel";
-            // 
-            // 
-            // 
-            this.webPanel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.webPanel.RootElement.AngleTransform = 0F;
-            this.webPanel.RootElement.FlipText = false;
-            this.webPanel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.webPanel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.webPanel.Size = new System.Drawing.Size(848, 20);
-            this.webPanel.TabIndex = 1;
-            this.webPanel.ThemeName = "VisualStudio2012Dark";
-            this.webPanel.Visible = false;
+            this.navBar.Controls.Add(this.BackWebButton);
+            this.navBar.Controls.Add(this.ForwardWebButton);
+            this.navBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.navBar.Location = new System.Drawing.Point(0, 299);
+            this.navBar.Name = "navBar";
+            this.navBar.Size = new System.Drawing.Size(848, 29);
+            this.navBar.TabIndex = 1;
+            this.navBar.ThemeName = "VisualStudio2012Dark";
+            this.navBar.Visible = false;
             // 
             // BackWebButton
             // 
             this.BackWebButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BackWebButton.Location = new System.Drawing.Point(720, 0);
+            this.BackWebButton.Location = new System.Drawing.Point(715, 3);
             this.BackWebButton.Name = "BackWebButton";
-            // 
-            // 
-            // 
-            this.BackWebButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.BackWebButton.RootElement.AngleTransform = 0F;
-            this.BackWebButton.RootElement.FlipText = false;
-            this.BackWebButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.BackWebButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.BackWebButton.Size = new System.Drawing.Size(64, 17);
+            this.BackWebButton.Size = new System.Drawing.Size(64, 23);
             this.BackWebButton.TabIndex = 1;
             this.BackWebButton.Text = "<";
             this.BackWebButton.ThemeName = "VisualStudio2012Dark";
@@ -234,17 +210,9 @@ namespace FreeLauncher.Forms
             // ForwardWebButton
             // 
             this.ForwardWebButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ForwardWebButton.Location = new System.Drawing.Point(784, 0);
+            this.ForwardWebButton.Location = new System.Drawing.Point(779, 3);
             this.ForwardWebButton.Name = "ForwardWebButton";
-            // 
-            // 
-            // 
-            this.ForwardWebButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.ForwardWebButton.RootElement.AngleTransform = 0F;
-            this.ForwardWebButton.RootElement.FlipText = false;
-            this.ForwardWebButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ForwardWebButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
-            this.ForwardWebButton.Size = new System.Drawing.Size(64, 17);
+            this.ForwardWebButton.Size = new System.Drawing.Size(64, 23);
             this.ForwardWebButton.TabIndex = 0;
             this.ForwardWebButton.Text = ">";
             this.ForwardWebButton.ThemeName = "VisualStudio2012Dark";
@@ -339,14 +307,6 @@ namespace FreeLauncher.Forms
             this.versionsListView.ItemSpacing = -1;
             this.versionsListView.Location = new System.Drawing.Point(0, 0);
             this.versionsListView.Name = "versionsListView";
-            // 
-            // 
-            // 
-            this.versionsListView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.versionsListView.RootElement.AngleTransform = 0F;
-            this.versionsListView.RootElement.FlipText = false;
-            this.versionsListView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.versionsListView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.versionsListView.SelectLastAddedItem = false;
             this.versionsListView.ShowItemToolTips = false;
             this.versionsListView.Size = new System.Drawing.Size(848, 328);
@@ -372,14 +332,6 @@ namespace FreeLauncher.Forms
             this.AboutPageView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AboutPageView.Location = new System.Drawing.Point(0, 0);
             this.AboutPageView.Name = "AboutPageView";
-            // 
-            // 
-            // 
-            this.AboutPageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.AboutPageView.RootElement.AngleTransform = 0F;
-            this.AboutPageView.RootElement.FlipText = false;
-            this.AboutPageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.AboutPageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AboutPageView.SelectedPage = this.AboutPageViewPage;
             this.AboutPageView.Size = new System.Drawing.Size(848, 328);
             this.AboutPageView.TabIndex = 9;
@@ -409,24 +361,16 @@ namespace FreeLauncher.Forms
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.radGroupBox2);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.radGroupBox1);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.AboutVersion);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label6);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.mcOfflineURL);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.MCofflineDescLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.radLabel1);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.PartnersLabel);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label3);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.gitURL);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.DevInfoLabel);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.label5);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.ruMcURL);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.GratitudesDescLabel);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.GratitudesLabel);
             this.radScrollablePanel2.PanelContainer.Size = new System.Drawing.Size(836, 291);
-            // 
-            // 
-            // 
-            this.radScrollablePanel2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radScrollablePanel2.RootElement.AngleTransform = 0F;
-            this.radScrollablePanel2.RootElement.FlipText = false;
-            this.radScrollablePanel2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radScrollablePanel2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radScrollablePanel2.Size = new System.Drawing.Size(838, 293);
             this.radScrollablePanel2.TabIndex = 9;
             this.radScrollablePanel2.Text = "radScrollablePanel2";
@@ -455,14 +399,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox2.HeaderText = "Логирование";
             this.radGroupBox2.Location = new System.Drawing.Point(469, 141);
             this.radGroupBox2.Name = "radGroupBox2";
-            // 
-            // 
-            // 
-            this.radGroupBox2.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radGroupBox2.RootElement.AngleTransform = 0F;
-            this.radGroupBox2.RootElement.FlipText = false;
-            this.radGroupBox2.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox2.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox2.Size = new System.Drawing.Size(357, 121);
             this.radGroupBox2.TabIndex = 13;
             this.radGroupBox2.Text = "Логирование";
@@ -472,14 +408,6 @@ namespace FreeLauncher.Forms
             // 
             this.CloseGameOutput.Location = new System.Drawing.Point(5, 45);
             this.CloseGameOutput.Name = "CloseGameOutput";
-            // 
-            // 
-            // 
-            this.CloseGameOutput.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.CloseGameOutput.RootElement.AngleTransform = 0F;
-            this.CloseGameOutput.RootElement.FlipText = false;
-            this.CloseGameOutput.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.CloseGameOutput.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.CloseGameOutput.Size = new System.Drawing.Size(327, 18);
             this.CloseGameOutput.TabIndex = 2;
             this.CloseGameOutput.Text = "Закрывать вкладку, если завершение прошло без ошибок";
@@ -490,14 +418,6 @@ namespace FreeLauncher.Forms
             this.EnableMinecraftLogging.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableMinecraftLogging.Location = new System.Drawing.Point(5, 21);
             this.EnableMinecraftLogging.Name = "EnableMinecraftLogging";
-            // 
-            // 
-            // 
-            this.EnableMinecraftLogging.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.EnableMinecraftLogging.RootElement.AngleTransform = 0F;
-            this.EnableMinecraftLogging.RootElement.FlipText = false;
-            this.EnableMinecraftLogging.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EnableMinecraftLogging.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.EnableMinecraftLogging.Size = new System.Drawing.Size(177, 18);
             this.EnableMinecraftLogging.TabIndex = 0;
             this.EnableMinecraftLogging.Text = "Выводить лог игры в консоль";
@@ -514,14 +434,6 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.HeaderText = "Основные";
             this.radGroupBox1.Location = new System.Drawing.Point(469, 14);
             this.radGroupBox1.Name = "radGroupBox1";
-            // 
-            // 
-            // 
-            this.radGroupBox1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radGroupBox1.RootElement.AngleTransform = 0F;
-            this.radGroupBox1.RootElement.FlipText = false;
-            this.radGroupBox1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radGroupBox1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radGroupBox1.Size = new System.Drawing.Size(357, 121);
             this.radGroupBox1.TabIndex = 12;
             this.radGroupBox1.Text = "Основные";
@@ -531,14 +443,6 @@ namespace FreeLauncher.Forms
             // 
             this.radLabel4.Location = new System.Drawing.Point(5, 21);
             this.radLabel4.Name = "radLabel4";
-            // 
-            // 
-            // 
-            this.radLabel4.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel4.RootElement.AngleTransform = 0F;
-            this.radLabel4.RootElement.FlipText = false;
-            this.radLabel4.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel4.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel4.Size = new System.Drawing.Size(87, 18);
             this.radLabel4.TabIndex = 5;
             this.radLabel4.Text = "Язык/Language:";
@@ -556,14 +460,6 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.Items.Add(radListDataItem1);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 21);
             this.LangDropDownList.Name = "LangDropDownList";
-            // 
-            // 
-            // 
-            this.LangDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.LangDropDownList.RootElement.AngleTransform = 0F;
-            this.LangDropDownList.RootElement.FlipText = false;
-            this.LangDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.LangDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LangDropDownList.Size = new System.Drawing.Size(202, 24);
             this.LangDropDownList.TabIndex = 3;
             this.LangDropDownList.Text = "Русский (ru-RU)";
@@ -574,14 +470,6 @@ namespace FreeLauncher.Forms
             // 
             this.DownloadAssets.Location = new System.Drawing.Point(5, 45);
             this.DownloadAssets.Name = "DownloadAssets";
-            // 
-            // 
-            // 
-            this.DownloadAssets.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.DownloadAssets.RootElement.AngleTransform = 0F;
-            this.DownloadAssets.RootElement.FlipText = false;
-            this.DownloadAssets.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.DownloadAssets.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.DownloadAssets.Size = new System.Drawing.Size(181, 18);
             this.DownloadAssets.TabIndex = 0;
             this.DownloadAssets.Text = "Пропускать загрузку ресурсов";
@@ -597,12 +485,7 @@ namespace FreeLauncher.Forms
             // 
             // 
             // 
-            this.AboutVersion.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.AboutVersion.RootElement.AngleTransform = 0F;
-            this.AboutVersion.RootElement.FlipText = false;
-            this.AboutVersion.RootElement.Margin = new System.Windows.Forms.Padding(0);
             this.AboutVersion.RootElement.MinSize = new System.Drawing.Size(58, 18);
-            this.AboutVersion.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AboutVersion.Size = new System.Drawing.Size(58, 18);
             this.AboutVersion.TabIndex = 1;
             this.AboutVersion.Text = "0.0.0.000";
@@ -612,19 +495,19 @@ namespace FreeLauncher.Forms
             ((Telerik.WinControls.UI.RadLabelElement)(this.AboutVersion.GetChildAt(0))).Text = "0.0.0.000";
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.AboutVersion.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
-            // label6
+            // mcOfflineURL
             // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label6.ForeColor = System.Drawing.Color.Gray;
-            this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label6.Location = new System.Drawing.Point(14, 201);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(127, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "http://vk.com/mcoffline";
-            this.label6.Click += new System.EventHandler(this.urlLabel_Click);
+            this.mcOfflineURL.AutoSize = true;
+            this.mcOfflineURL.BackColor = System.Drawing.Color.Transparent;
+            this.mcOfflineURL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mcOfflineURL.ForeColor = System.Drawing.Color.Gray;
+            this.mcOfflineURL.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.mcOfflineURL.Location = new System.Drawing.Point(14, 201);
+            this.mcOfflineURL.Name = "mcOfflineURL";
+            this.mcOfflineURL.Size = new System.Drawing.Size(127, 13);
+            this.mcOfflineURL.TabIndex = 11;
+            this.mcOfflineURL.Text = "http://vk.com/mcoffline";
+            this.mcOfflineURL.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // MCofflineDescLabel
             // 
@@ -642,17 +525,9 @@ namespace FreeLauncher.Forms
             // 
             this.radLabel1.BackColor = System.Drawing.Color.Transparent;
             this.radLabel1.Font = new System.Drawing.Font("Segoe UI", 20.25F);
-            this.radLabel1.ForeColor = System.Drawing.Color.Transparent;
+            this.radLabel1.ForeColor = System.Drawing.Color.White;
             this.radLabel1.Location = new System.Drawing.Point(3, 3);
             this.radLabel1.Name = "radLabel1";
-            // 
-            // 
-            // 
-            this.radLabel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radLabel1.RootElement.AngleTransform = 0F;
-            this.radLabel1.RootElement.FlipText = false;
-            this.radLabel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radLabel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radLabel1.Size = new System.Drawing.Size(175, 41);
             this.radLabel1.TabIndex = 0;
             this.radLabel1.Text = "FreeLauncher";
@@ -667,14 +542,6 @@ namespace FreeLauncher.Forms
             this.PartnersLabel.ForeColor = System.Drawing.Color.Transparent;
             this.PartnersLabel.Location = new System.Drawing.Point(3, 147);
             this.PartnersLabel.Name = "PartnersLabel";
-            // 
-            // 
-            // 
-            this.PartnersLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.PartnersLabel.RootElement.AngleTransform = 0F;
-            this.PartnersLabel.RootElement.FlipText = false;
-            this.PartnersLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.PartnersLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.PartnersLabel.Size = new System.Drawing.Size(140, 41);
             this.PartnersLabel.TabIndex = 10;
             this.PartnersLabel.Text = "Партнёры";
@@ -682,20 +549,20 @@ namespace FreeLauncher.Forms
             ((Telerik.WinControls.UI.RadLabelElement)(this.PartnersLabel.GetChildAt(0))).Text = "Партнёры";
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.PartnersLabel.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
-            // label3
+            // gitURL
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label3.ForeColor = System.Drawing.Color.Gray;
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(14, 72);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(163, 15);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "https://github.com/dedepete";
-            this.label3.Click += new System.EventHandler(this.urlLabel_Click);
+            this.gitURL.AutoSize = true;
+            this.gitURL.BackColor = System.Drawing.Color.Transparent;
+            this.gitURL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.gitURL.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gitURL.ForeColor = System.Drawing.Color.Gray;
+            this.gitURL.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.gitURL.Location = new System.Drawing.Point(14, 72);
+            this.gitURL.Name = "gitURL";
+            this.gitURL.Size = new System.Drawing.Size(163, 15);
+            this.gitURL.TabIndex = 5;
+            this.gitURL.Text = "https://github.com/dedepete";
+            this.gitURL.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // DevInfoLabel
             // 
@@ -709,19 +576,19 @@ namespace FreeLauncher.Forms
             this.DevInfoLabel.TabIndex = 3;
             this.DevInfoLabel.Text = "Разработано dedepete";
             // 
-            // label5
+            // ruMcURL
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label5.ForeColor = System.Drawing.Color.Gray;
-            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label5.Location = new System.Drawing.Point(14, 135);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(117, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "http://ru-minecraft.ru";
-            this.label5.Click += new System.EventHandler(this.urlLabel_Click);
+            this.ruMcURL.AutoSize = true;
+            this.ruMcURL.BackColor = System.Drawing.Color.Transparent;
+            this.ruMcURL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ruMcURL.ForeColor = System.Drawing.Color.Gray;
+            this.ruMcURL.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ruMcURL.Location = new System.Drawing.Point(14, 135);
+            this.ruMcURL.Name = "ruMcURL";
+            this.ruMcURL.Size = new System.Drawing.Size(117, 13);
+            this.ruMcURL.TabIndex = 8;
+            this.ruMcURL.Text = "http://ru-minecraft.ru";
+            this.ruMcURL.Click += new System.EventHandler(this.urlLabel_Click);
             // 
             // GratitudesDescLabel
             // 
@@ -742,14 +609,6 @@ namespace FreeLauncher.Forms
             this.GratitudesLabel.ForeColor = System.Drawing.Color.Transparent;
             this.GratitudesLabel.Location = new System.Drawing.Point(3, 81);
             this.GratitudesLabel.Name = "GratitudesLabel";
-            // 
-            // 
-            // 
-            this.GratitudesLabel.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.GratitudesLabel.RootElement.AngleTransform = 0F;
-            this.GratitudesLabel.RootElement.FlipText = false;
-            this.GratitudesLabel.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.GratitudesLabel.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.GratitudesLabel.Size = new System.Drawing.Size(202, 41);
             this.GratitudesLabel.TabIndex = 7;
             this.GratitudesLabel.Text = "Благодарности";
@@ -772,14 +631,6 @@ namespace FreeLauncher.Forms
             this.licensePageView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.licensePageView.Location = new System.Drawing.Point(0, 0);
             this.licensePageView.Name = "licensePageView";
-            // 
-            // 
-            // 
-            this.licensePageView.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.licensePageView.RootElement.AngleTransform = 0F;
-            this.licensePageView.RootElement.FlipText = false;
-            this.licensePageView.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.licensePageView.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.licensePageView.SelectedPage = this.FreeLauncherLicense;
             this.licensePageView.Size = new System.Drawing.Size(838, 293);
             this.licensePageView.TabIndex = 0;
@@ -856,14 +707,6 @@ namespace FreeLauncher.Forms
             this.radPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.radPanel1.Location = new System.Drawing.Point(0, 387);
             this.radPanel1.Name = "radPanel1";
-            // 
-            // 
-            // 
-            this.radPanel1.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.radPanel1.RootElement.AngleTransform = 0F;
-            this.radPanel1.RootElement.FlipText = false;
-            this.radPanel1.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.radPanel1.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radPanel1.Size = new System.Drawing.Size(858, 59);
             this.radPanel1.TabIndex = 3;
             this.radPanel1.ThemeName = "VisualStudio2012Dark";
@@ -887,14 +730,6 @@ namespace FreeLauncher.Forms
             this.ManageUsersButton.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.ManageUsersButton.Location = new System.Drawing.Point(513, 6);
             this.ManageUsersButton.Name = "ManageUsersButton";
-            // 
-            // 
-            // 
-            this.ManageUsersButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.ManageUsersButton.RootElement.AngleTransform = 0F;
-            this.ManageUsersButton.RootElement.FlipText = false;
-            this.ManageUsersButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.ManageUsersButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.ManageUsersButton.Size = new System.Drawing.Size(32, 24);
             this.ManageUsersButton.TabIndex = 7;
             this.ManageUsersButton.ThemeName = "VisualStudio2012Dark";
@@ -908,14 +743,6 @@ namespace FreeLauncher.Forms
             this.NicknameDropDownList.Location = new System.Drawing.Point(314, 6);
             this.NicknameDropDownList.Name = "NicknameDropDownList";
             this.NicknameDropDownList.NullText = "Ник";
-            // 
-            // 
-            // 
-            this.NicknameDropDownList.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.NicknameDropDownList.RootElement.AngleTransform = 0F;
-            this.NicknameDropDownList.RootElement.FlipText = false;
-            this.NicknameDropDownList.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.NicknameDropDownList.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.NicknameDropDownList.Size = new System.Drawing.Size(196, 24);
             this.NicknameDropDownList.TabIndex = 3;
             this.NicknameDropDownList.ThemeName = "VisualStudio2012Dark";
@@ -954,14 +781,6 @@ namespace FreeLauncher.Forms
             this.LaunchButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.LaunchButton.Location = new System.Drawing.Point(314, 33);
             this.LaunchButton.Name = "LaunchButton";
-            // 
-            // 
-            // 
-            this.LaunchButton.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.LaunchButton.RootElement.AngleTransform = 0F;
-            this.LaunchButton.RootElement.FlipText = false;
-            this.LaunchButton.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.LaunchButton.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LaunchButton.Size = new System.Drawing.Size(231, 22);
             this.LaunchButton.TabIndex = 4;
             this.LaunchButton.Text = "Запуск игры";
@@ -975,14 +794,6 @@ namespace FreeLauncher.Forms
             this.profilesDropDownBox.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
             this.profilesDropDownBox.Location = new System.Drawing.Point(41, 6);
             this.profilesDropDownBox.Name = "profilesDropDownBox";
-            // 
-            // 
-            // 
-            this.profilesDropDownBox.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.profilesDropDownBox.RootElement.AngleTransform = 0F;
-            this.profilesDropDownBox.RootElement.FlipText = false;
-            this.profilesDropDownBox.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.profilesDropDownBox.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.profilesDropDownBox.Size = new System.Drawing.Size(191, 24);
             this.profilesDropDownBox.TabIndex = 2;
             this.profilesDropDownBox.ThemeName = "VisualStudio2012Dark";
@@ -992,14 +803,6 @@ namespace FreeLauncher.Forms
             // 
             this.EditProfile.Location = new System.Drawing.Point(122, 33);
             this.EditProfile.Name = "EditProfile";
-            // 
-            // 
-            // 
-            this.EditProfile.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.EditProfile.RootElement.AngleTransform = 0F;
-            this.EditProfile.RootElement.FlipText = false;
-            this.EditProfile.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.EditProfile.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.EditProfile.Size = new System.Drawing.Size(110, 22);
             this.EditProfile.TabIndex = 1;
             this.EditProfile.Text = "Изменить профиль";
@@ -1011,14 +814,6 @@ namespace FreeLauncher.Forms
             // 
             this.AddProfile.Location = new System.Drawing.Point(6, 33);
             this.AddProfile.Name = "AddProfile";
-            // 
-            // 
-            // 
-            this.AddProfile.RootElement.Alignment = System.Drawing.ContentAlignment.TopLeft;
-            this.AddProfile.RootElement.AngleTransform = 0F;
-            this.AddProfile.RootElement.FlipText = false;
-            this.AddProfile.RootElement.Margin = new System.Windows.Forms.Padding(0);
-            this.AddProfile.RootElement.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.AddProfile.Size = new System.Drawing.Size(110, 22);
             this.AddProfile.TabIndex = 0;
             this.AddProfile.Text = "Добавить профиль";
@@ -1046,8 +841,8 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.mainPageView)).EndInit();
             this.mainPageView.ResumeLayout(false);
             this.News.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.webPanel)).EndInit();
-            this.webPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.navBar)).EndInit();
+            this.navBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BackWebButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ForwardWebButton)).EndInit();
             this.ConsolePage.ResumeLayout(false);
@@ -1112,7 +907,7 @@ namespace FreeLauncher.Forms
         private RadPageView mainPageView;
         private RadPageViewPage News;
         private WebBrowser newsBrowser;
-        private RadPanel webPanel;
+        private RadPanel navBar;
         private RadButton BackWebButton;
         private RadButton ForwardWebButton;
         private RadPageViewPage ConsolePage;
@@ -1123,14 +918,14 @@ namespace FreeLauncher.Forms
         private RadPageView AboutPageView;
         private RadPageViewPage AboutPageViewPage;
         private RadScrollablePanel radScrollablePanel2;
-        private Label label6;
+        private Label mcOfflineURL;
         private Label MCofflineDescLabel;
         private RadLabel PartnersLabel;
         private RadLabel AboutVersion;
         private RadLabel radLabel1;
-        private Label label3;
+        private Label gitURL;
         private Label DevInfoLabel;
-        private Label label5;
+        private Label ruMcURL;
         private Label GratitudesDescLabel;
         private RadLabel GratitudesLabel;
         private RadPageViewPage LicensesPage;
