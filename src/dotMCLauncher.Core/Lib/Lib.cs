@@ -22,7 +22,7 @@ namespace dotMCLauncher.Core
         [JsonProperty("natives")]
         private JObject _natives;
         [JsonProperty("rules")]
-        private List<Rule> Rules;
+        private List<Rule> _rules;
 
         /// <summary>
         /// Возвращает значение, которое добавляется в обработанное название библиотеки, если библиотека поддерживается Windows и является архивом, который содержит необходимые для игры DLL. Если нет, то возвращает null.
@@ -35,11 +35,11 @@ namespace dotMCLauncher.Core
         /// </summary>
         public bool IsForWindows()
         {
-            if (Rules == null) {
+            if (_rules == null) {
                 return true;
             }
             bool toReturn = false;
-            foreach (Rule rule in Rules) {
+            foreach (Rule rule in _rules) {
                 switch (rule.action) {
                     case "allow":
                         toReturn = rule.os == null || rule.os["name"].ToString() == "windows";

@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("FreeLauncher")]
 [assembly: AssemblyDescription("Open Source Minecraft launcher")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Space Earth Studio Minecraft")]
+[assembly: AssemblyCompany("Igor Popov")]
 [assembly: AssemblyProduct("FreeLauncher")]
-[assembly: AssemblyCopyright("Copyright SESMC©  2015")]
+[assembly: AssemblyCopyright("Copyright Igor Popov© 2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.5.1185")]
-[assembly: AssemblyFileVersion("0.1.5.1185")]
+[assembly: AssemblyVersion("0.1.5.1200")]
+[assembly: AssemblyFileVersion("0.1.5.1200")]
 [assembly: AssemblyInformationalVersion("%version3%_%branch%.%shorthash%")]

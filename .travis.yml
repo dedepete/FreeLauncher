@@ -3,5 +3,5 @@ solution: FreeLauncher.sln
 install:
 - travis_retry nuget restore -source "https://www.nuget.org/api/v2" FreeLauncher.sln
 script:
-- xbuild /validate ./dotMCLauncher.Core/dotMCLauncher.Core.csproj
-- xbuild /validate ./dotMCLauncher.YaDra4il/dotMCLauncher.YaDra4il.csproj
+- xbuild /validate ./src/dotMCLauncher.Core/dotMCLauncher.Core.csproj
+- xbuild /validate ./src/dotMCLauncher.YaDra4il/dotMCLauncher.YaDra4il.csproj

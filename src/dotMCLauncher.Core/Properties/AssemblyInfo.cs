@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("dotMCLauncher.YaDra4il")]
+[assembly: AssemblyTitle("dotMCLauncher.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("dotMCLauncher.YaDra4il")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("dotMCLauncher.Core")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("4af00307-c23d-4162-a77f-1aaf40321d63")]
+[assembly: Guid("fdd19cef-9a87-4bdc-8fd9-95cd08d7806f")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
@@ -32,5 +31,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.1.108")]
-[assembly: AssemblyFileVersion("0.0.1.108")]
+[assembly: AssemblyVersion("0.0.5.145")]
+[assembly: AssemblyFileVersion("0.0.5.145")]

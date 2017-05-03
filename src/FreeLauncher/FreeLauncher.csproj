@@ -89,16 +89,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <HintPath>..\..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -109,19 +109,19 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Telerik.WinControls, Version=2017.1.221.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWF\2017.1.221.40\Telerik.WinControls.dll</HintPath>
+      <HintPath>..\..\lib\RCWF\2017.1.221.40\Telerik.WinControls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.WinControls.Themes.VisualStudio2012Dark, Version=2017.1.221.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWF\2017.1.221.40\Telerik.WinControls.Themes.VisualStudio2012Dark.dll</HintPath>
+      <HintPath>..\..\lib\RCWF\2017.1.221.40\Telerik.WinControls.Themes.VisualStudio2012Dark.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.WinControls.UI, Version=2017.1.221.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWF\2017.1.221.40\Telerik.WinControls.UI.dll</HintPath>
+      <HintPath>..\..\lib\RCWF\2017.1.221.40\Telerik.WinControls.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TelerikCommon, Version=2017.1.221.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWF\2017.1.221.40\TelerikCommon.dll</HintPath>
+      <HintPath>..\..\lib\RCWF\2017.1.221.40\TelerikCommon.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -161,6 +161,7 @@
     <EmbeddedResource Include="Forms\UsersForm\UsersForm.resx">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -202,16 +203,6 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotMCLauncher.Core\dotMCLauncher.Core.csproj">
-      <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
-      <Name>dotMCLauncher.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\dotMCLauncher.YaDra4il\dotMCLauncher.YaDra4il.csproj">
-      <Project>{2aec9ec1-5042-4922-b425-88b740fddc82}</Project>
-      <Name>dotMCLauncher.YaDra4il</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 и x64%29</ProductName>
@@ -222,6 +213,16 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dotMCLauncher.Core\dotMCLauncher.Core.csproj">
+      <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
+      <Name>dotMCLauncher.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dotMCLauncher.YaDra4il\dotMCLauncher.YaDra4il.csproj">
+      <Project>{2aec9ec1-5042-4922-b425-88b740fddc82}</Project>
+      <Name>dotMCLauncher.YaDra4il</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -240,11 +241,11 @@
     <Exec Command="xcopy /Y /F &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) == 'Windows_NT'" />
     <Exec Command="cp -v &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) != 'Windows_NT'" />
   </Target>
-  <Import Project="..\packages\Fody.2.0.6\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" />
+  <Import Project="..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.0.6\build\dotnet\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets'))" />
   </Target>
 </Project>

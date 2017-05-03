@@ -484,6 +484,11 @@ namespace FreeLauncher.Forms
             Process.Start((sender as Label).Text);
         }
 
+        private void langWikiLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(@"https://github.com/dedepete/FreeLauncher/wiki");
+        }
+
         private void LangDropDownList_SelectedIndexChanged(object sender, PositionChangedEventArgs e)
         {
             if (LangDropDownList.SelectedItem.Tag.ToString() == _cfg.SelectedLanguage) {
