@@ -1,4 +1,5 @@
-# FreeLauncher
+# FreeLauncher [![Build status](https://ci.appveyor.com/api/projects/status/bmha8jjjrptoa76j?svg=true)](https://ci.appveyor.com/project/dedepete/freelauncher)
+
 ![Screenshot](http://img04.imgland.net/KS3BisZ.png)
 
 This is open source unofficial Minecraft launcher, based on dotMCLauncher. Feel free to contibute.
