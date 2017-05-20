@@ -6,5 +6,6 @@ namespace dotMCLauncher.Core
     {
         [JsonProperty("path")] public string Path;
         [JsonProperty("url")] public string Url;
+        [JsonIgnore] public bool IsNative;
     }
 }

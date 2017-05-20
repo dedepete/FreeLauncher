@@ -101,7 +101,7 @@ namespace FreeLauncher.Forms
             InitializeComponent();
 
             _cfg = _applicationContext.Configuration;
-            DownloadAssets.Checked = _cfg.SkipAssetsDownload;
+            DownloadAssetsBox.Checked = _cfg.SkipAssetsDownload;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
@@ -153,7 +153,7 @@ namespace FreeLauncher.Forms
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _cfg.SkipAssetsDownload = DownloadAssets.Checked;
+            _cfg.SkipAssetsDownload = DownloadAssetsBox.Checked;
             _cfg.EnableGameLogging = EnableMinecraftLogging.Checked;
             _cfg.CloseTabAfterSuccessfulExitCode = CloseGameOutput.Checked;
         }
@@ -252,18 +252,18 @@ namespace FreeLauncher.Forms
             }
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
-                GetVersion(_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)));
+                DownloadVersion(_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)));
                 UpdateVersionListView();
             };
             bgw.RunWorkerCompleted += delegate {
                 string libraries = string.Empty;
                 BackgroundWorker bgw1 = new BackgroundWorker();
-                bgw1.DoWork += delegate { libraries = GetLibraries(); };
+                bgw1.DoWork += delegate { libraries = DownloadLibraries(); };
                 bgw1.RunWorkerCompleted += delegate {
                     BackgroundWorker bgw2 = new BackgroundWorker();
                     bgw2.DoWork += delegate {
-                        if (!DownloadAssets.Checked) {
-                            GetAssets();
+                        if (!DownloadAssetsBox.Checked) {
+                            DownloadAssets();
                         } else {
                             AppendLog("Assets download skipped.");
                         }
@@ -615,7 +615,7 @@ namespace FreeLauncher.Forms
                     new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
         }
 
-        private void GetVersion(string version)
+        private void DownloadVersion(string version)
         {
             string filename;
             WebClient downloader = new WebClient();
@@ -650,52 +650,61 @@ namespace FreeLauncher.Forms
                     string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
             }
             if (selectedVersionManifest.InheritsFrom != null) {
-                GetVersion(selectedVersionManifest.InheritsFrom);
+                DownloadVersion(selectedVersionManifest.InheritsFrom);
             }
             AppendLog($@"Finished checking {version} version avalability.");
         }
 
-        private string GetLibraries()
+        private string DownloadLibraries()
         {
             string libraries = string.Empty;
-            const OS os = OS.WINDOWS;
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions +
                                   (_versionToLaunch ??
                                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
             StatusBarValue = 0;
-            StatusBarMaxValue = selectedVersionManifest.Libs.Count(a => a.IsForWindows()) + 1;
             UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
-            AppendLog("Checking libraries...");
-            foreach (
-                Lib lib in
-                    selectedVersionManifest
-                        .Libs.Where(a => a.IsForWindows())) {
+            AppendLog("Getting required libraries...");
+            Dictionary<DownloadEntry, bool> libsToDownload = new Dictionary<DownloadEntry, bool>();
+            foreach (Lib a in selectedVersionManifest.Libs) {
+                if (a.IsForWindows())
+                    if (a.DownloadInfo == null) {
+                        libsToDownload.Add(new DownloadEntry() {Path = a.GetPath()}, false);
+                        continue;
+                    }
+                    foreach (DownloadEntry entry in a.DownloadInfo.GetDownloadsEntries(OS.WINDOWS)) {
+                        if (entry != null) libsToDownload.Add(entry, entry.IsNative);
+                    }
+            }
+            StatusBarMaxValue = libsToDownload.Count + 1;
+            foreach (DownloadEntry entry in libsToDownload.Keys) {
                 StatusBarValue++;
-                if (!File.Exists(_applicationContext.McLibs + lib.GetPath(os)) ||
+                if (!File.Exists(_applicationContext.McLibs + entry.Path) ||
                     _restoreVersion) {
-                    UpdateStatusBarAndLog($"Downloading {lib.Name}...");
+                    UpdateStatusBarAndLog($"Downloading {entry.Path}...");
                     string directory =
                         Path.GetDirectoryName(_applicationContext.McLibs +
-                                              lib.GetPath(os));
+                                              entry.Path);
                     AppendDebug("Url: " +
-                                (lib.DownloadInfo?.GetUrl(os) ??
-                                 @"https://libraries.minecraft.net/") +
-                                lib.GetPath(os));
+                                (entry.Url ??
+                                (@"https://libraries.minecraft.net/" +
+                                entry.Path)));
                     AppendDebug("InstallDir: " + directory);
-                    AppendDebug("LibGetPath: " + lib.GetPath(os));
+                    AppendDebug("LibGetPath: " + entry.Path);
                     if (!File.Exists(directory)) {
                         Directory.CreateDirectory(directory);
                     }
                     try {
                         new WebClient().DownloadFile(
-                            lib.DownloadInfo?.GetUrl(os) ?? @"https://libraries.minecraft.net/" + lib.GetPath(os),
-                            _applicationContext.McLibs + lib.GetPath(os));
+                            entry.Url ??
+                                (@"https://libraries.minecraft.net/" +
+                                entry.Path),
+                            _applicationContext.McLibs + entry.Path);
                     }
                     catch (WebException ex) {
                         AppendException("Downloading failed: " + ex.Message);
-                        File.Delete(_applicationContext.McLibs + lib.GetPath(os));
+                        File.Delete(_applicationContext.McLibs + entry.Path);
                         continue;
                     }
                     catch (Exception ex) {
@@ -703,13 +712,13 @@ namespace FreeLauncher.Forms
                         continue;
                     }
                 }
-                if (lib.IsNative != null) {
-                    UpdateStatusBarAndLog($"Unpacking {lib.Name}...");
-                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + lib.GetPath(OS.WINDOWS))) {
-                        foreach (ZipEntry entry in zip.Where(entry => entry.FileName.EndsWith(".dll"))) {
-                            AppendDebug($"Unzipping {entry.FileName}");
+                if (entry.IsNative) {
+                    UpdateStatusBarAndLog($"Unpacking {entry.Path}...");
+                    using (ZipFile zip = ZipFile.Read(_applicationContext.McLibs + entry.Path)) {
+                        foreach (ZipEntry zipEntry in zip.Where(zipEntry => zipEntry.FileName.EndsWith(".dll"))) {
+                            AppendDebug($"Unzipping {zipEntry.FileName}");
                             try {
-                                entry.Extract(_applicationContext.McDirectory + "natives\\",
+                                zipEntry.Extract(_applicationContext.McDirectory + "natives\\",
                                     ExtractExistingFileAction.OverwriteSilently);
                             }
                             catch (Exception ex) {
@@ -718,7 +727,7 @@ namespace FreeLauncher.Forms
                         }
                     }
                 } else {
-                    libraries += _applicationContext.McLibs + lib.GetPath() + ";";
+                    libraries += _applicationContext.McLibs + entry.Path + ";";
                 }
                 UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
@@ -729,7 +738,7 @@ namespace FreeLauncher.Forms
             return libraries;
         }
 
-        private void GetAssets()
+        private void DownloadAssets()
         {
             UpdateStatusBarAndLog("Checking game assets...");
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
@@ -848,7 +857,7 @@ namespace FreeLauncher.Forms
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top),
                 Enabled = false
             };
-            RichTextBox reportBox = new RichTextBox {Dock = DockStyle.Fill, ReadOnly = true};
+            RichTextBox reportBox = new RichTextBox {Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font};
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
             closeButton.Click += (sender, e) => mainPageView.Pages.Remove(outputPage);
             killProcessButton.Location = new Point(panel.Size.Width - (killProcessButton.Size.Width + 5),
@@ -890,7 +899,7 @@ namespace FreeLauncher.Forms
             MCofflineDescLabel.Text = _applicationContext.ProgramLocalization.MCofflineDescription;
             CopyrightInfoLabel.Text = _applicationContext.ProgramLocalization.CopyrightInfo;
 
-            DownloadAssets.Text = _applicationContext.ProgramLocalization.SkipAssetsDownload;
+            DownloadAssetsBox.Text = _applicationContext.ProgramLocalization.SkipAssetsDownload;
             EnableMinecraftLogging.Text = _applicationContext.ProgramLocalization.EnableMinecraftLoggingText;
             CloseGameOutput.Text = _applicationContext.ProgramLocalization.CloseGameOutputText;
         }
@@ -905,6 +914,7 @@ namespace FreeLauncher.Forms
                     VersionManifest version in
                         Directory.GetDirectories(_applicationContext.McVersions)
                             .Select(versionDir => new DirectoryInfo(versionDir))
+                            .Where(info => VersionManifest.IsValid(info))
                             .Select(info => VersionManifest.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
@@ -953,6 +963,7 @@ namespace FreeLauncher.Forms
                     "[{0}][{2}:{1}] {3}",
                     DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), logLevel,
                     methodName, text));
+                Application.DoEvents();
             }
         }
 
@@ -995,11 +1006,11 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose != Profile.LauncherVisibility.CLOSED) {
                 if (_launcherForm.EnableMinecraftLogging.Checked) {
                     _outputReader = new Thread(Reader) {
-                        Name = "OUTPUT"
+                        Name = "O"
                     };
                 }
                 _errorReader = new Thread(Reader) {
-                    Name = "ERROR"
+                    Name = "E"
                 };
                 _output = _launcherForm.AddOutputPage();
                 _output.Panel.Text = $"Minecraft version: {_output.McVersion}\n" +
@@ -1011,7 +1022,7 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.CLOSED) {
                 _launcherForm.Close();
             } else {
-                _outputReader.Start();
+                _outputReader?.Start();
                 _errorReader.Start();
             }
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
@@ -1063,20 +1074,21 @@ namespace FreeLauncher.Forms
                 _output.OutputBox.SelectionColor = color;
                 _output.OutputBox.SelectionLength = 0;
                 _output.OutputBox.ScrollToCaret();
+                Application.DoEvents();
             }
         }
 
         private void Reader()
         {
-            while (!_minecraftProcess.StandardOutput.EndOfStream) {
+            while (!_minecraftProcess.StandardOutput.EndOfStream || !_minecraftProcess.StandardError.EndOfStream) {
                 string line =
-                (Thread.CurrentThread.Name == "ERROR"
+                (Thread.CurrentThread.Name == "E"
                     ? _minecraftProcess.StandardError
                     : _minecraftProcess.StandardOutput).ReadLine();
                 if (string.IsNullOrEmpty(line)) {
                     continue;
                 }
-                AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "ERROR");
+                AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "E");
             }
         }
     }

@@ -55,25 +55,12 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Возвращает путь к библиотеке.
         /// </summary>
-        /// <param name="generate">При True генерирует значение из названия библиотеки.</param>
-        /// <param name="os">Требуемая операционная система.</param>
-        public string GetPath(bool generate = false, OperatingSystem os = OperatingSystem.OTHER)
+        public string GetPath()
         {
             string[] s = Name.Split(':');
-            return (generate || DownloadInfo == null)
-                ? string.Format("{0}\\{1}\\{2}\\{1}-{2}" +
-                                (!string.IsNullOrEmpty(IsNative) ? "-" + IsNative : string.Empty) + ".jar",
-                    s[0].Replace('.', '\\'), s[1], s[2])
-                : DownloadInfo.GetDownloadsEntry(os).Path;
-        }
-
-        /// <summary>
-        /// Возвращает путь к библиотеке.
-        /// </summary>
-        /// <param name="os">Требуемая операционная система.</param>
-        public string GetPath(OperatingSystem os)
-        {
-            return GetPath(false, os);
+            return string.Format("{0}\\{1}\\{2}\\{1}-{2}" +
+                                 (!string.IsNullOrEmpty(IsNative) ? "-" + IsNative : string.Empty) + ".jar",
+                s[0].Replace('.', '\\'), s[1], s[2]);
         }
     }
 }

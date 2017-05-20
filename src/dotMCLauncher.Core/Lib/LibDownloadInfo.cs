@@ -11,11 +11,14 @@ namespace dotMCLauncher.Core
 
         [JsonIgnore] public Lib ParentLib;
 
-        public DownloadEntry GetDownloadsEntry(OperatingSystem os)
+        public List<DownloadEntry> GetDownloadsEntries(OperatingSystem os)
         {
+            List<DownloadEntry> result = new List<DownloadEntry>();
             if (os == OperatingSystem.OTHER || Classifiers == null) {
-                return Artifact;
+                result.Add(Artifact);
+                return result;
             }
+            result.Add(Artifact);
             string dictEntry = string.Empty;
             switch (os) {
                 case OperatingSystem.WINDOWS:
@@ -28,15 +31,14 @@ namespace dotMCLauncher.Core
                     dictEntry = "natives-osx";
                     break;
             }
-            return Classifiers.ContainsKey(dictEntry)
-                ? Classifiers[dictEntry]
-                : Classifiers.ContainsKey(dictEntry + (IntPtr.Size == 8 ? "-64" : "-32"))
-                    ? Classifiers[dictEntry + (IntPtr.Size == 8 ? "-64" : "-32")]
-                    : Artifact;
+            if (Classifiers.ContainsKey(dictEntry)) {
+                Classifiers[dictEntry].IsNative = true;
+                result.Add(Classifiers[dictEntry]);
+            } else if (Classifiers.ContainsKey(dictEntry + (IntPtr.Size == 8 ? "-64" : "-32"))) {
+                Classifiers[dictEntry + (IntPtr.Size == 8 ? "-64" : "-32")].IsNative = true;
+                result.Add(Classifiers[dictEntry + (IntPtr.Size == 8 ? "-64" : "-32")]);
+            }
+            return result;
         }
-
-        public string GetPath(OperatingSystem os = OperatingSystem.OTHER) => GetDownloadsEntry(os).Path;
-
-        public string GetUrl(OperatingSystem os = OperatingSystem.OTHER) => GetDownloadsEntry(os).Url;
     }
 }

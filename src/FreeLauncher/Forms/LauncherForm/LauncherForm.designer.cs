@@ -63,7 +63,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
             this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
             this.LangDropDownList = new Telerik.WinControls.UI.RadDropDownList();
-            this.DownloadAssets = new Telerik.WinControls.UI.RadCheckBox();
+            this.DownloadAssetsBox = new Telerik.WinControls.UI.RadCheckBox();
             this.AboutVersion = new Telerik.WinControls.UI.RadLabel();
             this.mcOfflineURL = new System.Windows.Forms.Label();
             this.MCofflineDescLabel = new System.Windows.Forms.Label();
@@ -121,7 +121,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssets)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AboutVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PartnersLabel)).BeginInit();
@@ -431,7 +431,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.BackColor = System.Drawing.Color.Transparent;
             this.radGroupBox1.Controls.Add(this.radLabel4);
             this.radGroupBox1.Controls.Add(this.LangDropDownList);
-            this.radGroupBox1.Controls.Add(this.DownloadAssets);
+            this.radGroupBox1.Controls.Add(this.DownloadAssetsBox);
             this.radGroupBox1.HeaderText = "Основные";
             this.radGroupBox1.Location = new System.Drawing.Point(469, 14);
             this.radGroupBox1.Name = "radGroupBox1";
@@ -467,14 +467,14 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.ThemeName = "VisualStudio2012Dark";
             this.LangDropDownList.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.LangDropDownList_SelectedIndexChanged);
             // 
-            // DownloadAssets
+            // DownloadAssetsBox
             // 
-            this.DownloadAssets.Location = new System.Drawing.Point(5, 45);
-            this.DownloadAssets.Name = "DownloadAssets";
-            this.DownloadAssets.Size = new System.Drawing.Size(181, 18);
-            this.DownloadAssets.TabIndex = 0;
-            this.DownloadAssets.Text = "Пропускать загрузку ресурсов";
-            this.DownloadAssets.ThemeName = "VisualStudio2012Dark";
+            this.DownloadAssetsBox.Location = new System.Drawing.Point(5, 45);
+            this.DownloadAssetsBox.Name = "DownloadAssetsBox";
+            this.DownloadAssetsBox.Size = new System.Drawing.Size(181, 18);
+            this.DownloadAssetsBox.TabIndex = 0;
+            this.DownloadAssetsBox.Text = "Пропускать загрузку ресурсов";
+            this.DownloadAssetsBox.ThemeName = "VisualStudio2012Dark";
             // 
             // AboutVersion
             // 
@@ -887,7 +887,7 @@ namespace FreeLauncher.Forms
             this.radGroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssets)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AboutVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PartnersLabel)).EndInit();
@@ -972,7 +972,7 @@ namespace FreeLauncher.Forms
         private RadGroupBox radGroupBox1;
         public RadLabel radLabel4;
         private RadDropDownList LangDropDownList;
-        public RadCheckBox DownloadAssets;
+        public RadCheckBox DownloadAssetsBox;
         private Label CopyrightInfoLabel;
         private LinkLabel langWikiLink;
     }

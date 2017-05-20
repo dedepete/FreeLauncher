@@ -243,6 +243,8 @@ namespace FreeLauncher.Forms
                         new DirectoryInfo(b).Name))
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
+                    where VersionManifest.IsValid(new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
+                                new DirectoryInfo(b).Name)))
                     select
                         VersionManifest.ParseVersion(
                             new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,

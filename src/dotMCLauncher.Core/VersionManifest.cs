@@ -77,12 +77,8 @@ namespace dotMCLauncher.Core
         /// <param name="parseInheritableVersion">Парсинг зависимой версии.</param>
         public static VersionManifest ParseVersion(DirectoryInfo pathToDirectory, bool parseInheritableVersion = true)
         {
+            IsValid(pathToDirectory, true);
             string version = pathToDirectory.Name;
-            if (!File.Exists(Path.Combine(pathToDirectory.ToString(), version + ".json"))) {
-                throw new VersionIsNotExists($"Directory '{version}' doesn't contain JSON file. Path: {pathToDirectory}") {
-                    Version = version
-                };
-            }
             VersionManifest ver = (VersionManifest)JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(pathToDirectory.ToString(), version + ".json")), typeof (VersionManifest));
             if (ver.InheritsFrom == null || !parseInheritableVersion) {
                 return ver;
@@ -91,6 +87,31 @@ namespace dotMCLauncher.Core
                 ParseVersion(new DirectoryInfo(Path.Combine(pathToDirectory.Parent.FullName, ver.InheritsFrom)));
             ver.Libs.AddRange(ver.InheritableVersionManifest.Libs);
             return ver;
+        }
+
+        public static bool IsValid(DirectoryInfo pathToDirectory, bool throwsExceptions = false)
+        {
+            string version = pathToDirectory.Name;
+            if (!File.Exists(Path.Combine(pathToDirectory.ToString(), version + ".json"))) {
+                if (throwsExceptions) {
+                    throw new VersionIsNotExists(
+                        $"Directory '{version}' doesn't contain JSON file. Path: {pathToDirectory}") {
+                        Version = version
+                    };
+                }
+                return false;
+            }
+            VersionManifest ver = (VersionManifest)JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(pathToDirectory.ToString(), version + ".json")), typeof(VersionManifest));
+            if (ver == null) {
+                if (throwsExceptions) {
+                    throw new VersionIsNotExists(
+                        $"Directory '{version}' contains invalid JSON file. Path: {pathToDirectory}") {
+                        Version = version
+                    };
+                }
+                return false;
+            }
+            return true;
         }
     }
 
