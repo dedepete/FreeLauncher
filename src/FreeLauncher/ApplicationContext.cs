@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 using CommandLine;
 using Newtonsoft.Json;
@@ -55,20 +59,32 @@ namespace FreeLauncher
 
         private Configuration GetConfiguration()
         {
-            return File.Exists(_configurationFile) ? JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile)) : new Configuration();
+            return File.Exists(_configurationFile)
+                ? JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile))
+                : new Configuration() {
+                    SelectedLanguage =
+                        CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == "ru" ? "ru-RU" : "en-UK"
+                };
         }
 
         private void LoadLocalization()
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string s = new StreamReader(assembly.GetManifestResourceStream("FreeLauncher.Translations.en_UK.lang.json")).ReadToEnd();
+            LocalizationsList.Add(JObject.Parse(s)["LanguageTag"].ToString(), JsonConvert.DeserializeObject<Localization>(s));
+            if (Configuration.SelectedLanguage == "en-UK") {
+                ProgramLocalization = LocalizationsList["en-UK"];
+            }
             var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
             if (!langsDirectory.Exists) {
                 return;
             }
             foreach (var local in langsDirectory
-                .GetFiles()
+                .GetFiles("*.json", SearchOption.AllDirectories)
                 .Where(file => file.Name.Contains("lang"))
                 .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
                 .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
+                if (LocalizationsList.ContainsKey(local.LanguageTag)) { continue; }
                 LocalizationsList.Add(local.LanguageTag, local);
                 if (local.LanguageTag == Configuration.SelectedLanguage) {
                     ProgramLocalization = local;

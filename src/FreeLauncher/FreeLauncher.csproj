@@ -161,7 +161,6 @@
     <EmbeddedResource Include="Forms\UsersForm\UsersForm.resx">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -183,9 +182,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Translations\lang.en-UK.json" />
-    <None Include="Translations\lang.ru-RU.json" />
-    <None Include="Translations\lang.uk-UA.json" />
+    <EmbeddedResource Include="Translations\en_UK\lang.json" />
+    <EmbeddedResource Include="Translations\ru_RU\lang.json" />
+    <Resource Include="Translations\uk_UA\lang.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\minecraft-logo.png" />
@@ -238,8 +237,8 @@
   <Target Name="BeforeBuild">
   </Target> -->
   <Target Name="AfterBuild">
-    <Exec Command="xcopy /Y /F &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) == 'Windows_NT'" />
-    <Exec Command="cp -v &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) != 'Windows_NT'" />
+    <Exec Command="xcopy /S /Y /F &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) == 'Windows_NT'" />
+    <Exec Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) != 'Windows_NT'" />
   </Target>
   <Import Project="..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
