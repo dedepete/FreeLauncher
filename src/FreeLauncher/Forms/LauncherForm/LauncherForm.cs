@@ -486,7 +486,7 @@ namespace FreeLauncher.Forms
 
         private void langWikiLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(@"https://github.com/dedepete/FreeLauncher/wiki");
+            Process.Start(@"https://github.com/dedepete/FreeLauncher/wiki/Change-language");
         }
 
         private void LangDropDownList_SelectedIndexChanged(object sender, PositionChangedEventArgs e)
@@ -875,6 +875,9 @@ namespace FreeLauncher.Forms
                 KillButton = killProcessButton,
                 McVersion = _versionToLaunch ?? (
                            _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
+                McType = VersionManifest.ParseVersion(
+                            new DirectoryInfo(_applicationContext.McVersions + (_versionToLaunch ?? (
+                                (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))))).ReleaseType,
                 Panel = panel
             };
         }
@@ -992,39 +995,58 @@ namespace FreeLauncher.Forms
         private readonly Profile _profile;
         private readonly Process _minecraftProcess;
         private LauncherFormOutput _output;
-        private static Thread _outputReader, _errorReader;
+        private readonly Queue<Action> _logQueue;
 
         public MinecraftProcess(Process minecraftProcess, LauncherForm launcherForm, Profile profile)
         {
             _launcherForm = launcherForm;
             _profile = profile;
             _minecraftProcess = minecraftProcess;
+            _logQueue = new Queue<Action>();
         }
 
         public void Launch()
         {
             if (_profile.LauncherVisibilityOnGameClose != Profile.LauncherVisibility.CLOSED) {
-                if (_launcherForm.EnableMinecraftLogging.Checked) {
-                    _outputReader = new Thread(Reader) {
-                        Name = "O"
-                    };
-                }
-                _errorReader = new Thread(Reader) {
-                    Name = "E"
-                };
                 _output = _launcherForm.AddOutputPage();
-                _output.Panel.Text = $"Minecraft version: {_output.McVersion}\n" +
-                                     "Status: Running";
                 _output.KillButton.Click += KillProcessButton_Click;
                 _minecraftProcess.Exited += MinecraftProcess_Exited;
+                if (_launcherForm.EnableMinecraftLogging.Checked) {
+                    _minecraftProcess.OutputDataReceived +=
+                        (sender, args) => _logQueue.Enqueue(() => AppendLog($"[0] {args.Data}"));
+                } else {
+                    AppendLog($"NOTICE:{Environment.NewLine}Logging from [O]UTPUT thread has been disabled. It can be enabled in the Settings.{Environment.NewLine}{Environment.NewLine}");
+                }
+                _minecraftProcess.ErrorDataReceived += (sender, args) => _logQueue.Enqueue(() => AppendLog($"[E] {args.Data}", true));
             }
             _minecraftProcess.Start();
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.CLOSED) {
                 _launcherForm.Close();
-            } else {
-                _outputReader?.Start();
-                _errorReader.Start();
+                return;
             }
+            _minecraftProcess.BeginOutputReadLine();
+            _minecraftProcess.BeginErrorReadLine();
+            new Thread(() => {
+                while (_minecraftProcess.HasExited != true || _logQueue.Count != 0) {
+                    if (_output.Panel.Disposing || _output.Panel.IsDisposed) {
+                        break;
+                    }
+                    _output.Panel?.Invoke((MethodInvoker) delegate {
+                        _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}\n" +
+                                             "Status: " + (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output") + "\n" +
+                                             $"Log queue: {_logQueue.Count}";
+                        Application.DoEvents();
+                    });
+                    if (_logQueue.Count != 0) {
+                        _logQueue.Dequeue().Invoke();
+                    }
+                }
+                if (_minecraftProcess.HasExited) {
+                    PrintExitInfo();
+                }
+            }) {
+                IsBackground = true
+            }.Start();
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Hide();
             }
@@ -1040,24 +1062,54 @@ namespace FreeLauncher.Forms
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.HIDDEN) {
                 _launcherForm.Invoke((MethodInvoker) (() => _launcherForm.Show()));
             }
-            string reason = _minecraftProcess.ExitCode == 0
-                ? "Stable closure"
-                : _minecraftProcess.ExitCode == -1 ? "Process killed" : "Crashed";
             _launcherForm.Invoke((MethodInvoker) delegate {
-                _output.Panel.Text = $"Minecraft version: {_output.McVersion}\n" +
-                                 "Status: Stopped\n" +
-                                 $"Exit code: {_minecraftProcess.ExitCode} (Reason: {reason})\n" +
-                                 $"Session duration: {_minecraftProcess.TotalProcessorTime:g}";
-                _output.CloseButton.Enabled = true;
+                _output.KillButton.Enabled = false;
                 if (_launcherForm.CloseGameOutput.Checked &&
-                    (_minecraftProcess.ExitCode == 0 || _minecraftProcess.ExitCode == -1)) {
+                    new[] { 0, -1 }.Contains(_minecraftProcess.ExitCode)) {
                     _output.CloseButton.PerformClick();
                 }
-                _output.KillButton.Enabled = false;
             });
         }
 
-        private void AppendLog(string text, bool iserror)
+        private void PrintExitInfo()
+        {
+            if (_output.OutputBox.InvokeRequired) {
+                _output.OutputBox.Invoke(new Action(PrintExitInfo));
+            } else {
+                string reason = _minecraftProcess.ExitCode == 0
+                    ? "Stable closure"
+                    : _minecraftProcess.ExitCode == -1 ? "Process killed" : "Crashed";
+                _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}\n" +
+                                     "Status: Stopped\n" +
+                                     $"Exit code: {_minecraftProcess.ExitCode} (Reason: {reason})\n" +
+                                     $"Session duration: {_minecraftProcess.TotalProcessorTime:g}";
+                _output.CloseButton.Enabled = true;
+                if (new[] {0, -1}.Contains(_minecraftProcess.ExitCode)) return;
+                AppendLog(string.Empty);
+                AppendLog(new string('=', 12));
+                AppendLog("//Oops, seems like the game has been exited with unusual error code!");
+                AppendLog("//Printing debug information right now!");
+                AppendLog(string.Empty);
+                AppendLog("System info:");
+                AppendLog($"{new string(' ', 2)}Operating system:");
+                AppendLog($"{new string(' ', 4)}OSFullName: {new ComputerInfo().OSFullName}");
+                AppendLog($"{new string(' ', 4)}Build: {Environment.OSVersion.Version.Build}");
+                AppendLog($"{new string(' ', 4)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
+                AppendLog(
+                    $"{new string(' ', 2)}Java path: \"{Java.JavaInstallationPath}\" ({Java.JavaBitInstallation}-bit)");
+                AppendLog(string.Empty);
+                AppendLog("Process info:");
+                AppendLog($"{new string(' ', 2)}Minecraft version/type:{_output.McVersion}/{_output.McType}");
+                AppendLog($"{new string(' ', 2)}Executable file: \"{_minecraftProcess.StartInfo.FileName}\"");
+                AppendLog($"{new string(' ', 2)}Arguments: \"{_minecraftProcess.StartInfo.Arguments}\"");
+                AppendLog($"{new string(' ', 2)}Exit code: {_minecraftProcess.ExitCode}");
+                AppendLog(string.Empty);
+                AppendLog("//Finished printing debug information");
+                AppendLog(new string('=', 12));
+            }
+        }
+
+        private void AppendLog(string text, bool iserror = false)
         {
             if (_output.OutputBox.IsDisposed) {
                 return;
@@ -1077,20 +1129,6 @@ namespace FreeLauncher.Forms
                 Application.DoEvents();
             }
         }
-
-        private void Reader()
-        {
-            while (!_minecraftProcess.StandardOutput.EndOfStream || !_minecraftProcess.StandardError.EndOfStream) {
-                string line =
-                (Thread.CurrentThread.Name == "E"
-                    ? _minecraftProcess.StandardError
-                    : _minecraftProcess.StandardOutput).ReadLine();
-                if (string.IsNullOrEmpty(line)) {
-                    continue;
-                }
-                AppendLog($"[{Thread.CurrentThread.Name}] {line}", Thread.CurrentThread.Name == "E");
-            }
-        }
     }
 
     public struct LauncherFormOutput
@@ -1100,5 +1138,6 @@ namespace FreeLauncher.Forms
         public RadButton KillButton;
         public RadPanel Panel;
         public string McVersion;
+        public string McType;
     }
 }
