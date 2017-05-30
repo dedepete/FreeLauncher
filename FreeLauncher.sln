@@ -51,6 +51,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "screenshots", "screenshots"
 		.github\assets\wiki\screenshots\scr_015_06.png = .github\assets\wiki\screenshots\scr_015_06.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2AE1C310-EEF2-4741-9940-9206D8762459}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\post_build.bat = scripts\post_build.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,5 +115,6 @@ Global
 		{A4748344-C88A-4690-ACBB-91D1C73E3DE8} = {68CAA24B-D44E-4A65-8100-E358C73BAF82}
 		{1287194F-03E2-4144-8C1A-20C760AF7693} = {A4748344-C88A-4690-ACBB-91D1C73E3DE8}
 		{92CEFE79-96B0-4653-B423-EE4A539D5BAE} = {A4748344-C88A-4690-ACBB-91D1C73E3DE8}
+		{2AE1C310-EEF2-4741-9940-9206D8762459} = {FE424D60-EAE8-4843-A970-F35DDFFE81C5}
 	EndGlobalSection
 EndGlobal

@@ -232,13 +232,15 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target> -->
   <Target Name="AfterBuild">
-    <Exec Command="xcopy /S /Y /F &quot;$(ProjectDir)Translations\*&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) == 'Windows_NT'" />
-    <Exec Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" Condition="$(OS) != 'Windows_NT'" />
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')"/>
+    </ItemGroup>
+    <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\post_build.bat $(Configuration) @(VersionNumber)" />
+    <Exec Condition="$(OS) != 'Windows_NT'" Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" />
   </Target>
   <Import Project="..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

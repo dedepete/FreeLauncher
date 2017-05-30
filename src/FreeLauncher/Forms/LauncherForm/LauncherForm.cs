@@ -1027,7 +1027,7 @@ namespace FreeLauncher.Forms
             _minecraftProcess.BeginOutputReadLine();
             _minecraftProcess.BeginErrorReadLine();
             new Thread(() => {
-                while (_minecraftProcess.HasExited != true || _logQueue.Count != 0) {
+                while (!_minecraftProcess.HasExited|| _logQueue.Count != 0) {
                     if (_output.Panel.Disposing || _output.Panel.IsDisposed) {
                         break;
                     }
