@@ -1,4 +1,4 @@
-# FreeLauncher [![Build status](https://ci.appveyor.com/api/projects/status/bmha8jjjrptoa76j?svg=true)](https://ci.appveyor.com/project/dedepete/freelauncher)
+# FreeLauncher [![Releases](https://img.shields.io/github/release/dedepete/FreeLauncher.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Build status](https://ci.appveyor.com/api/projects/status/bmha8jjjrptoa76j?svg=true)](https://ci.appveyor.com/project/dedepete/freelauncher)
 
 ![Screenshot](http://img04.imgland.net/KS3BisZ.png)
 
