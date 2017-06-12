@@ -38,8 +38,10 @@ namespace FreeLauncher.Forms
 
         private void AddUserButton_Click(object sender, EventArgs e)
         {
-            AddUserButton.Enabled =
-                UsernameTextBox.Enabled = PasswordTextBox.Enabled = YesNoToggleSwitch.Enabled = false;
+            AddUserButton.Enabled = false;
+            UsernameTextBox.Enabled = false;
+            PasswordTextBox.Enabled = false;
+            YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
             AddUserButton.Text = _applicationContext.ProgramLocalization.PleaseWait;
             BackgroundWorker bgw = new BackgroundWorker();
@@ -73,7 +75,9 @@ namespace FreeLauncher.Forms
                     _userManager.SelectedUsername = user.Username;
                 }
                 catch (WebException ex) {
-                    if (ex.Status != WebExceptionStatus.ProtocolError) return;
+                    if (ex.Status != WebExceptionStatus.ProtocolError) {
+                        return;
+                    }
                     RadMessageBox.Show(_applicationContext.ProgramLocalization.IncorrectLoginOrPassword,
                         _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
                         RadMessageIcon.Error);
@@ -87,7 +91,8 @@ namespace FreeLauncher.Forms
                 }));
             };
             bgw.RunWorkerCompleted += delegate {
-                UsernameTextBox.Enabled = YesNoToggleSwitch.Enabled = true;
+                UsernameTextBox.Enabled = true;
+                YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
                 AddUserButton.Text = _applicationContext.ProgramLocalization.AddNewUserButton;
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);

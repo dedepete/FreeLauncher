@@ -279,7 +279,8 @@ namespace FreeLauncher.Forms
 
         private void fastConnectCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)
         {
-            ipTextBox.Enabled = portTextBox.Enabled = FastConnectCheckBox.Checked;
+            ipTextBox.Enabled = FastConnectCheckBox.Checked;
+            portTextBox.Enabled = FastConnectCheckBox.Checked;
         }
 
         private void javaExecutableCheckBox_ToggleStateChanged(object sender, StateChangedEventArgs args)

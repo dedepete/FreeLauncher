@@ -114,7 +114,9 @@ namespace dotMCLauncher.Core
                 return false;
             }
             VersionManifest ver = (VersionManifest)JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(pathToDirectory.ToString(), version + ".json")), typeof(VersionManifest));
-            if (ver != null) return true;
+            if (ver != null) {
+                return true;
+            }
             if (throwsExceptions) {
                 throw new VersionIsNotExists(
                     $"Directory '{version}' contains invalid JSON file. Path: {pathToDirectory}") {
