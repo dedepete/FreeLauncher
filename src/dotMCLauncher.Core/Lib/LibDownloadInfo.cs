@@ -30,6 +30,8 @@ namespace dotMCLauncher.Core
                 case OperatingSystem.MACOS:
                     dictEntry = "natives-osx";
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(os), os, null);
             }
             if (Classifiers.ContainsKey(dictEntry)) {
                 Classifiers[dictEntry].IsNative = true;

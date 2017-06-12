@@ -34,8 +34,7 @@ namespace dotMCLauncher.Core
         /// </summary>
         public string ToJson()
         {
-            return ToJson(Formatting.Indented, new JsonSerializerSettings()
-            {
+            return ToJson(Formatting.Indented, new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore
             });
         }
@@ -46,8 +45,7 @@ namespace dotMCLauncher.Core
         /// <param name="formatting">Формат текста.</param>
         public string ToJson(Formatting formatting)
         {
-            return ToJson(formatting, new JsonSerializerSettings()
-            {
+            return ToJson(formatting, new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore
             });
         }
@@ -59,7 +57,7 @@ namespace dotMCLauncher.Core
         /// <param name="settings">Настройки сериалайзера.</param>
         public string ToJson(Formatting formatting, JsonSerializerSettings settings)
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
         }
 
         /// <summary>

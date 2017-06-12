@@ -53,6 +53,8 @@ namespace FreeLauncher.Forms
                         case "modified":
                             VersionSelector.SelectedPage = modVersionsPage;
                             break;
+                        default:
+                            throw new InvalidOperationException($"Unexpected value: {item}");
                     }
                 }
             }
@@ -132,7 +134,7 @@ namespace FreeLauncher.Forms
                 CurrentProfile.WindowInfo = null;
             }
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
-                CurrentProfile.FastConnectionSettigs = new ServerInfo() {
+                CurrentProfile.FastConnectionSettigs = new ServerInfo {
                     ServerIP = ipTextBox.Text,
                     ServerPort = Convert.ToUInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text

@@ -47,6 +47,8 @@ namespace dotMCLauncher.Core
                     case "disallow":
                         toReturn = rule.os == null ? toReturn : rule.os["name"].ToString() != "windows";
                         break;
+                    default:
+                        throw new InvalidOperationException($"Unexpected value: {rule.action}");
                 }
             }
             return toReturn;

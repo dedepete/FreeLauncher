@@ -98,9 +98,18 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Вывод профиля в JSON формате. 
         /// </summary>
-        public string ToString(Formatting formatting = Formatting.None)
+        public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, formatting, new JsonSerializerSettings {
+            return ToString(Formatting.None);
+        }
+
+        /// <summary>
+        /// Вывод профиля в JSON формате. 
+        /// </summary>
+        public string ToString(Formatting formatting)
+        {
+            return JsonConvert.SerializeObject(this, formatting, new JsonSerializerSettings
+            {
                 NullValueHandling = NullValueHandling.Ignore
             });
         }

@@ -371,17 +371,15 @@ namespace FreeLauncher.Forms
 
         private void newsBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
-                BackWebButton.Enabled = newsBrowser.CanGoBack;
-                ForwardWebButton.Enabled = newsBrowser.CanGoForward;
-                navBar.Text = newsBrowser.Url.ToString();
-                navBar.Visible = true;
-            } else {
-                navBar.Visible = false;
-            }
+            ProcessUrl();
         }
 
         private void newsBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        {
+            ProcessUrl();
+        }
+
+        private void ProcessUrl()
         {
             if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
@@ -418,15 +416,8 @@ namespace FreeLauncher.Forms
                 _versionToLaunch = versionsListView.SelectedItem[0].ToString();
                 LaunchButton.PerformClick();
             };
-            bool enableRestoreButton = false;
-            switch (ver.ReleaseType) {
-                case "release":
-                case "snapshot":
-                case "old_beta":
-                case "old_alpha":
-                    enableRestoreButton = true;
-                    break;
-            }
+            bool enableRestoreButton = ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" || ver.ReleaseType == "old_beta" ||
+                                       ver.ReleaseType == "old_alpha";
             RadMenuItem restoreVerButton = new RadMenuItem { Text = "Restore", Enabled = enableRestoreButton };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;
@@ -668,14 +659,17 @@ namespace FreeLauncher.Forms
             AppendLog("Getting required libraries...");
             Dictionary<DownloadEntry, bool> libsToDownload = new Dictionary<DownloadEntry, bool>();
             foreach (Lib a in selectedVersionManifest.Libs) {
-                if (a.IsForWindows())
+                if (a.IsForWindows()) {
                     if (a.DownloadInfo == null) {
                         libsToDownload.Add(new DownloadEntry() {Path = a.GetPath()}, false);
                         continue;
                     }
-                    foreach (DownloadEntry entry in a.DownloadInfo.GetDownloadsEntries(OS.WINDOWS)) {
-                        if (entry != null) libsToDownload.Add(entry, entry.IsNative);
+                }
+                foreach (DownloadEntry entry in a.DownloadInfo.GetDownloadsEntries(OS.WINDOWS)) {
+                    if (entry != null) {
+                        libsToDownload.Add(entry, entry.IsNative);
                     }
+                }
             }
             StatusBarMaxValue = libsToDownload.Count + 1;
             foreach (DownloadEntry entry in libsToDownload.Keys) {
@@ -917,7 +911,7 @@ namespace FreeLauncher.Forms
                     VersionManifest version in
                         Directory.GetDirectories(_applicationContext.McVersions)
                             .Select(versionDir => new DirectoryInfo(versionDir))
-                            .Where(info => VersionManifest.IsValid(info))
+                            .Where(VersionManifest.IsValid)
                             .Select(info => VersionManifest.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
@@ -1084,7 +1078,9 @@ namespace FreeLauncher.Forms
                                      $"Exit code: {_minecraftProcess.ExitCode} (Reason: {reason})\n" +
                                      $"Session duration: {_minecraftProcess.TotalProcessorTime:g}";
                 _output.CloseButton.Enabled = true;
-                if (new[] {0, -1}.Contains(_minecraftProcess.ExitCode)) return;
+                if (new[] {0, -1}.Contains(_minecraftProcess.ExitCode)) {
+                    return;
+                }
                 AppendLog(string.Empty);
                 AppendLog(new string('=', 12));
                 AppendLog("//Oops, seems like the game has been exited with unusual error code!");

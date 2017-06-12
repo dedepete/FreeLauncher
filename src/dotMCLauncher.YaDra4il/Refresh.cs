@@ -18,11 +18,5 @@ namespace dotMCLauncher.YaDra4il
                 {"requestUser", true}
             }.ToString();
         }
-
-        public override Request Parse(string json)
-        {
-            Console.WriteLine(json);
-            return base.Parse(json);
-        }
     }
 }

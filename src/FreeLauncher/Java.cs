@@ -46,7 +46,9 @@ namespace FreeLauncher
                     }
                     string currentVersion = baseKey.GetValue("CurrentVersion").ToString();
                     using (RegistryKey homeKey = baseKey.OpenSubKey(currentVersion))
-                        if (homeKey != null) return homeKey.GetValue("JavaHome").ToString();
+                        if (homeKey != null) {
+                            return homeKey.GetValue("JavaHome").ToString();
+                        }
                 }
                 break;
             }

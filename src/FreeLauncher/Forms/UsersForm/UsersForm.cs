@@ -73,14 +73,11 @@ namespace FreeLauncher.Forms
                     _userManager.SelectedUsername = user.Username;
                 }
                 catch (WebException ex) {
-                    switch (ex.Status) {
-                        case WebExceptionStatus.ProtocolError:
-                            RadMessageBox.Show(_applicationContext.ProgramLocalization.IncorrectLoginOrPassword, _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
-                                RadMessageIcon.Error);
-                            return;
-                        default:
-                            return;
-                    }
+                    if (ex.Status != WebExceptionStatus.ProtocolError) return;
+                    RadMessageBox.Show(_applicationContext.ProgramLocalization.IncorrectLoginOrPassword,
+                        _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
+                        RadMessageIcon.Error);
+                    return;
                 }
                 Invoke(new Action(() => {
                     SaveUsers();
@@ -112,7 +109,7 @@ namespace FreeLauncher.Forms
         {
             File.WriteAllText(_applicationContext.McLauncher + "users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
-                    new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}));
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         private void DeleteUserButton_Click(object sender, EventArgs e)

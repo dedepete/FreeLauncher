@@ -10,7 +10,7 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Устанавливает значения по умолчанию.
         /// </summary>
-        void SetDefaultValues()
+        public void SetDefaultValues()
         {
             Y = 480;
             X = 854;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Newtonsoft.Json;
 
 namespace dotMCLauncher.Core
@@ -10,12 +11,18 @@ namespace dotMCLauncher.Core
         [JsonProperty("latest")] public RawVersionListManifestLatest LatestVersions;
         [JsonProperty("versions")] public List<RawVersionListManifestEntry> Versions;
 
-        public List<RawVersionListManifestEntry> GetVersionsByType(string type, RawVersionListManifestSortMethod sorting = RawVersionListManifestSortMethod.INCLUDE)
+        public List<RawVersionListManifestEntry> GetVersionsByType(string type)
+            => GetVersionsByType(type, RawVersionListManifestSortMethod.INCLUDE);
+
+        public List<RawVersionListManifestEntry> GetVersionsByType(string type, RawVersionListManifestSortMethod sorting)
             => Versions.Where(x => sorting == RawVersionListManifestSortMethod.INCLUDE
                 ? x.ReleaseType == type
                 : x.ReleaseType != type).ToList();
 
-        public List<RawVersionListManifestEntry> GetVersionsByType(string[] types, RawVersionListManifestSortMethod sorting = RawVersionListManifestSortMethod.INCLUDE)
+        public List<RawVersionListManifestEntry> GetVersionsByTypes(string[] types)
+            => GetVersionsByTypes(types, RawVersionListManifestSortMethod.INCLUDE);
+
+        public List<RawVersionListManifestEntry> GetVersionsByTypes(string[] types, RawVersionListManifestSortMethod sorting)
             => Versions.Where(x => sorting == RawVersionListManifestSortMethod.INCLUDE
                 ? types.Contains(x.ReleaseType)
                 : !types.Contains(x.ReleaseType)).ToList();

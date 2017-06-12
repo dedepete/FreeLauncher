@@ -13,8 +13,7 @@
 
         public override Request Parse(string json)
         {
-            json = json.Trim('[', ']');
-            return base.Parse(json);
+            return base.Parse(json.Trim('[', ']'));
         }
     }
 }

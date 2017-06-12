@@ -59,7 +59,7 @@ namespace FreeLauncher
         {
             return File.Exists(_configurationFile)
                 ? JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(_configurationFile))
-                : new Configuration() {
+                : new Configuration {
                     SelectedLanguage =
                         CultureInfo.InstalledUICulture.TwoLetterISOLanguageName == "ru" ? "ru-RU" : "en-UK"
                 };
