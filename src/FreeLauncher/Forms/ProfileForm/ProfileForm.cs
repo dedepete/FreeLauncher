@@ -54,7 +54,7 @@ namespace FreeLauncher.Forms
                             VersionSelector.SelectedPage = modVersionsPage;
                             break;
                         default:
-                            throw new InvalidOperationException($"Unexpected value: {item}");
+                            throw new ArgumentOutOfRangeException(nameof(item), item, null);
                     }
                 }
             }
@@ -72,7 +72,7 @@ namespace FreeLauncher.Forms
             }
             if (CurrentProfile.FastConnectionSettigs != null) {
                 FastConnectCheckBox.Checked = true;
-                ipTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerIP;
+                ipTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerIp;
                 portTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerPort.ToString();
             }
             switch (CurrentProfile.LauncherVisibilityOnGameClose) {
@@ -86,7 +86,7 @@ namespace FreeLauncher.Forms
                     stateBox.SelectedIndex = 0;
                     break;
             }
-            if (Java.JavaExecutable == "\\bin\\java.exe") {
+            if (Java.JavaExecutable == @"\bin\java.exe") {
                 RadMessageBox.Show(this, _applicationContext.ProgramLocalization.JavaDetectionFailed,
                     _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK, RadMessageIcon.Error);
             }
@@ -117,7 +117,12 @@ namespace FreeLauncher.Forms
         private void saveProfileButton_Click(object sender, EventArgs e)
         {
             CurrentProfile.ProfileName = nameBox.Text;
-            if (GameDirectoryCheckBox.Checked && gameDirectoryBox.Text != _applicationContext.McDirectory &&
+            if (GameDirectoryCheckBox.Checked &&
+                !new[] {
+                    _applicationContext.McDirectory, _applicationContext.McDirectory + "/",
+                    _applicationContext.McDirectory + @"\",
+                    string.Empty
+                }.Contains(gameDirectoryBox.Text) &&
                 gameDirectoryBox.Text != string.Empty) {
                 CurrentProfile.WorkingDirectory = gameDirectoryBox.Text;
             } else {
@@ -135,7 +140,7 @@ namespace FreeLauncher.Forms
             }
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
                 CurrentProfile.FastConnectionSettigs = new ServerInfo {
-                    ServerIP = ipTextBox.Text,
+                    ServerIp = ipTextBox.Text,
                     ServerPort = Convert.ToUInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text
                         : "25565"))
@@ -207,7 +212,7 @@ namespace FreeLauncher.Forms
             versionsDropDownList.Items.Clear();
             versionsDropDownList.Items.Add(_applicationContext.ProgramLocalization.UseLatestVersion);
             List<string> list = new List<string>();
-            JObject json = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + "/versions.json"));
+            JObject json = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + @"\versions.json"));
             foreach (JObject ver in json["versions"]) {
                 string id = ver["id"].ToString(),
                     type = ver["type"].ToString();
@@ -241,15 +246,15 @@ namespace FreeLauncher.Forms
             }
             if (otherCheckBox.Checked) {
                 foreach (VersionManifest version in from b in Directory.GetDirectories(_applicationContext.McVersions)
-                    where File.Exists(string.Format("{0}/{1}/{1}.json", _applicationContext.McVersions,
+                    where File.Exists(string.Format(@"{0}\{1}\{1}.json", _applicationContext.McVersions,
                         new DirectoryInfo(b).Name))
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
-                    where VersionManifest.IsValid(new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
+                    where VersionManifest.IsValid(new DirectoryInfo(string.Format(@"{0}\{1}\", _applicationContext.McVersions,
                                 new DirectoryInfo(b).Name)))
                     select
                         VersionManifest.ParseVersion(
-                            new DirectoryInfo(string.Format("{0}/{1}/", _applicationContext.McVersions,
+                            new DirectoryInfo(string.Format(@"{0}\{1}\", _applicationContext.McVersions,
                                 new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId

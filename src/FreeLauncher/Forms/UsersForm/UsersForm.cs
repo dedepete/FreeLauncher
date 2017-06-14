@@ -24,8 +24,8 @@ namespace FreeLauncher.Forms
             _applicationContext = appContext;
             InitializeComponent();
             LoadLocalization();
-            _userManager = File.Exists(_applicationContext.McLauncher + "users.json")
-                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.McLauncher + "users.json"))
+            _userManager = File.Exists(_applicationContext.McLauncher + @"\users.json")
+                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.McLauncher + @"\users.json"))
                 : new UserManager();
             UpdateUsers();
         }
@@ -112,7 +112,7 @@ namespace FreeLauncher.Forms
 
         private void SaveUsers()
         {
-            File.WriteAllText(_applicationContext.McLauncher + "users.json",
+            File.WriteAllText(_applicationContext.McLauncher + @"\users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }

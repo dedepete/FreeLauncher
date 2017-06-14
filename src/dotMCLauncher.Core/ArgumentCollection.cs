@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace dotMCLauncher.Core
 {
-    public class ArgumentCollection<T1, T2> : Dictionary<string, string>
+    public class ArgumentCollection : Dictionary<string, string>
     {
         private string _argLine;
 
@@ -17,7 +18,7 @@ namespace dotMCLauncher.Core
             Regex re = new Regex(@"\-\-(\w+) (\S+)", RegexOptions.IgnoreCase);
             MatchCollection match = re.Matches(argLine);
             for (int i = 0; i < match.Count; i++) {
-                if (!base.ContainsKey(match[i].Groups[1].Value)) {
+                if (!ContainsKey(match[i].Groups[1].Value)) {
                     base.Add(match[i].Groups[1].Value, match[i].Groups[2].Value);
                 } else {
                     base[match[i].Groups[1].Value] = match[i].Groups[2].Value;
@@ -30,8 +31,17 @@ namespace dotMCLauncher.Core
         /// Добавление аргумента(ов) в список.
         /// </summary>
         /// <param name="key">Параметр.</param>
-        /// <param name="value">Значение. Может быть пустым.</param>
-        public new void Add(string key, string value = null)
+        public void Add(string key)
+        {
+            Add(key, null);
+        }
+
+        /// <summary>
+        /// Добавление аргумента(ов) в список.
+        /// </summary>
+        /// <param name="key">Параметр.</param>
+        /// <param name="value">Значение.</param>
+        public new void Add(string key, string value)
         {
             base.Add(key, value);
         }
@@ -43,35 +53,35 @@ namespace dotMCLauncher.Core
         public string ToString(Dictionary<string, string> values = null)
         {
             Regex re = new Regex(@"\$\{(\w+)\}", RegexOptions.IgnoreCase);
-            string temp = !string.IsNullOrEmpty(_argLine)
-                ? re.Replace(_argLine,
-                      match => values.ContainsKey(match.Groups[1].Value)
-                          ? (!values[match.Groups[1].Value].Contains(' ')
-                              ? values[match.Groups[1].Value]
-                              : $"\"{values[match.Groups[1].Value]}\"")
-                          : match.Value) + " "
-                : string.Empty;
-            foreach (string key in base.Keys) {
-                string tempValue = string.Empty;
+            StringBuilder toReturn = new StringBuilder();
+            if (!string.IsNullOrEmpty(_argLine)) {
+                toReturn.Append(re.Replace(_argLine,
+                                    match => values.ContainsKey(match.Groups[1].Value)
+                                        ? (!values[match.Groups[1].Value].Contains(' ')
+                                            ? values[match.Groups[1].Value]
+                                            : $"\"{values[match.Groups[1].Value]}\"")
+                                        : match.Value) + " ");
+            }
+            foreach (string key in Keys) {
+                string value = string.Empty;
                 if (base[key] != null && values != null && re.IsMatch(base[key])) {
-                    tempValue = re.Replace(base[key],
+                    value = re.Replace(base[key],
                         match =>
                             values.ContainsKey(match.Groups[1].Value)
                                 ? values[match.Groups[1].Value]
                                 : base[key]);
                 } else if (base[key] != null) {
-                    tempValue = base[key];
+                    value = base[key];
                 }
-                if (tempValue.Contains(' ')) {
-                    tempValue = $"\"{tempValue}\"";
+                if (value.Contains(' ')) {
+                    value = $"\"{value}\"";
                 }
-                if (tempValue != string.Empty) {
-                    tempValue = " " + tempValue;
+                if (value != string.Empty) {
+                    value = " " + value;
                 }
-                temp = temp + ("--" + key + tempValue + " ");
+                toReturn.Append($"--{key}{value} ");
             }
-            temp = temp.Substring(0, temp.Length - 1);
-            return temp;
+            return toReturn.ToString().Substring(0, toReturn.Length - 1);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace dotMCLauncher.Core
         {
             get { return _arguments; }
             set {
-                ArgumentCollection = new ArgumentCollection<string, string>();
+                ArgumentCollection = new ArgumentCollection();
                 ArgumentCollection.Parse(value);
                 _arguments = value;
             }
@@ -62,7 +62,7 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Список аргументов.
         /// </summary>
-        [JsonIgnore] public ArgumentCollection<string, string> ArgumentCollection;
+        [JsonIgnore] public ArgumentCollection ArgumentCollection;
 
         [JsonIgnore]
         public string GetClientDownloadUrl
@@ -106,7 +106,7 @@ namespace dotMCLauncher.Core
             string version = pathToDirectory.Name;
             if (!File.Exists(Path.Combine(pathToDirectory.ToString(), version + ".json"))) {
                 if (throwsExceptions) {
-                    throw new VersionIsNotExists(
+                    throw new VersionCorruptedOrNotExists(
                         $"Directory '{version}' doesn't contain JSON file. Path: {pathToDirectory}") {
                         Version = version
                     };
@@ -118,8 +118,8 @@ namespace dotMCLauncher.Core
                 return true;
             }
             if (throwsExceptions) {
-                throw new VersionIsNotExists(
-                    $"Directory '{version}' contains invalid JSON file. Path: {pathToDirectory}") {
+                throw new VersionCorruptedOrNotExists(
+                    $"Directory '{version}' contains corrupted JSON file. Path: {pathToDirectory}") {
                     Version = version
                 };
             }
@@ -127,9 +127,9 @@ namespace dotMCLauncher.Core
         }
     }
 
-    public class VersionIsNotExists : Exception
+    public class VersionCorruptedOrNotExists : Exception
     {
         public string Version;
-        public VersionIsNotExists(string message) : base(message) {}
+        public VersionCorruptedOrNotExists(string message) : base(message) {}
     }
 }

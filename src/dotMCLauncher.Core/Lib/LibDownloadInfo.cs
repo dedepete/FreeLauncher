@@ -19,7 +19,7 @@ namespace dotMCLauncher.Core
                 return result;
             }
             result.Add(Artifact);
-            string dictEntry = string.Empty;
+            string dictEntry;
             switch (os) {
                 case OperatingSystem.WINDOWS:
                     dictEntry = "natives-windows";

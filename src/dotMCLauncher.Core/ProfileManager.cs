@@ -57,7 +57,8 @@ namespace dotMCLauncher.Core
         /// <param name="settings">Настройки сериалайзера.</param>
         public string ToJson(Formatting formatting, JsonSerializerSettings settings)
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return JsonConvert.SerializeObject(this, Formatting.Indented,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
         }
 
         /// <summary>
@@ -67,10 +68,10 @@ namespace dotMCLauncher.Core
         public void AddProfile(Profile profile)
         {
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
-                throw new Exception("Field 'ProfileName' couldn't be empty");
+                throw new ArgumentNullException(nameof(profile.ProfileName));
             }
             if (Profiles.Keys.Contains(profile.ProfileName)) {
-                throw new Exception("Profile '" + profile.ProfileName + "' already exist in list.");
+                throw new ArgumentException("Profile '" + profile.ProfileName + "' already exists.");
             }
             Profiles.Add(profile.ProfileName, profile);
         }
@@ -82,7 +83,7 @@ namespace dotMCLauncher.Core
         public void DeleteProfile(Profile profile)
         {
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
-                throw new Exception("Field 'ProfileName' couldn't be empty");
+                throw new ArgumentNullException(nameof(profile.ProfileName));
             }
             Profiles.Remove(profile.ProfileName);
         }

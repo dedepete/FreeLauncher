@@ -4,17 +4,17 @@ namespace dotMCLauncher.Core
 {
     public class ServerInfo
     {
-        [JsonProperty("ip")] public string ServerIP;
+        [JsonProperty("ip")] public string ServerIp;
         [JsonProperty("port")] public uint ServerPort = 25565;
 
-        public string BuildIP()
+        public string BuildIp()
         {
-            return ServerIP + ":" + ServerPort;
+            return ServerIp + ":" + ServerPort;
         }
 
         public string BuildArguments()
         {
-            return $"--server {ServerIP} --port {ServerPort}";
+            return $"--server {ServerIp} --port {ServerPort}";
         }
     }
 }

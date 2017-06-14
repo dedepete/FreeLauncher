@@ -35,12 +35,12 @@ namespace FreeLauncher
             Parser.Default.ParseArguments(args, ProgramArguments);
             McDirectory = ProgramArguments.WorkingDirectory ??
                                                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                                   ".minecraft\\");
-            McLauncher = Path.Combine(McDirectory, "freelauncher\\");
-            McVersions = Path.Combine(McDirectory, "versions\\");
-            McLibs = Path.Combine(McDirectory, "libraries\\");
+                                                   ".minecraft");
+            McLauncher = Path.Combine(McDirectory, "freelauncher");
+            McVersions = Path.Combine(McDirectory, "versions");
+            McLibs = Path.Combine(McDirectory, "libraries");
 
-            _configurationFile = McLauncher + "\\configuration.json";
+            _configurationFile = McLauncher + @"\configuration.json";
             Configuration = GetConfiguration();
             LoadLocalization();
         }
@@ -73,7 +73,7 @@ namespace FreeLauncher
             if (Configuration.SelectedLanguage == "en-UK") {
                 ProgramLocalization = LocalizationsList["en-UK"];
             }
-            var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + "\\freelauncher-langs\\"));
+            var langsDirectory = new DirectoryInfo(Path.Combine(Application.StartupPath + @"\freelauncher-langs\"));
             if (!langsDirectory.Exists) {
                 return;
             }
