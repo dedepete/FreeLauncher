@@ -663,9 +663,11 @@ namespace FreeLauncher.Forms
                     }
                 }
                 foreach (DownloadEntry entry in a.DownloadInfo.GetDownloadsEntries(OS.WINDOWS)) {
-                    if (entry != null) {
-                        libsToDownload.Add(entry, entry.IsNative);
+                    if (entry == null) {
+                        continue;
                     }
+                    entry.Path = entry.Path ?? a.GetPath();
+                    libsToDownload.Add(entry, entry.IsNative);
                 }
             }
             StatusBarMaxValue = libsToDownload.Count + 1;
