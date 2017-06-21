@@ -5,13 +5,13 @@ namespace dotMCLauncher.Core
     public abstract class Version
     {
         /// <summary>
-        /// Идентификатор версии.
+        /// Version ID.
         /// </summary>
         [JsonProperty("id")]
         public string VersionId { get; set; }
 
         /// <summary>
-        /// Тип релиза.
+        /// Build type.
         /// </summary>
         [JsonProperty("type")]
         public string ReleaseType { get; set; }

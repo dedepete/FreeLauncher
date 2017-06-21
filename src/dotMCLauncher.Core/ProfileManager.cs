@@ -9,28 +9,28 @@ namespace dotMCLauncher.Core
     public class ProfileManager
     {
         /// <summary>
-        /// Последний использованный профиль.
+        /// Last used profile. 
         /// </summary>
         [JsonProperty("selectedProfile")]
         public string LastUsedProfile { get; set; }
 
         /// <summary>
-        /// Список профилей.
+        /// Profile list. 
         /// </summary>
         [JsonProperty("profiles")]
         public Dictionary<string, Profile> Profiles { get; set; }
 
         /// <summary>
-        /// Парсинг профиля.
+        /// Parses profiles. 
         /// </summary>
-        /// <param name="pathToFile">Путь до файла с профилями.</param>
+        /// <param name="pathToFile">Path to file with profiles data.</param>
         public static ProfileManager ParseProfile(string pathToFile)
         {
             return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof (ProfileManager));
         }
 
         /// <summary>
-        /// Вывод файла профилей в формате JSON.
+        /// Returns profiles data in JSON format. 
         /// </summary>
         public string ToJson()
         {
@@ -40,9 +40,9 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Вывод файла профилей в формате JSON.
+        /// Returns profiles data in JSON format. 
         /// </summary>
-        /// <param name="formatting">Формат текста.</param>
+        /// <param name="formatting">JSON formatting.</param>
         public string ToJson(Formatting formatting)
         {
             return ToJson(formatting, new JsonSerializerSettings {
@@ -51,10 +51,10 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Вывод файла профилей в формате JSON.
+        /// Returns profiles data in JSON format. 
         /// </summary>
-        /// <param name="formatting">Формат текста.</param>
-        /// <param name="settings">Настройки сериалайзера.</param>
+        /// <param name="formatting">JSON formatting.</param>
+        /// <param name="settings">Serializer settings.</param>
         public string ToJson(Formatting formatting, JsonSerializerSettings settings)
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented,
@@ -62,9 +62,9 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Добавление профиля в список.
+        /// Adds profile into list. 
         /// </summary>
-        /// <param name="profile">Добавляемый профиль.</param>
+        /// <param name="profile">Profile.</param>
         public void AddProfile(Profile profile)
         {
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
@@ -77,9 +77,9 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Удаление профиля из списка.
+        /// Removes profile from list. 
         /// </summary>
-        /// <param name="profile">Удаляемый профиль.</param>
+        /// <param name="profile">Profile.</param>
         public void DeleteProfile(Profile profile)
         {
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
@@ -89,10 +89,10 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Переименование профиля в списке.
+        /// Renames profile in the list. 
         /// </summary>
-        /// <param name="profile">Профиль для переименования.</param>
-        /// <param name="newName">Новое название профиля.</param>
+        /// <param name="profile">Profile to rename.</param>
+        /// <param name="newName">New name.</param>
         public void RenameProfile(Profile profile, string newName)
         {
             if (LastUsedProfile == profile.ProfileName) {

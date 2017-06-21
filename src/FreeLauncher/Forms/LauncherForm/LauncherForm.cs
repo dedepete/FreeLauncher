@@ -980,14 +980,16 @@ namespace FreeLauncher.Forms
         private readonly Profile _profile;
         private readonly Process _minecraftProcess;
         private LauncherFormOutput _output;
-        private readonly Queue<Action> _logQueue;
+        private readonly StringBuilder _outputInfoBuilder;
+        private readonly StringBuilder _outputErrorBuilder;
 
         public MinecraftProcess(Process minecraftProcess, LauncherForm launcherForm, Profile profile)
         {
             _launcherForm = launcherForm;
             _profile = profile;
             _minecraftProcess = minecraftProcess;
-            _logQueue = new Queue<Action>();
+            _outputInfoBuilder = new StringBuilder();
+            _outputErrorBuilder = new StringBuilder();
         }
 
         public void Launch()
@@ -998,12 +1000,12 @@ namespace FreeLauncher.Forms
                 _minecraftProcess.Exited += MinecraftProcess_Exited;
                 if (_launcherForm.EnableMinecraftLogging.Checked) {
                     _minecraftProcess.OutputDataReceived +=
-                        (sender, args) => _logQueue.Enqueue(() => AppendLog($"[0] {args.Data}"));
+                        (sender, args) => _outputInfoBuilder.Append($"{(_outputInfoBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[O] {args.Data}");
                 } else {
                     AppendLog($"NOTICE:{Environment.NewLine}Logging from [O]UTPUT thread has been disabled. It can be enabled in the Settings.{Environment.NewLine}{Environment.NewLine}");
                 }
                 _minecraftProcess.ErrorDataReceived +=
-                    (sender, args) => _logQueue.Enqueue(() => AppendLog($"[E] {args.Data}", true));
+                    (sender, args) => _outputErrorBuilder.Append($"{(_outputErrorBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[E] {args.Data}");
             }
             _minecraftProcess.Start();
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.CLOSED) {
@@ -1013,20 +1015,24 @@ namespace FreeLauncher.Forms
             _minecraftProcess.BeginOutputReadLine();
             _minecraftProcess.BeginErrorReadLine();
             new Thread(() => {
-                while (!_minecraftProcess.HasExited|| _logQueue.Count != 0) {
+                while (!_minecraftProcess.HasExited || _outputInfoBuilder.Length != 0 || _outputErrorBuilder.Length != 0) {
                     if (_output.Panel.Disposing || _output.Panel.IsDisposed) {
                         break;
                     }
                     _output.Panel?.Invoke((MethodInvoker) delegate {
                         _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}" +
                                              "\nStatus: " +
-                                             (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output") +
-                                             $"\nLog queue: {_logQueue.Count}";
+                                             (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output");
                         Application.DoEvents();
+                        if (_outputInfoBuilder.Length != 0) {
+                            AppendLog(_outputInfoBuilder.ToString());
+                            _outputInfoBuilder.Clear();
+                        }
+                        if (_outputErrorBuilder.Length != 0) {
+                            AppendLog(_outputErrorBuilder.ToString(), true);
+                            _outputErrorBuilder.Clear();
+                        }
                     });
-                    if (_logQueue.Count != 0) {
-                        _logQueue.Dequeue().Invoke();
-                    }
                 }
                 if (_minecraftProcess.HasExited) {
                     PrintExitInfo();

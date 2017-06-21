@@ -10,9 +10,9 @@ namespace dotMCLauncher.Core
         private string _argLine;
 
         /// <summary>
-        /// Парсинг строки.
+        /// Parses string.
         /// </summary>
-        /// <param name="argLine">Исходная строка.</param>
+        /// <param name="argLine">Input string.</param>
         public void Parse(string argLine)
         {
             Regex re = new Regex(@"\-\-(\w+) (\S+)", RegexOptions.IgnoreCase);
@@ -28,29 +28,37 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Добавление аргумента(ов) в список.
+        /// Adds argument into collection.
         /// </summary>
-        /// <param name="key">Параметр.</param>
+        /// <param name="key">Switch. (Key without argument)</param>
         public void Add(string key)
         {
             Add(key, null);
         }
 
         /// <summary>
-        /// Добавление аргумента(ов) в список.
+        /// Adds argument into collection.
         /// </summary>
-        /// <param name="key">Параметр.</param>
-        /// <param name="value">Значение.</param>
+        /// <param name="key">Key.</param>
+        /// <param name="value">Value.</param>
         public new void Add(string key, string value)
         {
             base.Add(key, value);
         }
 
         /// <summary>
-        /// Построение строки аргументов по списку значений.
+        /// Builds argument line with replaced values.
         /// </summary>
-        /// <param name="values">Список заменяемых значений.</param>
-        public string ToString(Dictionary<string, string> values = null)
+        public override string ToString()
+        {
+            return ToString(null);
+        }
+
+        /// <summary>
+        /// Builds argument line with replaced values.
+        /// </summary>
+        /// <param name="values">List of replaceable values.</param>
+        public string ToString(Dictionary<string, string> values)
         {
             Regex re = new Regex(@"\$\{(\w+)\}", RegexOptions.IgnoreCase);
             StringBuilder toReturn = new StringBuilder();

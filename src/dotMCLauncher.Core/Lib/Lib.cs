@@ -8,13 +8,13 @@ namespace dotMCLauncher.Core
     public class Lib
     {
         /// <summary>
-        /// Название библиотеки.
+        /// Library's name.
         /// </summary>
         [JsonProperty("name")]
         public string Name;
 
         /// <summary>
-        /// Информация для загрузки файла.
+        /// Library's download info.
         /// </summary>
         [JsonProperty("downloads")]
         public LibDownloadInfo DownloadInfo;
@@ -25,13 +25,13 @@ namespace dotMCLauncher.Core
         private List<Rule> _rules;
 
         /// <summary>
-        /// Возвращает значение, которое добавляется в обработанное название библиотеки, если библиотека поддерживается Windows и является архивом, который содержит необходимые для игры DLL. Если нет, то возвращает null.
+        /// Returns processed library name if one's a native and supports Windows. Returns null, if not.
         /// </summary>
         [JsonIgnore]
         public string IsNative => _natives?["windows"]?.ToString().Replace("${arch}", IntPtr.Size == 8 ? "64" : "32");
 
         /// <summary>
-        /// Возвращает True, если библиотека поддерживается Windows.
+        /// Returns True if library supports Windows operating system.
         /// </summary>
         public bool IsForWindows()
         {
@@ -55,7 +55,7 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Возвращает путь к библиотеке.
+        /// Returns path to library.
         /// </summary>
         public string GetPath()
         {

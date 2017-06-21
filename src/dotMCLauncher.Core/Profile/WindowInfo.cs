@@ -8,7 +8,7 @@ namespace dotMCLauncher.Core
         [JsonProperty("width")] public int X = 854;
 
         /// <summary>
-        /// Устанавливает значения по умолчанию.
+        /// Resets values.
         /// </summary>
         public void SetDefaultValues()
         {
@@ -22,7 +22,7 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Вывод как аргументы.
+        /// Returns command line arguments.
         /// </summary>
         public string ToCommandLineArg()
         {

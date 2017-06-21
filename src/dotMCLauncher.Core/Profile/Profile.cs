@@ -5,49 +5,49 @@ namespace dotMCLauncher.Core
     public class Profile
     {
         /// <summary>
-        /// Название профиля.
+        /// Profile's name. 
         /// </summary>
         [JsonProperty("name")] public string ProfileName;
 
         /// <summary>
-        /// Рабочая директория для игры.
+        /// Game's working directory. 
         /// </summary>
         [JsonProperty("gameDir")] public string WorkingDirectory;
 
         /// <summary>
-        /// Выбранная версия для игры.
+        /// Selected version ID.
         /// </summary>
         [JsonProperty("lastVersionId")] public string SelectedVersion;
 
         /// <summary>
-        /// Размер окна игры.
+        /// Window size info.
         /// </summary>
         [JsonProperty("resolution")] public WindowInfo WindowInfo;
 
         /// <summary>
-        /// Версии, которые будут выводиться в списке версий.
+        /// Allowed build types. 
         /// </summary>
         [JsonProperty("allowedReleaseTypes")] public string[] AllowedReleaseTypes;
 
         /// <summary>
-        /// Исполняемый файл Java.
+        /// Java executable file. 
         /// </summary>
         [JsonProperty("javaDir")] public string JavaExecutable;
 
         /// <summary>
-        /// Аргументы Java.
+        /// Java arguments. 
         /// </summary>
         [JsonProperty("javaArgs")] public string JavaArguments;
 
         /// <summary>
-        /// Сервер, к которому будет совершено подключение после запуска игры(не используется в официальном лаунчере).
+        /// The game will automatically connect to the selected server. 
         /// </summary>
         [JsonProperty("connectionOptions")] public ServerInfo FastConnectionSettigs;
 
         [JsonProperty("launcherVisibilityOnGameClose")] private string _launcherVisibilityOnGameClose;
 
         /// <summary>
-        /// Состояние окна лаунчера при запуске игры.
+        /// Launcher state on  game closure. 
         /// </summary>
         [JsonIgnore]
         public LauncherVisibility LauncherVisibilityOnGameClose
@@ -96,7 +96,7 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Вывод профиля в JSON формате. 
+        /// Returns profile information in JSON format. 
         /// </summary>
         public override string ToString()
         {
@@ -104,7 +104,7 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Вывод профиля в JSON формате. 
+        /// Returns profile information in JSON format. 
         /// </summary>
         public string ToString(Formatting formatting)
         {
@@ -115,9 +115,9 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Парсинг профиля из JSON текста. 
+        /// Parses profile from JSON text data. 
         /// </summary>
-        /// <param name="json">JSON текст.</param>
+        /// <param name="json">JSON data.</param>
         public static Profile ParseProfile(string json)
         {
             return JsonConvert.DeserializeObject<Profile>(json);

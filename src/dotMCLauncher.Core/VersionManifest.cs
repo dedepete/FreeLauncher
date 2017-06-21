@@ -8,7 +8,7 @@ namespace dotMCLauncher.Core
     public class VersionManifest: Version
     {
         /// <summary>
-        /// Аргументы.
+        /// Arguments.
         /// </summary>
         [JsonProperty("minecraftArguments")]
         public string Arguments
@@ -22,7 +22,7 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Используемый файл ресурсов.
+        /// Assets ID.
         /// </summary>
         [JsonProperty("assets")]
         public string AssetsIndex { get; set; }
@@ -34,13 +34,13 @@ namespace dotMCLauncher.Core
         public string MainClass { get; set; }
 
         /// <summary>
-        /// Список библиотек.
+        /// Library list.
         /// </summary>
         [JsonProperty("libraries")]
         public List<Lib> Libs { get; set; }
 
         /// <summary>
-        /// Родительская версия.
+        /// Parent's ID.
         /// </summary>
         [JsonProperty("inheritsFrom")]
         public string InheritsFrom { get; set; }
@@ -49,18 +49,18 @@ namespace dotMCLauncher.Core
         public VersionDownloadInfo DownloadInfo { get; set; }
 
         /// <summary>
-        /// Родительская версия.
+        /// Parent's manifest.
         /// </summary>
         [JsonIgnore]
         public VersionManifest InheritableVersionManifest { get; set; }
 
         /// <summary>
-        /// Базовая строка аргументов.
+        /// Argument line.
         /// </summary>
         [JsonIgnore] private string _arguments;
 
         /// <summary>
-        /// Список аргументов.
+        /// Argument list.
         /// </summary>
         [JsonIgnore] public ArgumentCollection ArgumentCollection;
 
@@ -71,16 +71,16 @@ namespace dotMCLauncher.Core
             $@"https://s3.amazonaws.com/Minecraft.Download/versions/{VersionId}/{VersionId}.jar";
 
         /// <summary>
-        /// Парсинг JSON файла версии.
+        /// Parses build's JSON file.
         /// </summary>
-        /// <param name="pathToDirectory">Путь до директории с файлами версии.</param>
+        /// <param name="pathToDirectory">Path to build's directory.</param>
         public static VersionManifest ParseVersion(DirectoryInfo pathToDirectory) => ParseVersion(pathToDirectory, true);
 
         /// <summary>
-        /// Парсинг JSON файла версии.
+        /// Parses build's JSON file.
         /// </summary>
-        /// <param name="pathToDirectory">Путь до директории с файлами версии.</param>
-        /// <param name="parseInheritableVersion">Парсинг зависимой версии.</param>
+        /// <param name="pathToDirectory">Path to build's directory.</param>
+        /// <param name="parseInheritableVersion">Parses inheritable builds.</param>
         public static VersionManifest ParseVersion(DirectoryInfo pathToDirectory, bool parseInheritableVersion)
         {
             IsValid(pathToDirectory, true);
