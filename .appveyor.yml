@@ -1,0 +1,25 @@
+version: '{build}-{branch}'
+
+image:
+- Visual Studio 2015
+- Visual Studio 2017
+
+configuration: Debug
+
+platform: Any CPU
+
+cache: packages\
+
+before_build:
+- cmd: nuget restore
+
+build:
+  parallel: true
+  verbosity: normal
+
+test: off
+
+artifacts:
+- path: src\FreeLauncher\bin\$(configuration)
+
+deploy: off
