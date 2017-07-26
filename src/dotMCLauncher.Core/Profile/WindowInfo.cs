@@ -4,8 +4,8 @@ namespace dotMCLauncher.Core
 {
     public class WindowInfo
     {
-        [JsonProperty("height")] public int Y = 480;
-        [JsonProperty("width")] public int X = 854;
+        [JsonProperty("height")] public int Y { get; set; } = 480;
+        [JsonProperty("width")] public int X { get; set; } = 854;
 
         /// <summary>
         /// Resets values.

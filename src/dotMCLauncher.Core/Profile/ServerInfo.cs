@@ -4,8 +4,8 @@ namespace dotMCLauncher.Core
 {
     public class ServerInfo
     {
-        [JsonProperty("ip")] public string ServerIp;
-        [JsonProperty("port")] public uint ServerPort = 25565;
+        [JsonProperty("ip")] public string ServerIp { get; set; }
+        [JsonProperty("port")] public uint ServerPort { get; set; } = 25565;
 
         public string BuildIp()
         {

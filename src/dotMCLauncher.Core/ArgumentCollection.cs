@@ -19,7 +19,7 @@ namespace dotMCLauncher.Core
             MatchCollection match = re.Matches(argLine);
             for (int i = 0; i < match.Count; i++) {
                 if (!ContainsKey(match[i].Groups[1].Value)) {
-                    Add(match[i].Groups[1].Value, new List<string>() { match[i].Groups[2].Value });
+                    Add(match[i].Groups[1].Value, new List<string> { match[i].Groups[2].Value });
                 } else {
                     base[match[i].Groups[1].Value].Add(match[i].Groups[2].Value);
                 }
@@ -90,7 +90,7 @@ namespace dotMCLauncher.Core
                                         : match.Value) + " ");
             }
             foreach (string key in Keys) {
-                string value = string.Empty;
+                string value;
                 if (base[key]?.Count > 0 && values != null) {
                     foreach (string str in base[key]) {
                         value = str;

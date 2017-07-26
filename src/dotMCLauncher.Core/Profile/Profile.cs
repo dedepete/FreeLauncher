@@ -7,44 +7,44 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Profile's name. 
         /// </summary>
-        [JsonProperty("name")] public string ProfileName;
+        [JsonProperty("name")] public string ProfileName { get; set; }
 
         /// <summary>
         /// Game's working directory. 
         /// </summary>
-        [JsonProperty("gameDir")] public string WorkingDirectory;
+        [JsonProperty("gameDir")] public string WorkingDirectory { get; set; }
 
         /// <summary>
         /// Selected version ID.
         /// </summary>
-        [JsonProperty("lastVersionId")] public string SelectedVersion;
+        [JsonProperty("lastVersionId")] public string SelectedVersion { get; set; }
 
         /// <summary>
         /// Window size info.
         /// </summary>
-        [JsonProperty("resolution")] public WindowInfo WindowInfo;
+        [JsonProperty("resolution")] public WindowInfo WindowInfo { get; set; }
 
         /// <summary>
         /// Allowed build types. 
         /// </summary>
-        [JsonProperty("allowedReleaseTypes")] public string[] AllowedReleaseTypes;
+        [JsonProperty("allowedReleaseTypes")] public string[] AllowedReleaseTypes { get; set; }
 
         /// <summary>
         /// Java executable file. 
         /// </summary>
-        [JsonProperty("javaDir")] public string JavaExecutable;
+        [JsonProperty("javaDir")] public string JavaExecutable { get; set; }
 
         /// <summary>
         /// Java arguments. 
         /// </summary>
-        [JsonProperty("javaArgs")] public string JavaArguments;
+        [JsonProperty("javaArgs")] public string JavaArguments { get; set; }
 
         /// <summary>
         /// The game will automatically connect to the selected server. 
         /// </summary>
-        [JsonProperty("connectionOptions")] public ServerInfo FastConnectionSettigs;
+        [JsonProperty("connectionOptions")] public ServerInfo FastConnectionSettigs { get; set; }
 
-        [JsonProperty("launcherVisibilityOnGameClose")] private string _launcherVisibilityOnGameClose;
+        [JsonProperty("launcherVisibilityOnGameClose")] private string _launcherVisibilityOnGameClose { get; set; }
 
         /// <summary>
         /// Launcher state on  game closure. 

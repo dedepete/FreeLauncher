@@ -4,7 +4,7 @@ namespace dotMCLauncher.Core
 {
     public class Rule
     {
-        public string action;
-        public JObject os;
+        public string action { get; set; }
+        public JObject os { get; set; }
     }
 }

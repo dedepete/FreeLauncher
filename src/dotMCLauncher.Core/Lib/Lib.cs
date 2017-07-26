@@ -11,16 +11,19 @@ namespace dotMCLauncher.Core
         /// Library's name.
         /// </summary>
         [JsonProperty("name")]
-        public string Name;
+        public string Name { get; set; }
 
         /// <summary>
         /// Library's download info.
         /// </summary>
         [JsonProperty("downloads")]
-        public LibDownloadInfo DownloadInfo;
+        public LibDownloadInfo DownloadInfo { get; set; }
 
+        /// <summary>
+        /// Library's download URL. Not being used in official versions, but may be used by modded versions.
+        /// </summary>
         [JsonProperty("url")]
-        public string Url;
+        public string Url { get; set; }
 
         [JsonProperty("natives")]
         private JObject _natives;
