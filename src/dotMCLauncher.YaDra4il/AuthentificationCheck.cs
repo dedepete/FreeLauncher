@@ -2,7 +2,7 @@
 {
     public class AuthentificationCheck : Request
     {
-        public bool valid;
+        public bool valid { get; set; }
         public AuthentificationCheck(string accessToken)
         {
             Url = Urls.Validate;

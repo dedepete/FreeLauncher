@@ -6,25 +6,25 @@ namespace dotMCLauncher.YaDra4il
     public class AuthManager
     {
         [JsonProperty("email")]
-        public string Email;
+        public string Email { get; set; }
         [JsonProperty("password")]
-        public string Password;
+        public string Password { get; set; }
 
         [JsonProperty("username")]
-        public string Username;
+        public string Username { get; set; }
         [JsonProperty("uuid")]
-        public string Uuid;
+        public string Uuid { get; set; }
         [JsonProperty("sessionToken")]
-        public string SessionToken;
+        public string SessionToken { get; set; }
         [JsonProperty("accessToken")]
-        public string AccessToken;
+        public string AccessToken { get; set; }
 
         [JsonProperty("demo")]
-        public bool IsDemo;
+        public bool IsDemo { get; set; }
         [JsonProperty("legacy")]
-        public bool IsLegacy;
+        public bool IsLegacy { get; set; }
 
-        public JArray UserProperties;
+        public JArray UserProperties { get; set; }
 
         public Authenticate Login()
         {

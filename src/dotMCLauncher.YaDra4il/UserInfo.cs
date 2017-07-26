@@ -2,8 +2,8 @@
 {
     public class UserInfo : Request
     {
-        public string id;
-        public string name;
+        public string id { get; set; }
+        public string name { get; set; }
 
         public UserInfo(string username)
         {

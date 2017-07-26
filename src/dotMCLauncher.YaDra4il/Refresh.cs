@@ -5,9 +5,9 @@ namespace dotMCLauncher.YaDra4il
 {
     public class Refresh : Request
     {
-        public string accessToken;
-        public string clientToken;
-        public JObject user;
+        public string accessToken { get; set; }
+        public string clientToken { get; set; }
+        public JObject user { get; set; }
         public Refresh(string accessToken, string clientToken)
         {
             Url = Urls.Refresh;

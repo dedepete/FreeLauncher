@@ -346,10 +346,10 @@ namespace FreeLauncher.Forms
                             Arguments =
                                 $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"}, {"assets_root", _applicationContext.McDirectory + @"\assets\"}, {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"}, {"assets_index_name", selectedVersionManifest.GetAssetsIndex()}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
-                        AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
+                        AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
                             _selectedProfile).Launch();
-                        AppendLog($"Version {selectedVersionManifest.VersionId} successfuly launched.");
+                        AppendLog($"Version {selectedVersionManifest.VersionId} successfuly executed.");
                         BlockControls = false;
                         UpdateVersionListView();
                         _versionToLaunch = null;
@@ -656,13 +656,12 @@ namespace FreeLauncher.Forms
             AppendLog("Getting required libraries...");
             Dictionary<DownloadEntry, bool> libsToDownload = new Dictionary<DownloadEntry, bool>();
             foreach (Lib a in selectedVersionManifest.Libs) {
-                if (a.IsForWindows()) {
-                    if (a.DownloadInfo == null) {
-                        libsToDownload.Add(new DownloadEntry {Path = a.GetPath(), Url = a.Url}, false);
-                        continue;
-                    }
+                if (!a.IsForWindows()) continue;
+                if (a.DownloadInfo == null) {
+                    libsToDownload.Add(new DownloadEntry {Path = a.GetPath(), Url = a.Url}, false);
+                    continue;
                 }
-                foreach (DownloadEntry entry in a.DownloadInfo.GetDownloadsEntries(OS.WINDOWS)) {
+                foreach (DownloadEntry entry in a.DownloadInfo?.GetDownloadsEntries(OS.WINDOWS)) {
                     if (entry == null) {
                         continue;
                     }

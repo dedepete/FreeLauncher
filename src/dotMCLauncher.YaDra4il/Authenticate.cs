@@ -4,10 +4,10 @@ namespace dotMCLauncher.YaDra4il
 {
     public class Authenticate : Request
     {
-        public string accessToken;
-        public string clientToken;
-        public UserInfo selectedProfile;
-        public JObject user;
+        public string accessToken { get; set; }
+        public string clientToken { get; set; }
+        public UserInfo selectedProfile { get; set; }
+        public JObject user { get; set; }
         public Authenticate(string email, string password)
         {
             Url = Urls.Authenticate;

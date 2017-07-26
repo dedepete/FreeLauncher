@@ -2,8 +2,8 @@
 {
     public abstract class Request
     {
-        public string Url;
-        public string ToPost;
+        public string Url { get; set; }
+        public string ToPost { get; set; }
 
         public virtual Request DoPost()
         {
