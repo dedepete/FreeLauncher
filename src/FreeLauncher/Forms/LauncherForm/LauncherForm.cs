@@ -322,9 +322,9 @@ namespace FreeLauncher.Forms
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
                         };
                         if (_selectedProfile.FastConnectionSettigs != null) {
-                            selectedVersionManifest.ArgumentCollection.Add("server",
+                            selectedVersionManifest.ArgCollection.Add("server",
                                 _selectedProfile.FastConnectionSettigs.ServerIp);
-                            selectedVersionManifest.ArgumentCollection.Add("port",
+                            selectedVersionManifest.ArgCollection.Add("port",
                                 _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
                         }
                         string javaArguments = _selectedProfile.JavaArguments == null
@@ -344,7 +344,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\",
                             Arguments =
-                                $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgumentCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"}, {"assets_root", _applicationContext.McDirectory + @"\assets\"}, {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"}, {"assets_index_name", selectedVersionManifest.InheritableVersionManifest?.AssetsIndex ?? selectedVersionManifest.AssetsIndex}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username() {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"}, {"assets_root", _applicationContext.McDirectory + @"\assets\"}, {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"}, {"assets_index_name", selectedVersionManifest.GetAssetsIndex()}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
                         };
                         AppendLog($"Command line: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
@@ -658,7 +658,7 @@ namespace FreeLauncher.Forms
             foreach (Lib a in selectedVersionManifest.Libs) {
                 if (a.IsForWindows()) {
                     if (a.DownloadInfo == null) {
-                        libsToDownload.Add(new DownloadEntry {Path = a.GetPath()}, false);
+                        libsToDownload.Add(new DownloadEntry {Path = a.GetPath(), Url = a.Url}, false);
                         continue;
                     }
                 }
@@ -667,6 +667,7 @@ namespace FreeLauncher.Forms
                         continue;
                     }
                     entry.Path = entry.Path ?? a.GetPath();
+                    entry.Url = entry.Url ?? a.Url;
                     libsToDownload.Add(entry, entry.IsNative);
                 }
             }
@@ -717,8 +718,7 @@ namespace FreeLauncher.Forms
                 UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             }
             libraries.Append(string.Format(@"{0}\{1}\{1}.jar", _applicationContext.McVersions,
-                selectedVersionManifest.InheritsFrom ??
-                (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
+                selectedVersionManifest.GetBaseJar()));
             AppendLog("Finished checking libraries.");
             return libraries.ToString();
         }
@@ -1024,11 +1024,11 @@ namespace FreeLauncher.Forms
                                              "\nStatus: " +
                                              (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output");
                         Application.DoEvents();
-                        if (_outputInfoBuilder.Length != 0) {
+                        if (_outputInfoBuilder.Length > 0) {
                             AppendLog(_outputInfoBuilder.ToString());
                             _outputInfoBuilder.Clear();
                         }
-                        if (_outputErrorBuilder.Length != 0) {
+                        if (_outputErrorBuilder.Length > 0) {
                             AppendLog(_outputErrorBuilder.ToString(), true);
                             _outputErrorBuilder.Clear();
                         }
@@ -1085,6 +1085,8 @@ namespace FreeLauncher.Forms
                 AppendLog("//Oops, seems like the game has been exited with unusual error code!");
                 AppendLog("//Printing debug information right now!");
                 AppendLog(string.Empty);
+                AppendLog($"{Application.ProductName} {Application.ProductVersion}");
+                AppendLog(string.Empty);
                 AppendLog("System info:");
                 AppendLog($"{new string(' ', 2)}Operating system:");
                 AppendLog($"{new string(' ', 4)}OSFullName: {new ComputerInfo().OSFullName}");
@@ -1094,7 +1096,7 @@ namespace FreeLauncher.Forms
                     $"{new string(' ', 2)}Java path: '{Java.JavaInstallationPath}' ({Java.JavaBitInstallation}-bit)");
                 AppendLog(string.Empty);
                 AppendLog("Process info:");
-                AppendLog($"{new string(' ', 2)}Minecraft version/type:{_output.McVersion}/{_output.McType}");
+                AppendLog($"{new string(' ', 2)}Minecraft version/type: {_output.McVersion}/{_output.McType}");
                 AppendLog($"{new string(' ', 2)}Executable file: '{_minecraftProcess.StartInfo.FileName}'");
                 AppendLog($"{new string(' ', 2)}Arguments: '{_minecraftProcess.StartInfo.Arguments}'");
                 AppendLog($"{new string(' ', 2)}Exit code: {_minecraftProcess.ExitCode}");

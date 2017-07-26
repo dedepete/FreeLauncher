@@ -19,6 +19,9 @@ namespace dotMCLauncher.Core
         [JsonProperty("downloads")]
         public LibDownloadInfo DownloadInfo;
 
+        [JsonProperty("url")]
+        public string Url;
+
         [JsonProperty("natives")]
         private JObject _natives;
         [JsonProperty("rules")]

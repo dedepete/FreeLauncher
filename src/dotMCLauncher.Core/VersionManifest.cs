@@ -15,9 +15,9 @@ namespace dotMCLauncher.Core
         {
             get { return _arguments; }
             set {
-                ArgumentCollection = new ArgumentCollection();
-                ArgumentCollection.Parse(value);
                 _arguments = value;
+                ArgCollection = new ArgumentCollection();
+                ArgCollection.Parse(value);
             }
         }
 
@@ -28,7 +28,7 @@ namespace dotMCLauncher.Core
         public string AssetsIndex { get; set; }
 
         /// <summary>
-        /// Главный класс игры.
+        /// Main class.
         /// </summary>
         [JsonProperty("mainClass")]
         public string MainClass { get; set; }
@@ -62,7 +62,7 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Argument list.
         /// </summary>
-        [JsonIgnore] public ArgumentCollection ArgumentCollection;
+        [JsonIgnore] public ArgumentCollection ArgCollection;
 
         [JsonIgnore]
         public string GetClientDownloadUrl
@@ -125,11 +125,42 @@ namespace dotMCLauncher.Core
             }
             return false;
         }
+
+        public string GetAssetsIndex()
+        {
+            if (!string.IsNullOrEmpty(AssetsIndex)) {
+                return AssetsIndex;
+            }
+            VersionManifest manifest = InheritableVersionManifest;
+            while (true) {
+                if (manifest.InheritsFrom == null) {
+                    if (manifest.AssetsIndex != null) {
+                        return manifest.AssetsIndex;
+                    }
+                    break;
+                }
+                manifest = manifest.InheritableVersionManifest;
+            }
+            throw new VersionCorrupted("Can't get assets index.") {
+                Version = VersionId
+            };
+        }
+
+        public string GetBaseJar()
+        {
+            return InheritsFrom == null ? VersionId : InheritableVersionManifest.GetBaseJar();
+        }
     }
 
     public class VersionCorruptedOrNotExists : Exception
     {
         public string Version;
         public VersionCorruptedOrNotExists(string message) : base(message) {}
+    }
+
+    public class VersionCorrupted : Exception
+    {
+        public string Version;
+        public VersionCorrupted(string message) : base(message) { }
     }
 }
