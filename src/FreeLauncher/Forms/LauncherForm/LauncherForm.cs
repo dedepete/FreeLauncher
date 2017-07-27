@@ -119,6 +119,7 @@ namespace FreeLauncher.Forms
             AppendLog($"{new string(' ', 4)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"{new string(' ', 2)}Java path: '{Java.JavaInstallationPath}' ({Java.JavaBitInstallation}-bit)");
             AppendLog(new string('=', 12));
+            logBox.Controls.Add(new LinkLabel() {Text = "Text"});
 
             if (_applicationContext.LocalizationsList.Count != 0) {
                 foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
@@ -479,7 +480,7 @@ namespace FreeLauncher.Forms
 
         private void langWikiLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(@"https://github.com/dedepete/FreeLauncher/wiki/Change-language");
+            Process.Start(@"https://github.com/dedepete/FreeLauncher/wiki/");
         }
 
         private void LangDropDownList_SelectedIndexChanged(object sender, PositionChangedEventArgs e)

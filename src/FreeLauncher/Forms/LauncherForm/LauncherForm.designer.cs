@@ -829,12 +829,12 @@ namespace FreeLauncher.Forms
             this.langWikiLink.AutoSize = true;
             this.langWikiLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.langWikiLink.LinkColor = System.Drawing.Color.Gray;
-            this.langWikiLink.Location = new System.Drawing.Point(747, 5);
+            this.langWikiLink.Location = new System.Drawing.Point(758, 5);
             this.langWikiLink.Name = "langWikiLink";
-            this.langWikiLink.Size = new System.Drawing.Size(109, 13);
+            this.langWikiLink.Size = new System.Drawing.Size(94, 13);
             this.langWikiLink.TabIndex = 5;
             this.langWikiLink.TabStop = true;
-            this.langWikiLink.Text = "Not your language?";
+            this.langWikiLink.Text = "Having troubles?";
             this.langWikiLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.langWikiLink_LinkClicked);
             // 
             // LauncherForm
