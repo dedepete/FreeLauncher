@@ -119,7 +119,6 @@ namespace FreeLauncher.Forms
             AppendLog($"{new string(' ', 4)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             AppendLog($"{new string(' ', 2)}Java path: '{Java.JavaInstallationPath}' ({Java.JavaBitInstallation}-bit)");
             AppendLog(new string('=', 12));
-            logBox.Controls.Add(new LinkLabel() {Text = "Text"});
 
             if (_applicationContext.LocalizationsList.Count != 0) {
                 foreach (KeyValuePair<string, Localization> keyvalue in _applicationContext.LocalizationsList) {
@@ -839,8 +838,7 @@ namespace FreeLauncher.Forms
             panel.Size = new Size(panel.Size.Width, 60);
             RadButton closeButton = new RadButton {
                 Text = _applicationContext.ProgramLocalization.Close,
-                Anchor = (AnchorStyles.Right | AnchorStyles.Top),
-                Enabled = false
+                Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
             RichTextBox reportBox = new RichTextBox {Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font};
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
@@ -1000,12 +998,22 @@ namespace FreeLauncher.Forms
                 _minecraftProcess.Exited += MinecraftProcess_Exited;
                 if (_launcherForm.EnableMinecraftLogging.Checked) {
                     _minecraftProcess.OutputDataReceived +=
-                        (sender, args) => _outputInfoBuilder.Append($"{(_outputInfoBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[O] {args.Data}");
+                        (sender, args) => {
+                            lock (this) {
+                                _outputInfoBuilder.Append(
+                                    $"{(_outputInfoBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[O] {args.Data}");
+                            }
+                        };
                 } else {
                     AppendLog($"NOTICE:{Environment.NewLine}Logging from [O]UTPUT thread has been disabled. It can be enabled in the Settings.{Environment.NewLine}{Environment.NewLine}");
                 }
                 _minecraftProcess.ErrorDataReceived +=
-                    (sender, args) => _outputErrorBuilder.Append($"{(_outputErrorBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[E] {args.Data}");
+                    (sender, args) => {
+                        lock (this) {
+                            _outputErrorBuilder.Append(
+                                $"{(_outputErrorBuilder.Length == 0 ? string.Empty : Environment.NewLine)}[E] {args.Data}");
+                        }
+                    };
             }
             _minecraftProcess.Start();
             if (_profile.LauncherVisibilityOnGameClose == Profile.LauncherVisibility.CLOSED) {
