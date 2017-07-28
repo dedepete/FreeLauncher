@@ -842,7 +842,10 @@ namespace FreeLauncher.Forms
             };
             RichTextBox reportBox = new RichTextBox {Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font};
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
-            closeButton.Click += (sender, e) => mainPageView.Pages.Remove(outputPage);
+            closeButton.Click += (sender, e) => {
+                if (!mainPageView.Pages.Contains(outputPage)) return;
+                mainPageView.Pages.Remove(outputPage);
+            };
             killProcessButton.Location = new Point(panel.Size.Width - (killProcessButton.Size.Width + 5),
                 closeButton.Location.Y + closeButton.Size.Height + 5);
             panel.Controls.Add(closeButton);
