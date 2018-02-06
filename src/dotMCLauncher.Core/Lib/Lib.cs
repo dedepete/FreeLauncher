@@ -46,15 +46,15 @@ namespace dotMCLauncher.Core
             }
             bool toReturn = false;
             foreach (Rule rule in _rules) {
-                switch (rule.action) {
+                switch (rule.Action) {
                     case "allow":
-                        toReturn = rule.os == null || rule.os["name"].ToString() == "windows";
+                        toReturn = (rule.Os == null && rule.Features == null) || rule.Os.Name == "windows";
                         break;
                     case "disallow":
-                        toReturn = rule.os == null ? toReturn : rule.os["name"].ToString() != "windows";
+                        toReturn = (rule.Os == null && rule.Features == null) ? toReturn : rule.Os.Name != "windows";
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(rule.action), rule.action, null);
+                        throw new ArgumentOutOfRangeException(nameof(rule.Action), rule.Action, null);
                 }
             }
             return toReturn;

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Igor Popov")]
 [assembly: AssemblyProduct("FreeLauncher")]
-[assembly: AssemblyCopyright("Copyright Igor Popov© 2015-2017")]
+[assembly: AssemblyCopyright("Copyright Igor Popov© 2015-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.7.1358")]
-[assembly: AssemblyFileVersion("0.1.7.1358")]
+[assembly: AssemblyVersion("0.1.7.1412")]
+[assembly: AssemblyFileVersion("0.1.7.1412")]
 [assembly: AssemblyInformationalVersion("%version3%_%branch%.%shorthash%")]

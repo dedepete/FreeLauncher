@@ -85,10 +85,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentCollection.cs" />
+    <Compile Include="Argument\Argument.cs" />
+    <Compile Include="Argument\ArgumentsGroup.cs" />
+    <Compile Include="Argument\ArgumentsGroupType.cs" />
+    <Compile Include="Argument\ArgumentType.cs" />
+    <Compile Include="Argument\ExtendedArgument.cs" />
+    <Compile Include="Argument\SingleArgument.cs" />
     <Compile Include="DownloadEntry.cs" />
     <Compile Include="Lib\LibDownloadInfo.cs" />
     <Compile Include="Lib\Lib.cs" />
-    <Compile Include="Lib\Rule.cs" />
+    <Compile Include="Rule\Features.cs" />
+    <Compile Include="Rule\OS.cs" />
+    <Compile Include="Rule\Rule.cs" />
     <Compile Include="OperatingSystem.cs" />
     <Compile Include="Profile\Profile.cs" />
     <Compile Include="ProfileManager.cs" />
@@ -99,12 +107,14 @@
     <Compile Include="RawVersionList\RawVersionListManifestLatest.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="VersionDownloadInfo.cs" />
-    <Compile Include="VersionManifest.cs" />
+    <Compile Include="VersionManifest\VersionManifest.cs" />
     <Compile Include="Profile\WindowInfo.cs" />
+    <Compile Include="VersionManifest\VersionManifestType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

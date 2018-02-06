@@ -94,7 +94,6 @@ namespace FreeLauncher.Forms
         }
 
         #endregion
-
         public LauncherForm(ApplicationContext appContext)
         {
             _applicationContext = appContext;
@@ -334,6 +333,33 @@ namespace FreeLauncher.Forms
                             !Directory.Exists(_selectedProfile.WorkingDirectory)) {
                             Directory.CreateDirectory(_selectedProfile.WorkingDirectory);
                         }
+                        Dictionary<string, string> argumentDictionary = new Dictionary<string, string> {
+                            {
+                                "auth_player_name",
+                                _selectedUser.Type == "offline"
+                                    ? NicknameDropDownList.Text
+                                    : new Username {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()
+                            },
+                            {"version_name", _selectedProfile.ProfileName}, {
+                                "game_directory",
+                                _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"
+                            },
+                            {"assets_root", _applicationContext.McDirectory + @"\assets\"},
+                            {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"},
+                            {"assets_index_name", selectedVersionManifest.GetAssetsIndex()},
+                            {"version_type", selectedVersionManifest.ReleaseType},
+                            {"auth_session", _selectedUser.AccessToken ?? "sample_token"},
+                            {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"},
+                            {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {
+                                "user_properties",
+                                _selectedUser.UserProperties?.ToString(Formatting.None) ??
+                                properties.ToString(Formatting.None)
+                            },
+                            {"user_type", _selectedUser.Type}
+                        };
+                        string gameArguments = selectedVersionManifest.Type == VersionManifestType.V1
+                            ? selectedVersionManifest.ArgCollection.ToString(argumentDictionary)
+                            : selectedVersionManifest.ArgGroups.FirstOrDefault(ag => ag.Type == ArgumentsGroupType.GAME).ToString(argumentDictionary);
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
@@ -344,7 +370,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\",
                             Arguments =
-                                $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {selectedVersionManifest.ArgCollection.ToString(new Dictionary<string, string> {{"auth_player_name", _selectedUser.Type == "offline" ? NicknameDropDownList.Text : new Username {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()}, {"version_name", _selectedProfile.ProfileName}, {"game_directory", _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"}, {"assets_root", _applicationContext.McDirectory + @"\assets\"}, {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"}, {"assets_index_name", selectedVersionManifest.GetAssetsIndex()}, { "version_type", selectedVersionManifest.ReleaseType }, {"auth_session", _selectedUser.AccessToken ?? "sample_token"}, {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"}, {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {"user_properties", _selectedUser.UserProperties?.ToString(Formatting.None) ?? properties.ToString(Formatting.None)}, {"user_type", _selectedUser.Type}})}"
+                                $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {gameArguments}"
                         };
                         AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
@@ -384,7 +410,7 @@ namespace FreeLauncher.Forms
             if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
-                navBar.Text = newsBrowser.Url.ToString();
+                navBar.Text = newsBrowser.Url?.ToString();
                 navBar.Visible = true;
             } else {
                 navBar.Visible = false;

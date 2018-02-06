@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace dotMCLauncher.Core
 {
     public class VersionManifest: Version
     {
+        [JsonIgnore] public VersionManifestType Type = VersionManifestType.V1;
+
         /// <summary>
-        /// Arguments.
+        /// Arguments v1.
         /// </summary>
         [JsonProperty("minecraftArguments")]
         public string Arguments
@@ -18,6 +21,42 @@ namespace dotMCLauncher.Core
                 _arguments = value;
                 ArgCollection = new ArgumentCollection();
                 ArgCollection.Parse(value);
+            }
+        }
+
+        /// <summary>
+        /// Arguments v2.
+        /// </summary>
+        [JsonProperty("arguments")]
+        public JObject ArgumentGroups
+        {
+            set {
+                Type = VersionManifestType.V2;
+                ArgGroups = new List<ArgumentsGroup>();
+                foreach (KeyValuePair<string, JToken> pair in value) {
+                    ArgumentsGroup group = new ArgumentsGroup();
+                    group.Type = pair.Key.ToUpper() == "GAME" ? ArgumentsGroupType.GAME : ArgumentsGroupType.JVM;
+                    group.Arguments = new List<Argument>();
+                    JArray array = (JArray) pair.Value;
+                    for (int i = 0; i < array.Count; i++) {
+                        JToken token = array[i];
+                        if (token is JValue) {
+                            group.Arguments.Add(new SingleArgument {
+                                Value = token
+                            });
+                            Console.WriteLine("[S]" + token);
+                        } else {
+                            ExtendedArgument arg = (ExtendedArgument)
+                                JsonConvert.DeserializeObject(((JArray)pair.Value)[i].ToString(), typeof(ExtendedArgument));
+                            group.Arguments.Add(arg);
+                            Console.WriteLine("[E]" + token + "\n" +
+                                              "Multi: " + arg.HasMultipleArguments + "\n" +
+                                              "Values: " + arg.Value + "\n" +
+                                              "IsForWindows: " + arg.IsForWindows());
+                        }
+                    }
+                    ArgGroups.Add(group);
+                }
             }
         }
 
@@ -63,6 +102,8 @@ namespace dotMCLauncher.Core
         /// Argument list.
         /// </summary>
         [JsonIgnore] public ArgumentCollection ArgCollection;
+
+        [JsonIgnore] public List<ArgumentsGroup> ArgGroups;
 
         [JsonIgnore]
         public string GetClientDownloadUrl

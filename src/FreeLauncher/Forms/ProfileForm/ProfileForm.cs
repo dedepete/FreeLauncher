@@ -54,7 +54,7 @@ namespace FreeLauncher.Forms
                             VersionSelector.SelectedPage = modVersionsPage;
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(nameof(item), item, null);
+                            continue;
                     }
                 }
             }
