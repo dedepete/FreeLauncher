@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,7 +27,6 @@ namespace dotMCLauncher.Core
             }
             set {
                 Values = new List<string>();
-                JToken val = value;
                 JArray array = value.Type == JTokenType.Array ? value as JArray : new JArray(value);
                 if (array.Count > 1) {
                     HasMultipleArguments = true;
@@ -66,6 +64,27 @@ namespace dotMCLauncher.Core
                     default:
                         throw new ArgumentOutOfRangeException(nameof(rule.Action), rule.Action, null);
                 }
+            }
+            return toReturn;
+        }
+
+        public bool IsValid(params Rule[] rules)
+        {
+            if (rules == null) {
+                return true;
+            }
+            bool toReturn = false;
+            foreach (Rule rule in _rules) {
+                foreach (Rule reqRule in rules) {
+                    if (reqRule.Action == rule.Action &&
+                        reqRule.Features?.IsForCustomResolution == rule.Features?.IsForCustomResolution &&
+                        reqRule.Features?.IsForDemoUser == rule.Features?.IsForDemoUser &&
+                        reqRule.Os?.Name == rule.Os?.Name &&
+                        reqRule.Os?.Version == rule.Os?.Version) {
+                        toReturn = true;
+                    }
+                }
+
             }
             return toReturn;
         }

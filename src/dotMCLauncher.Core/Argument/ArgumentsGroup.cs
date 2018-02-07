@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,35 +12,43 @@ namespace dotMCLauncher.Core
 
         public List<Argument> Arguments;
 
-        public string ToString(Dictionary<string, string> values)
+        public string ToString(Dictionary<string, string> values, Rule[] rules = null)
         {
-            string toReturn = string.Empty;
+            StringBuilder toReturn = new StringBuilder();
             foreach (Argument argument in Arguments) {
                 switch (argument.Type) {
                     case ArgumentType.SINGLE:
-                        toReturn += (argument as SingleArgument).Value + " ";
+                        toReturn.Append((argument as SingleArgument).Value + " ");
                         break;
                     case ArgumentType.EXTENDED:
                         ExtendedArgument extendedArgument = argument as ExtendedArgument;
-                        if (!extendedArgument.IsForWindows()) {
+                        if (!extendedArgument.IsValid(rules)) {
                             continue;
                         }
                         if (!extendedArgument.HasMultipleArguments) {
-                            toReturn += extendedArgument.Value + " ";
+                            toReturn.Append((extendedArgument.Value.Contains(' ')
+                                                ? "\"" + extendedArgument.Value + "\""
+                                                : extendedArgument.Value) + " ");
                             continue;
                         }
-                        toReturn = extendedArgument.Values.Aggregate(toReturn, (current, value) => current + value + " ");
+                        toReturn = extendedArgument.Values.Aggregate(toReturn,
+                            (current, value) =>
+                                toReturn.Append((Type == ArgumentsGroupType.JVM && value.Contains(' ')
+                                                    ? "\"" + value + "\""
+                                                    : value) + " "));
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             Regex re = new Regex(@"\$\{(\w+)\}", RegexOptions.IgnoreCase);
-            toReturn = re.Replace(toReturn,
-                                match => values.ContainsKey(match.Groups[1].Value)
-                                    ? (!values[match.Groups[1].Value].Contains(" ")
-                                        ? values[match.Groups[1].Value]
-                                        : $"\"{values[match.Groups[1].Value]}\"")
-                                    : match.Value);
-            return toReturn;
+            toReturn.Length--;
+            return re.Replace(toReturn.ToString(),
+                match => values.ContainsKey(match.Groups[1].Value)
+                    ? (!values[match.Groups[1].Value].Contains(" ")
+                        ? values[match.Groups[1].Value]
+                        : $"\"{values[match.Groups[1].Value]}\"")
+                    : match.Value);
         }
     }
 }

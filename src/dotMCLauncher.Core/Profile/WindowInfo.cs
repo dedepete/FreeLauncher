@@ -4,21 +4,21 @@ namespace dotMCLauncher.Core
 {
     public class WindowInfo
     {
-        [JsonProperty("height")] public int Y { get; set; } = 480;
-        [JsonProperty("width")] public int X { get; set; } = 854;
+        [JsonProperty("height")] public int Height { get; set; } = 480;
+        [JsonProperty("width")] public int Width { get; set; } = 854;
 
         /// <summary>
         /// Resets values.
         /// </summary>
         public void SetDefaultValues()
         {
-            Y = 480;
-            X = 854;
+            Height = 480;
+            Width = 854;
         }
 
         public override string ToString()
         {
-            return $"({X};{Y})";
+            return $"({Width};{Height})";
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace dotMCLauncher.Core
         /// </summary>
         public string ToCommandLineArg()
         {
-            return $"--width {X} --height {Y}";
+            return $"--width {Width} --height {Height}";
         }
     }
 }

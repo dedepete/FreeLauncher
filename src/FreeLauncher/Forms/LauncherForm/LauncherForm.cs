@@ -316,15 +316,15 @@ namespace FreeLauncher.Forms
                         UpdateUserList();
                         VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                             new DirectoryInfo(_applicationContext.McVersions + @"\" + (_versionToLaunch ?? (
-                                (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))));
+                                _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
                         };
-                        if (_selectedProfile.FastConnectionSettigs != null) {
+                        if (_selectedProfile.ConnectionSettigs != null) {
                             selectedVersionManifest.ArgCollection.Add("server",
-                                _selectedProfile.FastConnectionSettigs.ServerIp);
+                                _selectedProfile.ConnectionSettigs.ServerIp);
                             selectedVersionManifest.ArgCollection.Add("port",
-                                _selectedProfile.FastConnectionSettigs.ServerPort.ToString());
+                                _selectedProfile.ConnectionSettigs.ServerPort.ToString());
                         }
                         string javaArguments = _selectedProfile.JavaArguments == null
                             ? string.Empty
@@ -333,7 +333,7 @@ namespace FreeLauncher.Forms
                             !Directory.Exists(_selectedProfile.WorkingDirectory)) {
                             Directory.CreateDirectory(_selectedProfile.WorkingDirectory);
                         }
-                        Dictionary<string, string> argumentDictionary = new Dictionary<string, string> {
+                        Dictionary<string, string> gameArgumentDictionary = new Dictionary<string, string> {
                             {
                                 "auth_player_name",
                                 _selectedUser.Type == "offline"
@@ -357,9 +357,45 @@ namespace FreeLauncher.Forms
                             },
                             {"user_type", _selectedUser.Type}
                         };
-                        string gameArguments = selectedVersionManifest.Type == VersionManifestType.V1
-                            ? selectedVersionManifest.ArgCollection.ToString(argumentDictionary)
-                            : selectedVersionManifest.ArgGroups.FirstOrDefault(ag => ag.Type == ArgumentsGroupType.GAME).ToString(argumentDictionary);
+                        Dictionary<string, string> jvmArgumentDictionary = new Dictionary<string, string> {
+                            {"natives_directory", _applicationContext.McDirectory + @"\natives\"},
+                            {"launcher_name", Application.ProductName},
+                            {"launcher_version", Application.ProductVersion},
+                            {"classpath", libraries.Contains(' ') ? $"\"{libraries}\"" : libraries}
+                        };
+                        string gameArguments, jvmArguments;
+                        if (selectedVersionManifest.Type == VersionManifestType.V2) {
+                            List<Rule> requiredRules = new List<Rule> {
+                                new Rule {Action = "allow", Os = new dotMCLauncher.Core.OS {Name = "windows"}}
+                            };
+                            if (new ComputerInfo().OSFullName.ToUpperInvariant().Contains("WINDOWS 10")) {
+                                requiredRules.Add(new Rule {
+                                    Action = "allow",
+                                    Os = new dotMCLauncher.Core.OS {Name = "windows", Version = "^10\\."}
+                                });
+                            }
+                            if (_selectedProfile.WindowInfo != null && (_selectedProfile.WindowInfo.Width != 854 || _selectedProfile.WindowInfo.Height != 480)) {
+                                requiredRules.Add(new Rule {
+                                    Action = "allow",
+                                    Features = new Features {IsForCustomResolution = true}
+                                });
+                                gameArgumentDictionary.Add("resolution_width",
+                                    _selectedProfile.WindowInfo?.Width.ToString());
+                                gameArgumentDictionary.Add("resolution_height",
+                                    _selectedProfile.WindowInfo?.Height.ToString());
+                            }
+                            gameArguments =
+                                selectedVersionManifest.ArgGroups.FirstOrDefault(
+                                        ag => ag.Type == ArgumentsGroupType.GAME)
+                                    .ToString(gameArgumentDictionary, requiredRules.ToArray());
+                            jvmArguments = selectedVersionManifest.ArgGroups.FirstOrDefault(
+                                    ag => ag.Type == ArgumentsGroupType.JVM)
+                                .ToString(jvmArgumentDictionary, requiredRules.ToArray());
+                        } else {
+                            gameArguments = selectedVersionManifest.ArgCollection.ToString(gameArgumentDictionary);
+                            jvmArguments = javaArguments +
+                                           $"-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)}";
+                        }
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
@@ -370,7 +406,7 @@ namespace FreeLauncher.Forms
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\",
                             Arguments =
-                                $"{javaArguments}-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)} {selectedVersionManifest.MainClass} {gameArguments}"
+                                $"{jvmArguments} {selectedVersionManifest.MainClass} {gameArguments}"
                         };
                         AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
@@ -407,7 +443,7 @@ namespace FreeLauncher.Forms
 
         private void ProcessUrl()
         {
-            if (newsBrowser.Url != new Uri("https://mcupdate.tumblr.com/")) {
+            if (newsBrowser.Url != new Uri("https://minecraft.net")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
                 navBar.Text = newsBrowser.Url?.ToString();

@@ -33,10 +33,10 @@ namespace FreeLauncher.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn1 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn2 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
-            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn3 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
-            Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn4 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Версия");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn5 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Тип");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn6 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
+            Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
             this.vs12theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.mainPageView = new Telerik.WinControls.UI.RadPageView();
@@ -181,7 +181,7 @@ namespace FreeLauncher.Forms
             this.newsBrowser.ScriptErrorsSuppressed = true;
             this.newsBrowser.Size = new System.Drawing.Size(848, 299);
             this.newsBrowser.TabIndex = 0;
-            this.newsBrowser.Url = new System.Uri("https://mcupdate.tumblr.com/", System.UriKind.Absolute);
+            this.newsBrowser.Url = new System.Uri("https://minecraft.net", System.UriKind.Absolute);
             this.newsBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.newsBrowser_Navigated);
             this.newsBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.newsBrowser_Navigating);
             // 
@@ -291,15 +291,15 @@ namespace FreeLauncher.Forms
             this.versionsListView.AllowRemove = false;
             this.versionsListView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.versionsListView.CheckOnClickMode = Telerik.WinControls.UI.CheckOnClickMode.FirstClick;
-            listViewDetailColumn1.HeaderText = "Версия";
-            listViewDetailColumn2.HeaderText = "Тип";
-            listViewDetailColumn2.Width = 100F;
-            listViewDetailColumn3.HeaderText = "Зависимость";
-            listViewDetailColumn3.Width = 100F;
+            listViewDetailColumn4.HeaderText = "Версия";
+            listViewDetailColumn5.HeaderText = "Тип";
+            listViewDetailColumn5.Width = 100F;
+            listViewDetailColumn6.HeaderText = "Зависимость";
+            listViewDetailColumn6.Width = 100F;
             this.versionsListView.Columns.AddRange(new Telerik.WinControls.UI.ListViewDetailColumn[] {
-            listViewDetailColumn1,
-            listViewDetailColumn2,
-            listViewDetailColumn3});
+            listViewDetailColumn4,
+            listViewDetailColumn5,
+            listViewDetailColumn6});
             this.versionsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.versionsListView.EnableColumnSort = true;
             this.versionsListView.EnableFiltering = true;
@@ -345,6 +345,7 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
+            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(426F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -456,9 +457,9 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteDisplayMember = null;
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            radListDataItem1.Tag = "ru-RU";
-            radListDataItem1.Text = "Русский (ru-default)";
-            this.LangDropDownList.Items.Add(radListDataItem1);
+            radListDataItem2.Tag = "ru-RU";
+            radListDataItem2.Text = "Русский (ru-default)";
+            this.LangDropDownList.Items.Add(radListDataItem2);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 21);
             this.LangDropDownList.Name = "LangDropDownList";
             this.LangDropDownList.Size = new System.Drawing.Size(202, 24);
@@ -620,6 +621,7 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
+            this.LicensesPage.ItemSize = new System.Drawing.SizeF(421F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -644,6 +646,7 @@ namespace FreeLauncher.Forms
             // 
             this.FreeLauncherLicense.AutoScroll = true;
             this.FreeLauncherLicense.Controls.Add(this.FreeLauncherLicenseText);
+            this.FreeLauncherLicense.ItemSize = new System.Drawing.SizeF(94F, 26F);
             this.FreeLauncherLicense.Location = new System.Drawing.Point(155, 4);
             this.FreeLauncherLicense.Name = "FreeLauncherLicense";
             this.FreeLauncherLicense.Size = new System.Drawing.Size(679, 285);
@@ -654,7 +657,7 @@ namespace FreeLauncher.Forms
             this.FreeLauncherLicenseText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FreeLauncherLicenseText.Location = new System.Drawing.Point(0, 0);
             this.FreeLauncherLicenseText.Name = "FreeLauncherLicenseText";
-            this.FreeLauncherLicenseText.Size = new System.Drawing.Size(679, 285);
+            this.FreeLauncherLicenseText.Size = new System.Drawing.Size(477, 324);
             this.FreeLauncherLicenseText.TabIndex = 2;
             this.FreeLauncherLicenseText.Text = resources.GetString("FreeLauncherLicenseText.Text");
             this.FreeLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
@@ -665,6 +668,7 @@ namespace FreeLauncher.Forms
             // 
             this.dotMCLauncherLicense.AutoScroll = true;
             this.dotMCLauncherLicense.Controls.Add(this.dotMCLauncherLicenseText);
+            this.dotMCLauncherLicense.ItemSize = new System.Drawing.SizeF(94F, 26F);
             this.dotMCLauncherLicense.Location = new System.Drawing.Point(155, 4);
             this.dotMCLauncherLicense.Name = "dotMCLauncherLicense";
             this.dotMCLauncherLicense.Size = new System.Drawing.Size(679, 285);
@@ -675,7 +679,7 @@ namespace FreeLauncher.Forms
             this.dotMCLauncherLicenseText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dotMCLauncherLicenseText.Location = new System.Drawing.Point(0, 0);
             this.dotMCLauncherLicenseText.Name = "dotMCLauncherLicenseText";
-            this.dotMCLauncherLicenseText.Size = new System.Drawing.Size(679, 285);
+            this.dotMCLauncherLicenseText.Size = new System.Drawing.Size(477, 324);
             this.dotMCLauncherLicenseText.TabIndex = 1;
             this.dotMCLauncherLicenseText.Text = resources.GetString("dotMCLauncherLicenseText.Text");
             this.dotMCLauncherLicenseText.ThemeName = "VisualStudio2012Dark";

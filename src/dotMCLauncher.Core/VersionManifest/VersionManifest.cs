@@ -8,10 +8,10 @@ namespace dotMCLauncher.Core
 {
     public class VersionManifest: Version
     {
-        [JsonIgnore] public VersionManifestType Type = VersionManifestType.V1;
+        [JsonIgnore] public VersionManifestType Type { get; set; } = VersionManifestType.V1;
 
         /// <summary>
-        /// Arguments v1.
+        /// Arguments. v1
         /// </summary>
         [JsonProperty("minecraftArguments")]
         public string Arguments
@@ -25,34 +25,30 @@ namespace dotMCLauncher.Core
         }
 
         /// <summary>
-        /// Arguments v2.
+        /// Arguments. v2
         /// </summary>
         [JsonProperty("arguments")]
-        public JObject ArgumentGroups
+        public JObject SetArgumentGroups
         {
             set {
                 Type = VersionManifestType.V2;
                 ArgGroups = new List<ArgumentsGroup>();
                 foreach (KeyValuePair<string, JToken> pair in value) {
                     ArgumentsGroup group = new ArgumentsGroup();
-                    group.Type = pair.Key.ToUpper() == "GAME" ? ArgumentsGroupType.GAME : ArgumentsGroupType.JVM;
+                    group.Type = pair.Key.ToUpperInvariant() == "GAME"
+                        ? ArgumentsGroupType.GAME
+                        : ArgumentsGroupType.JVM;
                     group.Arguments = new List<Argument>();
                     JArray array = (JArray) pair.Value;
-                    for (int i = 0; i < array.Count; i++) {
-                        JToken token = array[i];
+                    foreach (JToken token in array) {
                         if (token is JValue) {
                             group.Arguments.Add(new SingleArgument {
                                 Value = token
                             });
-                            Console.WriteLine("[S]" + token);
                         } else {
                             ExtendedArgument arg = (ExtendedArgument)
-                                JsonConvert.DeserializeObject(((JArray)pair.Value)[i].ToString(), typeof(ExtendedArgument));
+                                JsonConvert.DeserializeObject(token.ToString(), typeof(ExtendedArgument));
                             group.Arguments.Add(arg);
-                            Console.WriteLine("[E]" + token + "\n" +
-                                              "Multi: " + arg.HasMultipleArguments + "\n" +
-                                              "Values: " + arg.Value + "\n" +
-                                              "IsForWindows: " + arg.IsForWindows());
                         }
                     }
                     ArgGroups.Add(group);
@@ -94,15 +90,18 @@ namespace dotMCLauncher.Core
         public VersionManifest InheritableVersionManifest { get; set; }
 
         /// <summary>
-        /// Argument line.
+        /// Argument line. v1
         /// </summary>
         [JsonIgnore] private string _arguments;
 
         /// <summary>
-        /// Argument list.
+        /// Argument list. v1
         /// </summary>
         [JsonIgnore] public ArgumentCollection ArgCollection;
 
+        /// <summary>
+        /// Groups of arguments. v2
+        /// </summary>
         [JsonIgnore] public List<ArgumentsGroup> ArgGroups;
 
         [JsonIgnore]

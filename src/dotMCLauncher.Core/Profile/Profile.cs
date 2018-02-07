@@ -42,7 +42,7 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// The game will automatically connect to the selected server. 
         /// </summary>
-        [JsonProperty("connectionOptions")] public ServerInfo FastConnectionSettigs { get; set; }
+        [JsonProperty("connectionOptions")] public ServerInfo ConnectionSettigs { get; set; }
 
         [JsonProperty("launcherVisibilityOnGameClose")] private string _launcherVisibilityOnGameClose { get; set; }
 

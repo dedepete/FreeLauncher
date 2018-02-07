@@ -67,13 +67,13 @@ namespace FreeLauncher.Forms
                 gameDirectoryBox.Text = _applicationContext.McDirectory;
             }
             if (CurrentProfile.WindowInfo != null) {
-                xResolutionBox.Text = CurrentProfile.WindowInfo.X.ToString();
-                yResolutionBox.Text = CurrentProfile.WindowInfo.Y.ToString();
+                xResolutionBox.Text = CurrentProfile.WindowInfo.Width.ToString();
+                yResolutionBox.Text = CurrentProfile.WindowInfo.Height.ToString();
             }
-            if (CurrentProfile.FastConnectionSettigs != null) {
+            if (CurrentProfile.ConnectionSettigs != null) {
                 FastConnectCheckBox.Checked = true;
-                ipTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerIp;
-                portTextBox.Text = CurrentProfile.FastConnectionSettigs.ServerPort.ToString();
+                ipTextBox.Text = CurrentProfile.ConnectionSettigs.ServerIp;
+                portTextBox.Text = CurrentProfile.ConnectionSettigs.ServerPort.ToString();
             }
             switch (CurrentProfile.LauncherVisibilityOnGameClose) {
                 case Profile.LauncherVisibility.HIDDEN:
@@ -131,22 +131,22 @@ namespace FreeLauncher.Forms
             if ((xResolutionBox.Text != "854" || yResolutionBox.Text != "480") && xResolutionBox.Text != string.Empty &&
                 yResolutionBox.Text != string.Empty) {
                 WindowInfo winInfo = new WindowInfo {
-                    X = Convert.ToInt32(xResolutionBox.Text),
-                    Y = Convert.ToInt32(yResolutionBox.Text)
+                    Width = Convert.ToInt32(xResolutionBox.Text),
+                    Height = Convert.ToInt32(yResolutionBox.Text)
                 };
                 CurrentProfile.WindowInfo = winInfo;
             } else {
                 CurrentProfile.WindowInfo = null;
             }
             if (FastConnectCheckBox.Checked && ipTextBox.Text != null) {
-                CurrentProfile.FastConnectionSettigs = new ServerInfo {
+                CurrentProfile.ConnectionSettigs = new ServerInfo {
                     ServerIp = ipTextBox.Text,
                     ServerPort = Convert.ToUInt32((portTextBox.Text != string.Empty
                         ? portTextBox.Text
                         : "25565"))
                 };
             } else {
-                CurrentProfile.FastConnectionSettigs = null;
+                CurrentProfile.ConnectionSettigs = null;
             }
             switch (stateBox.SelectedItem.Tag.ToString()) {
                 case "hide launcher and re-open when game closes":
