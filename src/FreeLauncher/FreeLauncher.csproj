@@ -219,9 +219,9 @@
       <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
       <Name>dotMCLauncher.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\dotMCLauncher.YaDra4il\dotMCLauncher.YaDra4il.csproj">
+    <ProjectReference Include="..\dotMCLauncher.Yggdrasil\dotMCLauncher.Yggdrasil.csproj">
       <Project>{2aec9ec1-5042-4922-b425-88b740fddc82}</Project>
-      <Name>dotMCLauncher.YaDra4il</Name>
+      <Name>dotMCLauncher.Yggdrasil</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-﻿namespace dotMCLauncher.YaDra4il
+﻿namespace dotMCLauncher.Yggdrasil
 {
     internal static class Urls
     {

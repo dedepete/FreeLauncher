@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using dotMCLauncher.YaDra4il;
+using dotMCLauncher.Yggdrasil;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
@@ -64,7 +64,7 @@ namespace FreeLauncher.Forms
                     auth.Login();
                     user.Type = auth.IsLegacy ? "legacy" : "mojang";
                     user.AccessToken = auth.AccessToken;
-                    user.SessionToken = auth.SessionToken;
+                    user.ClientToken = auth.ClientToken;
                     user.Uuid = auth.Uuid;
                     user.UserProperties = auth.UserProperties;
                     if (_userManager.Accounts.ContainsKey(user.Username)) {
@@ -166,7 +166,7 @@ namespace FreeLauncher.Forms
         [JsonProperty("username")] public string Username;
         [JsonProperty("type")] public string Type;
         [JsonProperty("uuid")] public string Uuid;
-        [JsonProperty("sessionToken")] public string SessionToken;
+        [JsonProperty("sessionToken")] public string ClientToken;
         [JsonProperty("accessToken")] public string AccessToken;
         [JsonProperty("properties")] public JArray UserProperties;
     }

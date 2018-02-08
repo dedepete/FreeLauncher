@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using dotMCLauncher.Core;
-using dotMCLauncher.YaDra4il;
+using dotMCLauncher.Yggdrasil;
 using Ionic.Zip;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
@@ -152,7 +152,7 @@ namespace FreeLauncher.Forms
                 newsBrowser.DocumentText = $@"<html><body>
 <h1>OFFLINE-MODE ENABLED</h1>
 <hr />
-Failed to check for Internet connection or mode was forced to be enabled.
+Failed to check for Internet connection or offline-mode was forced to be enabled.
 <br />
 Please, check for your Internet configuration and restart the launcher.
 <hr />
@@ -307,10 +307,11 @@ Please, check for your Internet configuration and restart the launcher.
                             _selectedUser = _userManager.Accounts[NicknameDropDownList.Text];
                             if (_selectedUser.Type != "offline") {
                                 AuthManager am = new AuthManager {
-                                    SessionToken = _selectedUser.SessionToken,
+                                    ClientToken = _selectedUser.ClientToken,
+                                    AccessToken = _selectedUser.AccessToken,
                                     Uuid = _selectedUser.Uuid
                                 };
-                                bool check = am.CheckSessionToken();
+                                bool check = am.CheckClientToken();
                                 if (!check) {
                                     RadMessageBox.Show(
                                         "Session token is not valid. Please, head up to user manager and re-add your account.",
@@ -322,10 +323,10 @@ Please, check for your Internet configuration and restart the launcher.
                                     };
                                     _selectedUser = user;
                                 } else {
-                                    Refresh refresh = new Refresh(_selectedUser.SessionToken,
+                                    Refresh refresh = new Refresh(_selectedUser.ClientToken,
                                         _selectedUser.AccessToken);
                                     _selectedUser.UserProperties = (JArray) refresh.user?["properties"];
-                                    _selectedUser.SessionToken = refresh.accessToken;
+                                    _selectedUser.ClientToken = refresh.accessToken;
                                     _userManager.Accounts[NicknameDropDownList.Text] = _selectedUser;
                                 }
                             }
@@ -367,8 +368,8 @@ Please, check for your Internet configuration and restart the launcher.
                             {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"},
                             {"assets_index_name", selectedVersionManifest.GetAssetsIndex()},
                             {"version_type", selectedVersionManifest.ReleaseType},
-                            {"auth_session", _selectedUser.AccessToken ?? "sample_token"},
-                            {"auth_access_token", _selectedUser.SessionToken ?? "sample_token"},
+                            {"auth_session", _selectedUser.ClientToken ?? "sample_token"},
+                            {"auth_access_token", _selectedUser.AccessToken ?? "sample_token"},
                             {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {
                                 "user_properties",
                                 _selectedUser.UserProperties?.ToString(Formatting.None) ??

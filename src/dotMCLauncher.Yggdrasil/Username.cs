@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Newtonsoft.Json.Linq;
 
-namespace dotMCLauncher.YaDra4il
+namespace dotMCLauncher.Yggdrasil
 {
     public class Username
     {

@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeLauncher", "src\FreeLau
 		{E0F782F2-153E-4285-862C-1279A32B1141} = {E0F782F2-153E-4285-862C-1279A32B1141}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.YaDra4il", "src\dotMCLauncher.YaDra4il\dotMCLauncher.YaDra4il.csproj", "{2AEC9EC1-5042-4922-B425-88B740FDDC82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Yggdrasil", "src\dotMCLauncher.Yggdrasil\dotMCLauncher.Yggdrasil.csproj", "{2AEC9EC1-5042-4922-B425-88B740FDDC82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Core", "src\dotMCLauncher.Core\dotMCLauncher.Core.csproj", "{E0F782F2-153E-4285-862C-1279A32B1141}"
 EndProject

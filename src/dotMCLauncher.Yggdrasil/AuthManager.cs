@@ -1,26 +1,31 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace dotMCLauncher.YaDra4il
+namespace dotMCLauncher.Yggdrasil
 {
     public class AuthManager
     {
         [JsonProperty("email")]
         public string Email { get; set; }
+
         [JsonProperty("password")]
         public string Password { get; set; }
 
         [JsonProperty("username")]
         public string Username { get; set; }
+
         [JsonProperty("uuid")]
         public string Uuid { get; set; }
+
         [JsonProperty("sessionToken")]
-        public string SessionToken { get; set; }
+        public string ClientToken { get; set; }
+
         [JsonProperty("accessToken")]
         public string AccessToken { get; set; }
 
         [JsonProperty("demo")]
         public bool IsDemo { get; set; }
+
         [JsonProperty("legacy")]
         public bool IsLegacy { get; set; }
 
@@ -28,19 +33,19 @@ namespace dotMCLauncher.YaDra4il
 
         public Authenticate Login()
         {
-            var auth = Login(Email, Password);
-            SessionToken = auth.accessToken;
-            AccessToken = auth.clientToken;
+            Authenticate auth = Login(Email, Password);
+            ClientToken = auth.clientToken;
+            AccessToken = auth.accessToken;
             Username = auth.selectedProfile.name;
             Uuid = auth.selectedProfile.id;
-            UserProperties = (JArray)auth.user["properties"];
+            UserProperties = (JArray) auth.user["properties"];
             return auth;
         }
 
         private Authenticate Login(string email, string password)
         {
-            var auth = new Authenticate(email, password);
-            auth = (Authenticate)auth.DoPost();
+            Authenticate auth = new Authenticate(email, password);
+            auth = (Authenticate) auth.DoPost();
             return auth;
         }
 
@@ -51,36 +56,35 @@ namespace dotMCLauncher.YaDra4il
 
         private static void Logout(string email, string password)
         {
-            var signout = new Signout(email, password);
+            Signout signout = new Signout(email, password);
             signout.DoPost();
         }
 
         public Refresh Refresh()
         {
-            var refresh = new Refresh(SessionToken, AccessToken);
-            refresh = (Refresh)refresh.DoPost();
-            SessionToken = refresh.accessToken;
+            Refresh refresh = new Refresh(ClientToken, AccessToken);
+            refresh = (Refresh) refresh.DoPost();
+            ClientToken = refresh.accessToken;
             AccessToken = refresh.clientToken;
-            UserProperties = (JArray)refresh.user["properties"];
+            UserProperties = (JArray) refresh.user["properties"];
             return refresh;
         }
 
-        public bool CheckSessionToken()
+        public bool CheckClientToken()
         {
-            var valid = CheckSessionToken(SessionToken);
+            bool valid = CheckClientToken(AccessToken, ClientToken);
             return valid;
         }
 
-        private static bool CheckSessionToken(string sessionToken)
+        private static bool CheckClientToken(string accessToken, string clientToken)
         {
-            var check = new AuthentificationCheck(sessionToken);
-            return ((AuthentificationCheck)check.DoPost()).valid;
+            AuthentificationCheck check = new AuthentificationCheck(accessToken, clientToken);
+            return ((AuthentificationCheck) check.DoPost()).valid;
         }
 
         public string GetUsernameByUuid()
         {
-            Username = new Username
-            {
+            Username = new Username {
                 Uuid = Uuid
             }.GetUsernameByUuid();
             return Username;
@@ -88,14 +92,15 @@ namespace dotMCLauncher.YaDra4il
 
         public UserInfo GetUserInfo()
         {
-            var inform = GetUserInfo(Username);
+            UserInfo inform = GetUserInfo(Username);
             Uuid = inform.id;
             return inform;
         }
+
         public static UserInfo GetUserInfo(string username)
         {
-            var inform = new UserInfo(username);
-            inform = (UserInfo)inform.DoPost();
+            UserInfo inform = new UserInfo(username);
+            inform = (UserInfo) inform.DoPost();
             return inform;
         }
     }

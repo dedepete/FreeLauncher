@@ -61,9 +61,9 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label1.Location = new System.Drawing.Point(1, 222);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(293, 13);
+            this.label1.Size = new System.Drawing.Size(201, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Powered by dotMCLauncher.YaDra4il (Yggdrasil for .NET)";
+            this.label1.Text = "Powered by dotMCLauncher.Yggdrasil";
             // 
             // UsersListControl
             // 

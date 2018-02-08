@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 
-namespace dotMCLauncher.YaDra4il
+namespace dotMCLauncher.Yggdrasil
 {
     public class Refresh : Request
     {

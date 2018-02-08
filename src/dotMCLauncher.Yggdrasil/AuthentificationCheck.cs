@@ -1,26 +1,27 @@
-﻿namespace dotMCLauncher.YaDra4il
+﻿namespace dotMCLauncher.Yggdrasil
 {
     public class AuthentificationCheck : Request
     {
         public bool valid { get; set; }
-        public AuthentificationCheck(string accessToken)
+
+        public AuthentificationCheck(string accessToken, string clientToken)
         {
             Url = Urls.Validate;
-            ToPost = "{\"accessToken\":\"" + accessToken + "\"}";
+            ToPost = "{\"accessToken\":\"" + accessToken + "\",\"clientToken\":\"" + clientToken + "\"}";
         }
+
         public override Request DoPost()
         {
-            try
-            {
+            try {
                 base.DoPost();
                 valid = true;
             }
-            catch
-            {
+            catch {
                 valid = false;
             }
             return this;
         }
+
         public override Request Parse(string json)
         {
             return null;

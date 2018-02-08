@@ -7,8 +7,8 @@
     <ProjectGuid>{2AEC9EC1-5042-4922-B425-88B740FDDC82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dotMCLauncher.YaDra4il</RootNamespace>
-    <AssemblyName>dotMCLauncher.YaDra4il</AssemblyName>
+    <RootNamespace>dotMCLauncher.Yggdrasil</RootNamespace>
+    <AssemblyName>dotMCLauncher.Yggdrasil</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
