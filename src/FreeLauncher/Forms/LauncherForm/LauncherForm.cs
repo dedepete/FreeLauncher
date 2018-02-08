@@ -133,6 +133,10 @@ namespace FreeLauncher.Forms
                 LangDropDownList.Enabled = false;
             }
 
+            if (!_applicationContext.ProgramArguments.OfflineMode) {
+                _applicationContext.ProgramArguments.OfflineMode = !CheckForInternetConnection();
+            }
+
             if (!Directory.Exists(_applicationContext.McDirectory)) {
                 Directory.CreateDirectory(_applicationContext.McDirectory);
             }
@@ -142,6 +146,21 @@ namespace FreeLauncher.Forms
 
             if (!_applicationContext.ProgramArguments.NotAStandalone) {
                 UpdateVersions();
+            }
+
+            if (_applicationContext.ProgramArguments.OfflineMode) {
+                newsBrowser.DocumentText = $@"<html><body>
+<h1>OFFLINE-MODE ENABLED</h1>
+<hr />
+Failed to check for Internet connection or mode was forced to be enabled.
+<br />
+Please, check for your Internet configuration and restart the launcher.
+<hr />
+<i>{ProductName} {ProductVersion}</i>
+</body></html>";
+                Text += " [OFFLINE]";
+            } else {
+                newsBrowser.Navigate("http://dedepete.github.io/FreeLauncher");
             }
 
             UpdateProfileList();
@@ -443,6 +462,9 @@ namespace FreeLauncher.Forms
 
         private void ProcessUrl()
         {
+            if (_applicationContext.ProgramArguments.OfflineMode) {
+                return;
+            }
             if (newsBrowser.Url != new Uri("http://dedepete.github.io/FreeLauncher/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
@@ -480,8 +502,9 @@ namespace FreeLauncher.Forms
                 _versionToLaunch = versionsListView.SelectedItem[0].ToString();
                 LaunchButton.PerformClick();
             };
-            bool enableRestoreButton = ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
-                                       ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha";
+            bool enableRestoreButton = !_applicationContext.ProgramArguments.OfflineMode &&
+                                       (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
+                                        ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
             RadMenuItem restoreVerButton = new RadMenuItem { Text = "Restore", Enabled = enableRestoreButton };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;
@@ -562,6 +585,14 @@ namespace FreeLauncher.Forms
 
         private void UpdateVersions()
         {
+            if (_applicationContext.ProgramArguments.OfflineMode) {
+                AppendLog("Unable to get new version list: offline-mode enabled.");
+                if (File.Exists(_applicationContext.McVersions + @"\versions.json")) return;
+                MessageBox.Show("Looks like this is your first time using this launcher.\n" +
+                                "Unfortunately, some required files are missing and we are unable to download them without the Internet connection.\n" +
+                                "Please, check for your Internet configuration and restart the launcher.");
+                Environment.Exit(0);
+            }
             AppendLog("Checking version.json...");
             RawVersionListManifest remoteManifest = RawVersionListManifest.ParseList(new WebClient().DownloadString(
                 new Uri("https://launchermeta.mojang.com/mc/game/version_manifest.json")));
@@ -682,22 +713,36 @@ namespace FreeLauncher.Forms
                 Directory.CreateDirectory(path);
             }
             if (!File.Exists($@"{path}\{version}.json") || _restoreVersion) {
-                filename = version + ".json";
-                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
-                downloader.DownloadFileTaskAsync(new Uri(_versionList.GetVersion(version)?.ManifestUrl ?? string.Format(
-                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
-                    string.Format(@"{0}\{1}\{1}.json", _applicationContext.McVersions, version)).Wait();
+                if (!_applicationContext.ProgramArguments.OfflineMode) {
+                    filename = version + ".json";
+                    UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
+                    downloader.DownloadFileTaskAsync(
+                        new Uri(_versionList.GetVersion(version)?.ManifestUrl ?? string.Format(
+                                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
+                        string.Format(@"{0}\{1}\{1}.json", _applicationContext.McVersions, version)).Wait();
+                } else {
+                    AppendException($"Unable to download version {version}: offline-mode enabled.");
+                    return;
+                }
             }
             StatusBarValue = 0;
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions + @"\" + version), false);
             if ((!File.Exists($"{path}/{version}.jar") || _restoreVersion) &&
                 selectedVersionManifest.InheritsFrom == null) {
-                filename = version + ".jar";
-                UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
-                downloader.DownloadFileTaskAsync(new Uri(selectedVersionManifest.DownloadInfo?.Client.Url
-                    ?? string.Format("https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar", version)),
-                    string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
+                if (!_applicationContext.ProgramArguments.OfflineMode) {
+                    filename = version + ".jar";
+                    UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
+                    downloader.DownloadFileTaskAsync(new Uri(selectedVersionManifest.DownloadInfo?.Client.Url
+                                                             ??
+                                                             string.Format(
+                                                                 "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar",
+                                                                 version)),
+                        string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
+                } else {
+                    AppendException($"Unable to download version {version}: offline-mode enabled.");
+                    return;
+                }
             }
             if (selectedVersionManifest.InheritsFrom != null) {
                 DownloadVersion(selectedVersionManifest.InheritsFrom);
@@ -715,7 +760,7 @@ namespace FreeLauncher.Forms
             StatusBarVisible = true;
             StatusBarValue = 0;
             UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
-            AppendLog("Getting required libraries...");
+            AppendLog("Preparing required libraries...");
             Dictionary<DownloadEntry, bool> libsToDownload = new Dictionary<DownloadEntry, bool>();
             foreach (Lib a in selectedVersionManifest.Libs) {
                 if (!a.IsForWindows()) continue;
@@ -737,26 +782,30 @@ namespace FreeLauncher.Forms
                 StatusBarValue++;
                 if (!File.Exists(_applicationContext.McLibs + @"\" + entry.Path) ||
                     _restoreVersion) {
-                    UpdateStatusBarAndLog($"Downloading {entry.Path.Replace('/', '\\')}...");
-                    string directory = Path.GetDirectoryName(_applicationContext.McLibs + @"\" + entry.Path);
-                    AppendDebug("Url: " + (entry.Url ?? @"https://libraries.minecraft.net/" + entry.Path));
-                    AppendDebug("DownloadDir: " + directory);
-                    AppendDebug("LibPath: " + entry.Path.Replace('/', '\\'));
-                    if (!File.Exists(directory)) {
-                        Directory.CreateDirectory(directory);
-                    }
-                    try {
-                        new WebClient().DownloadFile(entry.Url ?? @"https://libraries.minecraft.net/" + entry.Path,
-                            _applicationContext.McLibs + @"\" + entry.Path);
-                    }
-                    catch (WebException ex) {
-                        AppendException("Downloading failed: " + ex.Message);
-                        File.Delete(_applicationContext.McLibs + @"\" + entry.Path);
-                        continue;
-                    }
-                    catch (Exception ex) {
-                        AppendException("Downloading failed: " + ex.Message);
-                        continue;
+                    if (!_applicationContext.ProgramArguments.OfflineMode) {
+                        UpdateStatusBarAndLog($"Downloading {entry.Path.Replace('/', '\\')}...");
+                        string directory = Path.GetDirectoryName(_applicationContext.McLibs + @"\" + entry.Path);
+                        AppendDebug("Url: " + (entry.Url ?? @"https://libraries.minecraft.net/" + entry.Path));
+                        AppendDebug("DownloadDir: " + directory);
+                        AppendDebug("LibPath: " + entry.Path.Replace('/', '\\'));
+                        if (!File.Exists(directory)) {
+                            Directory.CreateDirectory(directory);
+                        }
+                        try {
+                            new WebClient().DownloadFile(entry.Url ?? @"https://libraries.minecraft.net/" + entry.Path,
+                                _applicationContext.McLibs + @"\" + entry.Path);
+                        }
+                        catch (WebException ex) {
+                            AppendException("Downloading failed: " + ex.Message);
+                            File.Delete(_applicationContext.McLibs + @"\" + entry.Path);
+                            continue;
+                        }
+                        catch (Exception ex) {
+                            AppendException("Downloading failed: " + ex.Message);
+                            continue;
+                        }
+                    } else {
+                        AppendException($"Unable to download {entry.Path}: offline-mode enabled.");
                     }
                 }
                 if (entry.IsNative) {
@@ -973,13 +1022,38 @@ namespace FreeLauncher.Forms
                 string path = Path.Combine(_applicationContext.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + @"\");
                 string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
+                LaunchButton.Enabled = true;
                 if (!File.Exists(string.Format(@"{0}\{1}.json", path, _selectedProfile.SelectedVersion ??
                                                                      GetLatestVersion(_selectedProfile))))
                 {
                     state = _applicationContext.ProgramLocalization.ReadyToDownload;
+                    if (_applicationContext.ProgramArguments.OfflineMode) {
+                        LaunchButton.Enabled = false;
+                    }
                 }
-                SelectedVersion.Text = string.Format(state, (_selectedProfile.SelectedVersion ??
-                                                             GetLatestVersion(_selectedProfile)));
+                if (!File.Exists(string.Format(@"{0}\{1}.jar", path, _selectedProfile.SelectedVersion ??
+                                                                      GetLatestVersion(_selectedProfile)))) {
+                    state = _applicationContext.ProgramLocalization.ReadyToDownload;
+                    if (_applicationContext.ProgramArguments.OfflineMode) {
+                        LaunchButton.Enabled = false;
+                    }
+                }
+                SelectedVersion.Text = string.Format(state, _selectedProfile.SelectedVersion ??
+                                                            GetLatestVersion(_selectedProfile));
+            }
+        }
+
+        public static bool CheckForInternetConnection()
+        {
+            try {
+                using (WebClient client = new WebClient()) {
+                    using (client.OpenRead("https://www.gstatic.com/generate_204")) {
+                        return true;
+                    }
+                }
+            }
+            catch {
+                return false;
             }
         }
 
