@@ -1,0 +1,71 @@
+/*
+ * Web Fonts from fontspring.com
+ *
+ * All OpenType features and all extended glyphs have been removed.
+ * Fully installable fonts can be purchased at http://www.fontspring.com
+ *
+ * The fonts included in this stylesheet are subject to the End User License you purchased
+ * from Fontspring. The fonts are protected under domestic and international trademark and 
+ * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+ * distributing this font software.
+ *
+ * (c) 2010-2013 Fontspring
+ *
+ *
+ *
+ *
+ * The fonts included are copyrighted by the vendor listed below.
+ *
+ * Vendor:      Canada Type
+ * License URL: http://www.fontspring.com/fflicense/canada-type
+ *
+ *
+ */
+
+@font-face {
+    font-family: 'Gibson';
+    src: url('Gibson-Regular-webfont.eot?3');
+    src: url('Gibson-Regular-webfont.eot?3?#iefix') format('embedded-opentype'),
+         url('Gibson-Regular-webfont.woff?3') format('woff'),
+         url('Gibson-Regular-webfont.ttf?3') format('truetype'),
+         url('Gibson-Regular-webfont.svg?3#GibsonRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Gibson';
+    src: url('Gibson-SemiBold-webfont.eot?3');
+    src: url('Gibson-SemiBold-webfont.eot?3?#iefix') format('embedded-opentype'),
+         url('Gibson-SemiBold-webfont.woff?3') format('woff'),
+         url('Gibson-SemiBold-webfont.ttf?3') format('truetype'),
+         url('Gibson-SemiBold-webfont.svg?3#GibsonLightBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Gibson';
+    src: url('Gibson-Italic-webfont.eot?3');
+    src: url('Gibson-Italic-webfont.eot?3?#iefix') format('embedded-opentype'),
+         url('Gibson-Italic-webfont.woff?3') format('woff'),
+         url('Gibson-Italic-webfont.ttf?3') format('truetype'),
+         url('Gibson-Italic-webfont.svg?3#GibsonItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Gibson';
+    src: url('Gibson-SemiBoldItalic-webfont.eot?3');
+    src: url('Gibson-SemiBoldItalic-webfont.eot?3?#iefix') format('embedded-opentype'),
+         url('Gibson-SemiBoldItalic-webfont.woff?3') format('woff'),
+         url('Gibson-SemiBoldItalic-webfont.ttf?3') format('truetype'),
+         url('Gibson-SemiBoldItalic-webfont.svg?3#GibsonLightBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+
+}
