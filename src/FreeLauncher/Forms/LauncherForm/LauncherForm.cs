@@ -443,7 +443,7 @@ namespace FreeLauncher.Forms
 
         private void ProcessUrl()
         {
-            if (newsBrowser.Url != new Uri("https://minecraft.net")) {
+            if (newsBrowser.Url != new Uri("http://dedepete.github.io/FreeLauncher/")) {
                 BackWebButton.Enabled = newsBrowser.CanGoBack;
                 ForwardWebButton.Enabled = newsBrowser.CanGoForward;
                 navBar.Text = newsBrowser.Url?.ToString();
