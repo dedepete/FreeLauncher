@@ -7,44 +7,53 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Profile's name. 
         /// </summary>
-        [JsonProperty("name")] public string ProfileName { get; set; }
+        [JsonProperty("name")]
+        public string ProfileName { get; set; }
 
         /// <summary>
         /// Game's working directory. 
         /// </summary>
-        [JsonProperty("gameDir")] public string WorkingDirectory { get; set; }
+        [JsonProperty("gameDir")]
+        public string WorkingDirectory { get; set; }
 
         /// <summary>
         /// Selected version ID.
         /// </summary>
-        [JsonProperty("lastVersionId")] public string SelectedVersion { get; set; }
+        [JsonProperty("lastVersionId")]
+        public string SelectedVersion { get; set; }
 
         /// <summary>
         /// Window size info.
         /// </summary>
-        [JsonProperty("resolution")] public WindowInfo WindowInfo { get; set; }
+        [JsonProperty("resolution")]
+        public WindowInfo WindowInfo { get; set; }
 
         /// <summary>
         /// Allowed build types. 
         /// </summary>
-        [JsonProperty("allowedReleaseTypes")] public string[] AllowedReleaseTypes { get; set; }
+        [JsonProperty("allowedReleaseTypes")]
+        public string[] AllowedReleaseTypes { get; set; }
 
         /// <summary>
         /// Java executable file. 
         /// </summary>
-        [JsonProperty("javaDir")] public string JavaExecutable { get; set; }
+        [JsonProperty("javaDir")]
+        public string JavaExecutable { get; set; }
 
         /// <summary>
         /// Java arguments. 
         /// </summary>
-        [JsonProperty("javaArgs")] public string JavaArguments { get; set; }
+        [JsonProperty("javaArgs")]
+        public string JavaArguments { get; set; }
 
         /// <summary>
         /// The game will automatically connect to the selected server. 
         /// </summary>
-        [JsonProperty("connectionOptions")] public ServerInfo ConnectionSettigs { get; set; }
+        [JsonProperty("connectionOptions")]
+        public ServerInfo ConnectionSettigs { get; set; }
 
-        [JsonProperty("launcherVisibilityOnGameClose")] private string _launcherVisibilityOnGameClose { get; set; }
+        [JsonProperty("launcherVisibilityOnGameClose")]
+        private string _launcherVisibilityOnGameClose { get; set; }
 
         /// <summary>
         /// Launcher state on  game closure. 
@@ -108,8 +117,7 @@ namespace dotMCLauncher.Core
         /// </summary>
         public string ToString(Formatting formatting)
         {
-            return JsonConvert.SerializeObject(this, formatting, new JsonSerializerSettings
-            {
+            return JsonConvert.SerializeObject(this, formatting, new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore
             });
         }

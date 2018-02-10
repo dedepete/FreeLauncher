@@ -27,6 +27,7 @@ namespace dotMCLauncher.Core
 
         [JsonProperty("natives")]
         private JObject _natives;
+
         [JsonProperty("rules")]
         private List<Rule> _rules;
 
@@ -67,7 +68,7 @@ namespace dotMCLauncher.Core
         {
             string[] s = Name.Split(':');
             return string.Format(@"{0}\{1}\{2}\{1}-{2}" +
-                                 (!string.IsNullOrEmpty(IsNative) ? "-" + IsNative : string.Empty) + ".jar",
+                (!string.IsNullOrEmpty(IsNative) ? "-" + IsNative : string.Empty) + ".jar",
                 s[0].Replace('.', '\\'), s[1], s[2]);
         }
     }

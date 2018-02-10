@@ -6,6 +6,7 @@ namespace dotMCLauncher.Core
     {
         [JsonProperty("name")]
         public string Name { get; set; }
+
         [JsonProperty("version")]
         public string Version { get; set; }
     }

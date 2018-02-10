@@ -215,9 +215,11 @@ namespace FreeLauncher.Forms
             JObject json = JObject.Parse(File.ReadAllText(_applicationContext.McVersions + @"\versions.json"));
             foreach (JObject ver in json["versions"]) {
                 string id = ver["id"].ToString(),
-                    type = ver["type"].ToString();
+                       type = ver["type"].ToString();
                 list.Add(string.Format("{0} {1}", type, id));
-                RadListDataItem ritem = new RadListDataItem {Text = type + " " + id, Tag = id};
+                RadListDataItem ritem = new RadListDataItem {
+                    Text = type + " " + id, Tag = id
+                };
                 switch (type) {
                     case "snapshot":
                         if (snapshotsCheckBox.Checked) {
@@ -251,11 +253,11 @@ namespace FreeLauncher.Forms
                     let add = list.All(a => !a.Contains(new DirectoryInfo(b).Name))
                     where add
                     where VersionManifest.IsValid(new DirectoryInfo(string.Format(@"{0}\{1}\", _applicationContext.McVersions,
-                                new DirectoryInfo(b).Name)))
+                        new DirectoryInfo(b).Name)))
                     select
-                        VersionManifest.ParseVersion(
-                            new DirectoryInfo(string.Format(@"{0}\{1}\", _applicationContext.McVersions,
-                                new DirectoryInfo(b).Name)), false)) {
+                    VersionManifest.ParseVersion(
+                        new DirectoryInfo(string.Format(@"{0}\{1}\", _applicationContext.McVersions,
+                            new DirectoryInfo(b).Name)), false)) {
                     versionsDropDownList.Items.Add(new RadListDataItem(version.ReleaseType + " " + version.VersionId) {
                         Tag = version.VersionId
                     });

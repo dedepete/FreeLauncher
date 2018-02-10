@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace dotMCLauncher.Yggdrasil
 {
@@ -9,6 +10,7 @@ namespace dotMCLauncher.Yggdrasil
     {
         public string Url { get; set; }
         public string ToPost { get; set; }
+        public JObject Response { get; set; }
 
         public virtual Request DoPost()
         {
@@ -23,6 +25,9 @@ namespace dotMCLauncher.Yggdrasil
                 streamWriter.Close();
             }
             string response = new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
+            if (!string.IsNullOrWhiteSpace(response)) {
+                Response = JObject.Parse(response);
+            }
             return Parse(response);
         }
 

@@ -1,13 +1,21 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace dotMCLauncher.Yggdrasil
 {
     public class Authenticate : Request
     {
-        public string accessToken { get; set; }
-        public string clientToken { get; set; }
-        public UserInfo selectedProfile { get; set; }
-        public JObject user { get; set; }
+        [JsonProperty("accessToken")]
+        public string AccessToken { get; set; }
+
+        [JsonProperty("clientToken")]
+        public string ClientToken { get; set; }
+
+        [JsonProperty("selectedProfile")]
+        public UserInfo SelectedProfile { get; set; }
+
+        [JsonProperty("user")]
+        public JObject User { get; set; }
 
         public Authenticate(string email, string password)
         {
@@ -15,13 +23,19 @@ namespace dotMCLauncher.Yggdrasil
             ToPost = new JObject {
                 {
                     "agent", new JObject {
-                        {"name", "Minecraft"},
-                        {"version", 1}
+                        {
+                            "name", "Minecraft"
+                        }, {
+                            "version", 1
+                        }
                     }
-                },
-                {"username", email},
-                {"password", password},
-                {"requestUser", true}
+                }, {
+                    "username", email
+                }, {
+                    "password", password
+                }, {
+                    "requestUser", true
+                }
             }.ToString();
         }
     }

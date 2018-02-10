@@ -40,18 +40,26 @@ namespace FreeLauncher.Forms
 
         private int StatusBarValue
         {
-            get { return StatusBar.Value1; }
-            set { SetStatusBarValue(value); }
+            get {
+                return StatusBar.Value1;
+            }
+            set {
+                SetStatusBarValue(value);
+            }
         }
 
         private int StatusBarMaxValue
         {
-            set { SetStatusBarMaxValue(value); }
+            set {
+                SetStatusBarMaxValue(value);
+            }
         }
 
         private bool StatusBarVisible
         {
-            set { SetStatusBarVisibility(value); }
+            set {
+                SetStatusBarVisibility(value);
+            }
         }
 
         private bool BlockControls
@@ -94,6 +102,7 @@ namespace FreeLauncher.Forms
         }
 
         #endregion
+
         public LauncherForm(ApplicationContext appContext)
         {
             _applicationContext = appContext;
@@ -224,7 +233,9 @@ Please, check for your Internet configuration and restart the launcher.
         {
             Profile editedProfile = Profile.ParseProfile(_selectedProfile.ToString());
             editedProfile.ProfileName = $"Copy of '{_selectedProfile.ProfileName}'({LinuxTimeStamp})";
-            ProfileForm pf = new ProfileForm(editedProfile, _applicationContext) {Text = _applicationContext.ProgramLocalization.AddingProfileTitle};
+            ProfileForm pf = new ProfileForm(editedProfile, _applicationContext) {
+                Text = _applicationContext.ProgramLocalization.AddingProfileTitle
+            };
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
                 if (_profileManager.Profiles.ContainsKey(editedProfile.ProfileName)) {
@@ -276,7 +287,9 @@ Please, check for your Internet configuration and restart the launcher.
             bgw.RunWorkerCompleted += delegate {
                 string libraries = string.Empty;
                 BackgroundWorker bgw1 = new BackgroundWorker();
-                bgw1.DoWork += delegate { libraries = DownloadLibraries(); };
+                bgw1.DoWork += delegate {
+                    libraries = DownloadLibraries();
+                };
                 bgw1.RunWorkerCompleted += delegate {
                     BackgroundWorker bgw2 = new BackgroundWorker();
                     bgw2.DoWork += delegate {
@@ -311,7 +324,7 @@ Please, check for your Internet configuration and restart the launcher.
                                     AccessToken = _selectedUser.AccessToken,
                                     Uuid = _selectedUser.Uuid
                                 };
-                                bool check = am.CheckClientToken();
+                                bool check = am.Validate();
                                 if (!check) {
                                     RadMessageBox.Show(
                                         "Session token is not valid. Please, head up to user manager and re-add your account.",
@@ -323,10 +336,10 @@ Please, check for your Internet configuration and restart the launcher.
                                     };
                                     _selectedUser = user;
                                 } else {
-                                    Refresh refresh = new Refresh(_selectedUser.ClientToken,
-                                        _selectedUser.AccessToken);
-                                    _selectedUser.UserProperties = (JArray) refresh.user?["properties"];
-                                    _selectedUser.ClientToken = refresh.accessToken;
+                                    Refresh refresh = new Refresh(_selectedUser.AccessToken, _selectedUser.ClientToken);
+                                    refresh = (Refresh) refresh.DoPost();
+                                    _selectedUser.UserProperties = (JArray) refresh.User?["properties"];
+                                    _selectedUser.AccessToken = refresh.AccessToken;
                                     _userManager.Accounts[NicknameDropDownList.Text] = _selectedUser;
                                 }
                             }
@@ -358,46 +371,70 @@ Please, check for your Internet configuration and restart the launcher.
                                 "auth_player_name",
                                 _selectedUser.Type == "offline"
                                     ? NicknameDropDownList.Text
-                                    : new Username {Uuid = _selectedUser.Uuid}.GetUsernameByUuid()
-                            },
-                            {"version_name", _selectedProfile.ProfileName}, {
+                                    : new Username {
+                                        Uuid = _selectedUser.Uuid
+                                    }.GetUsernameByUuid()
+                            }, {
+                                "version_name", _selectedProfile.ProfileName
+                            }, {
                                 "game_directory",
                                 _selectedProfile.WorkingDirectory ?? _applicationContext.McDirectory + @"\"
-                            },
-                            {"assets_root", _applicationContext.McDirectory + @"\assets\"},
-                            {"game_assets", _applicationContext.McDirectory + @"\assets\legacy\"},
-                            {"assets_index_name", selectedVersionManifest.GetAssetsIndex()},
-                            {"version_type", selectedVersionManifest.ReleaseType},
-                            {"auth_session", _selectedUser.ClientToken ?? "sample_token"},
-                            {"auth_access_token", _selectedUser.AccessToken ?? "sample_token"},
-                            {"auth_uuid", _selectedUser.Uuid ?? "sample_token"}, {
+                            }, {
+                                "assets_root", _applicationContext.McDirectory + @"\assets\"
+                            }, {
+                                "game_assets", _applicationContext.McDirectory + @"\assets\legacy\"
+                            }, {
+                                "assets_index_name", selectedVersionManifest.GetAssetsIndex()
+                            }, {
+                                "version_type", selectedVersionManifest.ReleaseType
+                            }, {
+                                "auth_session", _selectedUser.ClientToken ?? "sample_token"
+                            }, {
+                                "auth_access_token", _selectedUser.AccessToken ?? "sample_token"
+                            }, {
+                                "auth_uuid", _selectedUser.Uuid ?? "sample_token"
+                            }, {
                                 "user_properties",
                                 _selectedUser.UserProperties?.ToString(Formatting.None) ??
                                 properties.ToString(Formatting.None)
-                            },
-                            {"user_type", _selectedUser.Type}
+                            }, {
+                                "user_type", _selectedUser.Type
+                            }
                         };
                         Dictionary<string, string> jvmArgumentDictionary = new Dictionary<string, string> {
-                            {"natives_directory", _applicationContext.McDirectory + @"\natives\"},
-                            {"launcher_name", Application.ProductName},
-                            {"launcher_version", Application.ProductVersion},
-                            {"classpath", libraries.Contains(' ') ? $"\"{libraries}\"" : libraries}
+                            {
+                                "natives_directory", _applicationContext.McDirectory + @"\natives\"
+                            }, {
+                                "launcher_name", Application.ProductName
+                            }, {
+                                "launcher_version", Application.ProductVersion
+                            }, {
+                                "classpath", libraries.Contains(' ') ? $"\"{libraries}\"" : libraries
+                            }
                         };
                         string gameArguments, jvmArguments;
                         if (selectedVersionManifest.Type == VersionManifestType.V2) {
                             List<Rule> requiredRules = new List<Rule> {
-                                new Rule {Action = "allow", Os = new dotMCLauncher.Core.OS {Name = "windows"}}
+                                new Rule {
+                                    Action = "allow", Os = new dotMCLauncher.Core.OS {
+                                        Name = "windows"
+                                    }
+                                }
                             };
                             if (new ComputerInfo().OSFullName.ToUpperInvariant().Contains("WINDOWS 10")) {
                                 requiredRules.Add(new Rule {
                                     Action = "allow",
-                                    Os = new dotMCLauncher.Core.OS {Name = "windows", Version = "^10\\."}
+                                    Os = new dotMCLauncher.Core.OS {
+                                        Name = "windows", Version = "^10\\."
+                                    }
                                 });
                             }
                             if (_selectedProfile.WindowInfo != null && (_selectedProfile.WindowInfo.Width != 854 || _selectedProfile.WindowInfo.Height != 480)) {
                                 requiredRules.Add(new Rule {
                                     Action = "allow",
-                                    Features = new Features {IsForCustomResolution = true}
+                                    Features = new Features {
+                                        IsForCustomResolution = true
+                                    }
                                 });
                                 gameArgumentDictionary.Add("resolution_width",
                                     _selectedProfile.WindowInfo?.Width.ToString());
@@ -414,7 +451,7 @@ Please, check for your Internet configuration and restart the launcher.
                         } else {
                             gameArguments = selectedVersionManifest.ArgCollection.ToString(gameArgumentDictionary);
                             jvmArguments = javaArguments +
-                                           $"-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)}";
+                                $"-Djava.library.path={_applicationContext.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)}";
                         }
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
@@ -429,7 +466,9 @@ Please, check for your Internet configuration and restart the launcher.
                                 $"{jvmArguments} {selectedVersionManifest.MainClass} {gameArguments}"
                         };
                         AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
-                        new MinecraftProcess(new Process {StartInfo = proc, EnableRaisingEvents = true}, this,
+                        new MinecraftProcess(new Process {
+                                StartInfo = proc, EnableRaisingEvents = true
+                            }, this,
                             _selectedProfile).Launch();
                         AppendLog($"Version {selectedVersionManifest.VersionId} successfuly executed.");
                         BlockControls = false;
@@ -495,7 +534,9 @@ Please, check for your Internet configuration and restart the launcher.
                 VersionManifest.ParseVersion(
                     new DirectoryInfo(Path.Combine(_applicationContext.McVersions,
                         versionsListView.SelectedItem[0] + @"\")), false);
-            RadMenuItem launchVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.Launch };
+            RadMenuItem launchVerButton = new RadMenuItem {
+                Text = _applicationContext.ProgramLocalization.Launch
+            };
             launchVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
@@ -504,22 +545,28 @@ Please, check for your Internet configuration and restart the launcher.
                 LaunchButton.PerformClick();
             };
             bool enableRestoreButton = !_applicationContext.ProgramArguments.OfflineMode &&
-                                       (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
-                                        ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
-            RadMenuItem restoreVerButton = new RadMenuItem { Text = "Restore", Enabled = enableRestoreButton };
+            (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
+                ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
+            RadMenuItem restoreVerButton = new RadMenuItem {
+                Text = "Restore", Enabled = enableRestoreButton
+            };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;
                 _versionToLaunch = versionsListView.SelectedItem[0].ToString();
                 LaunchButton.PerformClick();
             };
-            RadMenuItem openVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.OpenLocation };
+            RadMenuItem openVerButton = new RadMenuItem {
+                Text = _applicationContext.ProgramLocalization.OpenLocation
+            };
             openVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
                 }
                 Process.Start(Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + @"\"));
             };
-            RadMenuItem delVerButton = new RadMenuItem { Text = _applicationContext.ProgramLocalization.DeleteVersion};
+            RadMenuItem delVerButton = new RadMenuItem {
+                Text = _applicationContext.ProgramLocalization.DeleteVersion
+            };
             delVerButton.Click += delegate {
                 if (versionsListView.SelectedItem == null) {
                     return;
@@ -538,8 +585,7 @@ Please, check for your Internet configuration and restart the launcher.
                         Path.Combine(_applicationContext.McVersions, versionsListView.SelectedItem[0] + @"\"), true);
                     AppendLog($"Version '{versionsListView.SelectedItem[0]}' has been deleted successfuly.");
                     UpdateVersionListView();
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     AppendException($"An error has occurred during version deletion: {ex}");
                 }
             };
@@ -588,10 +634,12 @@ Please, check for your Internet configuration and restart the launcher.
         {
             if (_applicationContext.ProgramArguments.OfflineMode) {
                 AppendLog("Unable to get new version list: offline-mode enabled.");
-                if (File.Exists(_applicationContext.McVersions + @"\versions.json")) return;
+                if (File.Exists(_applicationContext.McVersions + @"\versions.json")) {
+                    return;
+                }
                 MessageBox.Show("Looks like this is your first time using this launcher.\n" +
-                                "Unfortunately, some required files are missing and we are unable to download them without the Internet connection.\n" +
-                                "Please, check for your Internet configuration and restart the launcher.");
+                    "Unfortunately, some required files are missing and we are unable to download them without the Internet connection.\n" +
+                    "Please, check for your Internet configuration and restart the launcher.");
                 Environment.Exit(0);
             }
             AppendLog("Checking version.json...");
@@ -632,8 +680,7 @@ Please, check for your Internet configuration and restart the launcher.
                 if (!_profileManager.Profiles.Any()) {
                     throw new FileLoadException("File is corrupted or contains no profiles.");
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 AppendException($"An exception has occurred while processing profiles:\n{ex.Message}\nA new profile list will be created.");
                 if (File.Exists(_applicationContext.McDirectory + @"\launcher_profiles.json")) {
                     string fileName = $"launcher_profiles-{LinuxTimeStamp}.bak.json";
@@ -646,18 +693,22 @@ Please, check for your Internet configuration and restart the launcher.
                         "profiles", new JObject {
                             {
                                 ProductName, new JObject {
-                                    {"name", ProductName}, {
+                                    {
+                                        "name", ProductName
+                                    }, {
                                         "allowedReleaseTypes", new JArray {
                                             "release",
                                             "other"
                                         }
-                                    },
-                                    {"launcherVisibilityOnGameClose", "keep the launcher open"}
+                                    }, {
+                                        "launcherVisibilityOnGameClose", "keep the launcher open"
+                                    }
                                 }
                             }
                         }
-                    },
-                    {"selectedProfile", ProductName}
+                    }, {
+                        "selectedProfile", ProductName
+                    }
                 }.ToString());
                 _profileManager = ProfileManager.ParseProfile(_applicationContext.McDirectory + @"\launcher_profiles.json");
                 SaveProfiles();
@@ -675,8 +726,7 @@ Please, check for your Internet configuration and restart the launcher.
                     ? JsonConvert.DeserializeObject<UserManager>(
                         File.ReadAllText(_applicationContext.McLauncher + @"\users.json"))
                     : new UserManager();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 AppendException("Reading user list: an exception has occurred\n" + ex.Message);
                 _userManager = new UserManager();
                 SaveUsers();
@@ -694,7 +744,9 @@ Please, check for your Internet configuration and restart the launcher.
         {
             File.WriteAllText(_applicationContext.McLauncher + @"\users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+                    new JsonSerializerSettings {
+                        NullValueHandling = NullValueHandling.Ignore
+                    }));
         }
 
         private void DownloadVersion(string version)
@@ -719,7 +771,7 @@ Please, check for your Internet configuration and restart the launcher.
                     UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                     downloader.DownloadFileTaskAsync(
                         new Uri(_versionList.GetVersion(version)?.ManifestUrl ?? string.Format(
-                                    "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
+                            "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
                         string.Format(@"{0}\{1}\{1}.json", _applicationContext.McVersions, version)).Wait();
                 } else {
                     AppendException($"Unable to download version {version}: offline-mode enabled.");
@@ -735,10 +787,10 @@ Please, check for your Internet configuration and restart the launcher.
                     filename = version + ".jar";
                     UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
                     downloader.DownloadFileTaskAsync(new Uri(selectedVersionManifest.DownloadInfo?.Client.Url
-                                                             ??
-                                                             string.Format(
-                                                                 "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar",
-                                                                 version)),
+                            ??
+                            string.Format(
+                                "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.jar",
+                                version)),
                         string.Format("{0}/{1}/{1}.jar", _applicationContext.McVersions, version)).Wait();
                 } else {
                     AppendException($"Unable to download version {version}: offline-mode enabled.");
@@ -756,17 +808,21 @@ Please, check for your Internet configuration and restart the launcher.
             StringBuilder libraries = new StringBuilder();
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions + @"\" +
-                                  (_versionToLaunch ??
-                                   (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
+                (_versionToLaunch ??
+                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             StatusBarVisible = true;
             StatusBarValue = 0;
             UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             AppendLog("Preparing required libraries...");
             Dictionary<DownloadEntry, bool> libsToDownload = new Dictionary<DownloadEntry, bool>();
             foreach (Lib a in selectedVersionManifest.Libs) {
-                if (!a.IsForWindows()) continue;
+                if (!a.IsForWindows()) {
+                    continue;
+                }
                 if (a.DownloadInfo == null) {
-                    libsToDownload.Add(new DownloadEntry {Path = a.GetPath(), Url = a.Url}, false);
+                    libsToDownload.Add(new DownloadEntry {
+                        Path = a.GetPath(), Url = a.Url
+                    }, false);
                     continue;
                 }
                 foreach (DownloadEntry entry in a.DownloadInfo?.GetDownloadsEntries(OS.WINDOWS)) {
@@ -795,13 +851,11 @@ Please, check for your Internet configuration and restart the launcher.
                         try {
                             new WebClient().DownloadFile(entry.Url ?? @"https://libraries.minecraft.net/" + entry.Path,
                                 _applicationContext.McLibs + @"\" + entry.Path);
-                        }
-                        catch (WebException ex) {
+                        } catch (WebException ex) {
                             AppendException("Downloading failed: " + ex.Message);
                             File.Delete(_applicationContext.McLibs + @"\" + entry.Path);
                             continue;
-                        }
-                        catch (Exception ex) {
+                        } catch (Exception ex) {
                             AppendException("Downloading failed: " + ex.Message);
                             continue;
                         }
@@ -817,8 +871,7 @@ Please, check for your Internet configuration and restart the launcher.
                             try {
                                 zipEntry.Extract(_applicationContext.McDirectory + @"\natives\",
                                     ExtractExistingFileAction.OverwriteSilently);
-                            }
-                            catch (Exception ex) {
+                            } catch (Exception ex) {
                                 AppendException(ex.Message);
                             }
                         }
@@ -839,8 +892,8 @@ Please, check for your Internet configuration and restart the launcher.
             UpdateStatusBarAndLog("Checking game assets...");
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_applicationContext.McVersions + @"\" +
-                                  (_versionToLaunch ??
-                                   (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
+                (_versionToLaunch ??
+                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             if (selectedVersionManifest.InheritsFrom != null) {
                 selectedVersionManifest = selectedVersionManifest.InheritableVersionManifest;
             }
@@ -857,11 +910,11 @@ Please, check for your Internet configuration and restart the launcher.
             JObject jo = JObject.Parse(File.ReadAllText(file));
             StatusBarValue = 0;
             StatusBarMaxValue = jo["objects"].Cast<JProperty>()
-                                    .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
-                                    .Select(c => c.Substring(0, 2) + @"\" + c)
-                                    .Count(filename =>
-                                            !File.Exists(_applicationContext.McDirectory + @"\assets\objects\" +
-                                                         filename) || _restoreVersion) + 1;
+                .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
+                .Select(c => c.Substring(0, 2) + @"\" + c)
+                .Count(filename =>
+                    !File.Exists(_applicationContext.McDirectory + @"\assets\objects\" +
+                        filename) || _restoreVersion) + 1;
             foreach (string resourseFile in jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c.Substring(0, 2) + @"\" + c)
@@ -869,7 +922,7 @@ Please, check for your Internet configuration and restart the launcher.
                     !File.Exists(_applicationContext.McDirectory + @"\assets\objects\" + filename) ||
                     _restoreVersion)) {
                 string path = _applicationContext.McDirectory + @"\assets\objects\" + resourseFile.Substring(0, 2) +
-                              @"\";
+                    @"\";
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
                 }
@@ -877,8 +930,7 @@ Please, check for your Internet configuration and restart the launcher.
                     AppendDebug($"Downloading {resourseFile}...");
                     new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
                         _applicationContext.McDirectory + @"\assets\objects\" + resourseFile);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     AppendException(ex.ToString());
                 }
                 StatusBarValue++;
@@ -887,10 +939,10 @@ Please, check for your Internet configuration and restart the launcher.
             if (selectedVersionManifest.AssetsIndex == null) {
                 StatusBarValue = 0;
                 StatusBarMaxValue = jo["objects"].Cast<JProperty>()
-                                        .Count(
-                                            res =>
-                                                !File.Exists(_applicationContext.McDirectory + @"\assets\legacy\" +
-                                                             res.Name)) + 1;
+                    .Count(
+                        res =>
+                            !File.Exists(_applicationContext.McDirectory + @"\assets\legacy\" +
+                                res.Name)) + 1;
                 UpdateStatusBarAndLog("Converting assets...");
                 foreach (
                     JProperty res in
@@ -913,8 +965,7 @@ Please, check for your Internet configuration and restart the launcher.
                             _applicationContext.McDirectory + @"\assets\objects\" +
                             res.Value["hash"].ToString().Substring(0, 2) + @"\" + res.Value["hash"],
                             _applicationContext.McDirectory + @"\assets\legacy\" + res.Name);
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         AppendLog(ex.ToString());
                     }
                     StatusBarValue++;
@@ -952,10 +1003,13 @@ Please, check for your Internet configuration and restart the launcher.
                 Text = _applicationContext.ProgramLocalization.Close,
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
-            RichTextBox reportBox = new RichTextBox {Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font};
+            RichTextBox reportBox = new RichTextBox {
+                Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font
+            };
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
             closeButton.Click += (sender, e) => {
-                if (!mainPageView.Pages.Contains(outputPage)) return;
+                if (!mainPageView.Pages.Contains(outputPage))
+                    return;
                 mainPageView.Pages.Remove(outputPage);
             };
             killProcessButton.Location = new Point(panel.Size.Width - (killProcessButton.Size.Width + 5),
@@ -972,10 +1026,10 @@ Please, check for your Internet configuration and restart the launcher.
                 CloseButton = closeButton,
                 KillButton = killProcessButton,
                 McVersion = _versionToLaunch ?? (
-                           _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
+                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
                 McType = VersionManifest.ParseVersion(
-                            new DirectoryInfo(_applicationContext.McVersions + @"\" + (_versionToLaunch ?? (
-                                (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))))).ReleaseType,
+                    new DirectoryInfo(_applicationContext.McVersions + @"\" + (_versionToLaunch ?? (
+                        (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))))).ReleaseType,
                 Panel = panel
             };
         }
@@ -1013,10 +1067,10 @@ Please, check for your Internet configuration and restart the launcher.
                 versionsListView.Items.Clear();
                 foreach (
                     VersionManifest version in
-                        Directory.GetDirectories(_applicationContext.McVersions)
-                            .Select(versionDir => new DirectoryInfo(versionDir))
-                            .Where(VersionManifest.IsValid)
-                            .Select(info => VersionManifest.ParseVersion(info, false))) {
+                    Directory.GetDirectories(_applicationContext.McVersions)
+                        .Select(versionDir => new DirectoryInfo(versionDir))
+                        .Where(VersionManifest.IsValid)
+                        .Select(info => VersionManifest.ParseVersion(info, false))) {
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType,
                         version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
                 }
@@ -1025,22 +1079,21 @@ Please, check for your Internet configuration and restart the launcher.
                 string state = _applicationContext.ProgramLocalization.ReadyToLaunch;
                 LaunchButton.Enabled = true;
                 if (!File.Exists(string.Format(@"{0}\{1}.json", path, _selectedProfile.SelectedVersion ??
-                                                                     GetLatestVersion(_selectedProfile))))
-                {
+                    GetLatestVersion(_selectedProfile)))) {
                     state = _applicationContext.ProgramLocalization.ReadyToDownload;
                     if (_applicationContext.ProgramArguments.OfflineMode) {
                         LaunchButton.Enabled = false;
                     }
                 }
                 if (!File.Exists(string.Format(@"{0}\{1}.jar", path, _selectedProfile.SelectedVersion ??
-                                                                      GetLatestVersion(_selectedProfile)))) {
+                    GetLatestVersion(_selectedProfile)))) {
                     state = _applicationContext.ProgramLocalization.ReadyToDownload;
                     if (_applicationContext.ProgramArguments.OfflineMode) {
                         LaunchButton.Enabled = false;
                     }
                 }
                 SelectedVersion.Text = string.Format(state, _selectedProfile.SelectedVersion ??
-                                                            GetLatestVersion(_selectedProfile));
+                    GetLatestVersion(_selectedProfile));
             }
         }
 
@@ -1052,8 +1105,7 @@ Please, check for your Internet configuration and restart the launcher.
                         return true;
                     }
                 }
-            }
-            catch {
+            } catch {
                 return false;
             }
         }
@@ -1169,8 +1221,8 @@ Please, check for your Internet configuration and restart the launcher.
                     }
                     _output.Panel?.Invoke((MethodInvoker) delegate {
                         _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}" +
-                                             "\nStatus: " +
-                                             (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output");
+                            "\nStatus: " +
+                            (!_minecraftProcess.HasExited ? "Running" : "Stopped, printing output");
                         Application.DoEvents();
                         if (_outputInfoBuilder.Length > 0) {
                             AppendLog(_outputInfoBuilder.ToString());
@@ -1206,7 +1258,9 @@ Please, check for your Internet configuration and restart the launcher.
             _launcherForm.Invoke((MethodInvoker) delegate {
                 _output.KillButton.Enabled = false;
                 if (_launcherForm.CloseGameOutput.Checked &&
-                    new[] { 0, -1 }.Contains(_minecraftProcess.ExitCode)) {
+                    new[] {
+                        0, -1
+                    }.Contains(_minecraftProcess.ExitCode)) {
                     _output.CloseButton.PerformClick();
                 }
             });
@@ -1221,11 +1275,13 @@ Please, check for your Internet configuration and restart the launcher.
                     ? "Stable closure"
                     : _minecraftProcess.ExitCode == -1 ? "Process killed" : "Crashed";
                 _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}" +
-                                     "\nStatus: Stopped" +
-                                     $"\nExit code: {_minecraftProcess.ExitCode} (Reason: {reason})" +
-                                     $"\nSession duration: {_minecraftProcess.TotalProcessorTime:g}";
+                    "\nStatus: Stopped" +
+                    $"\nExit code: {_minecraftProcess.ExitCode} (Reason: {reason})" +
+                    $"\nSession duration: {_minecraftProcess.TotalProcessorTime:g}";
                 _output.CloseButton.Enabled = true;
-                if (new[] {0, -1}.Contains(_minecraftProcess.ExitCode)) {
+                if (new[] {
+                    0, -1
+                }.Contains(_minecraftProcess.ExitCode)) {
                     return;
                 }
                 AppendLog(string.Empty);

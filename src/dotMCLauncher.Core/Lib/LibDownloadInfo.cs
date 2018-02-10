@@ -6,10 +6,14 @@ namespace dotMCLauncher.Core
 {
     public class LibDownloadInfo
     {
-        [JsonProperty("classifiers")] public Dictionary<string, DownloadEntry> Classifiers;
-        [JsonProperty("artifact")] public DownloadEntry Artifact;
+        [JsonProperty("classifiers")]
+        public Dictionary<string, DownloadEntry> Classifiers;
 
-        [JsonIgnore] public Lib ParentLib;
+        [JsonProperty("artifact")]
+        public DownloadEntry Artifact;
+
+        [JsonIgnore]
+        public Lib ParentLib;
 
         public List<DownloadEntry> GetDownloadsEntries(OperatingSystem os)
         {

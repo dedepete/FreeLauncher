@@ -34,11 +34,11 @@ namespace dotMCLauncher.Yggdrasil
         public Authenticate Login()
         {
             Authenticate auth = Login(Email, Password);
-            ClientToken = auth.clientToken;
-            AccessToken = auth.accessToken;
-            Username = auth.selectedProfile.name;
-            Uuid = auth.selectedProfile.id;
-            UserProperties = (JArray) auth.user["properties"];
+            ClientToken = auth.ClientToken;
+            AccessToken = auth.AccessToken;
+            Username = auth.SelectedProfile.Name;
+            Uuid = auth.SelectedProfile.Id;
+            UserProperties = (JArray) auth.User["properties"];
             return auth;
         }
 
@@ -64,22 +64,19 @@ namespace dotMCLauncher.Yggdrasil
         {
             Refresh refresh = new Refresh(ClientToken, AccessToken);
             refresh = (Refresh) refresh.DoPost();
-            ClientToken = refresh.accessToken;
-            AccessToken = refresh.clientToken;
-            UserProperties = (JArray) refresh.user["properties"];
             return refresh;
         }
 
-        public bool CheckClientToken()
+        public bool Validate()
         {
-            bool valid = CheckClientToken(AccessToken, ClientToken);
+            bool valid = Validate(AccessToken, ClientToken);
             return valid;
         }
 
-        private static bool CheckClientToken(string accessToken, string clientToken)
+        private static bool Validate(string accessToken, string clientToken)
         {
-            AuthentificationCheck check = new AuthentificationCheck(accessToken, clientToken);
-            return ((AuthentificationCheck) check.DoPost()).valid;
+            Validate check = new Validate(accessToken, clientToken);
+            return ((Validate) check.DoPost()).Valid;
         }
 
         public string GetUsernameByUuid()
@@ -93,7 +90,7 @@ namespace dotMCLauncher.Yggdrasil
         public UserInfo GetUserInfo()
         {
             UserInfo inform = GetUserInfo(Username);
-            Uuid = inform.id;
+            Uuid = inform.Id;
             return inform;
         }
 

@@ -5,10 +5,12 @@
         public Signout(string email, string password)
         {
             Url = Urls.Signout;
-            ToPost = new Newtonsoft.Json.Linq.JObject
-            {
-                {"username", email},
-                {"password", password},
+            ToPost = new Newtonsoft.Json.Linq.JObject {
+                {
+                    "username", email
+                }, {
+                    "password", password
+                },
             }.ToString();
         }
 

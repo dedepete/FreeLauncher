@@ -26,7 +26,7 @@ namespace dotMCLauncher.Core
         /// <param name="pathToFile">Path to file with profiles data.</param>
         public static ProfileManager ParseProfile(string pathToFile)
         {
-            return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof (ProfileManager));
+            return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof(ProfileManager));
         }
 
         /// <summary>
@@ -58,7 +58,9 @@ namespace dotMCLauncher.Core
         public string ToJson(Formatting formatting, JsonSerializerSettings settings)
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented,
-                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                new JsonSerializerSettings {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
         }
 
         /// <summary>

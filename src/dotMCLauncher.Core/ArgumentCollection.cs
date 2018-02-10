@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,7 +19,9 @@ namespace dotMCLauncher.Core
             MatchCollection match = re.Matches(argLine);
             for (int i = 0; i < match.Count; i++) {
                 if (!ContainsKey(match[i].Groups[1].Value)) {
-                    Add(match[i].Groups[1].Value, new List<string> { match[i].Groups[2].Value });
+                    Add(match[i].Groups[1].Value, new List<string> {
+                        match[i].Groups[2].Value
+                    });
                 } else {
                     base[match[i].Groups[1].Value].Add(match[i].Groups[2].Value);
                 }
@@ -48,7 +49,9 @@ namespace dotMCLauncher.Core
                 base[key].Add(value);
                 return;
             }
-            Add(key, new List<string> { value });
+            Add(key, new List<string> {
+                value
+            });
         }
 
         /// <summary>
@@ -84,11 +87,11 @@ namespace dotMCLauncher.Core
             StringBuilder toReturn = new StringBuilder();
             if (!string.IsNullOrEmpty(_argLine)) {
                 toReturn.Append(re.Replace(_argLine,
-                                    match => values.ContainsKey(match.Groups[1].Value)
-                                        ? (!values[match.Groups[1].Value].Contains(' ')
-                                            ? values[match.Groups[1].Value]
-                                            : $"\"{values[match.Groups[1].Value]}\"")
-                                        : match.Value) + " ");
+                    match => values.ContainsKey(match.Groups[1].Value)
+                        ? (!values[match.Groups[1].Value].Contains(' ')
+                            ? values[match.Groups[1].Value]
+                            : $"\"{values[match.Groups[1].Value]}\"")
+                        : match.Value) + " ");
             }
             foreach (string key in Keys) {
                 string value;

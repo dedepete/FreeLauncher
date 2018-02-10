@@ -1,9 +1,14 @@
-﻿namespace dotMCLauncher.Yggdrasil
+﻿using Newtonsoft.Json;
+
+namespace dotMCLauncher.Yggdrasil
 {
     public class UserInfo : Request
     {
-        public string id { get; set; }
-        public string name { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         public UserInfo(string username)
         {

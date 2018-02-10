@@ -6,6 +6,7 @@ namespace dotMCLauncher.Yggdrasil
     public class Username
     {
         public string Uuid { private get; set; }
+
         public string GetUsernameByUuid()
         {
             string res =

@@ -6,9 +6,10 @@ using Newtonsoft.Json.Linq;
 
 namespace dotMCLauncher.Core
 {
-    public class VersionManifest: Version
+    public class VersionManifest : Version
     {
-        [JsonIgnore] public VersionManifestType Type { get; set; } = VersionManifestType.V1;
+        [JsonIgnore]
+        public VersionManifestType Type { get; set; } = VersionManifestType.V1;
 
         /// <summary>
         /// Arguments. v1
@@ -16,7 +17,9 @@ namespace dotMCLauncher.Core
         [JsonProperty("minecraftArguments")]
         public string Arguments
         {
-            get { return _arguments; }
+            get {
+                return _arguments;
+            }
             set {
                 _arguments = value;
                 ArgCollection = new ArgumentCollection();
@@ -92,17 +95,20 @@ namespace dotMCLauncher.Core
         /// <summary>
         /// Argument line. v1
         /// </summary>
-        [JsonIgnore] private string _arguments;
+        [JsonIgnore]
+        private string _arguments;
 
         /// <summary>
         /// Argument list. v1
         /// </summary>
-        [JsonIgnore] public ArgumentCollection ArgCollection;
+        [JsonIgnore]
+        public ArgumentCollection ArgCollection;
 
         /// <summary>
         /// Groups of arguments. v2
         /// </summary>
-        [JsonIgnore] public List<ArgumentsGroup> ArgGroups;
+        [JsonIgnore]
+        public List<ArgumentsGroup> ArgGroups;
 
         [JsonIgnore]
         public string GetClientDownloadUrl
@@ -153,7 +159,7 @@ namespace dotMCLauncher.Core
                 }
                 return false;
             }
-            VersionManifest ver = (VersionManifest)JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(pathToDirectory.ToString(), version + ".json")), typeof(VersionManifest));
+            VersionManifest ver = (VersionManifest) JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(pathToDirectory.ToString(), version + ".json")), typeof(VersionManifest));
             if (ver != null) {
                 return true;
             }
@@ -195,7 +201,7 @@ namespace dotMCLauncher.Core
     public class VersionCorruptedOrNotExists : Exception
     {
         public string Version;
-        public VersionCorruptedOrNotExists(string message) : base(message) {}
+        public VersionCorruptedOrNotExists(string message) : base(message) { }
     }
 
     public class VersionCorrupted : Exception

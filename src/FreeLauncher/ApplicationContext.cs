@@ -34,8 +34,8 @@ namespace FreeLauncher
             LocalizationsList = new Dictionary<string, Localization>();
             Parser.Default.ParseArguments(args, ProgramArguments);
             McDirectory = ProgramArguments.WorkingDirectory ??
-                                               Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                                   ".minecraft");
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    ".minecraft");
             McLauncher = Path.Combine(McDirectory, "freelauncher");
             McVersions = Path.Combine(McDirectory, "versions");
             McLibs = Path.Combine(McDirectory, "libraries");
@@ -82,7 +82,9 @@ namespace FreeLauncher
                 .Where(file => file.Name.Contains("lang"))
                 .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
                 .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
-                if (LocalizationsList.ContainsKey(local.LanguageTag)) { continue; }
+                if (LocalizationsList.ContainsKey(local.LanguageTag)) {
+                    continue;
+                }
                 LocalizationsList.Add(local.LanguageTag, local);
                 if (local.LanguageTag == Configuration.SelectedLanguage) {
                     ProgramLocalization = local;

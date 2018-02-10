@@ -6,6 +6,7 @@ namespace dotMCLauncher.Core
     {
         [JsonProperty("release")]
         public string Release;
+
         [JsonProperty("snapshot")]
         public string Snapshot;
     }

@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticate.cs" />
-    <Compile Include="AuthentificationCheck.cs" />
+    <Compile Include="Validate.cs" />
     <Compile Include="AuthManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refresh.cs" />

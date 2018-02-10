@@ -27,15 +27,15 @@ namespace dotMCLauncher.Core
                         }
                         if (!extendedArgument.HasMultipleArguments) {
                             toReturn.Append((extendedArgument.Value.Contains(' ')
-                                                ? "\"" + extendedArgument.Value + "\""
-                                                : extendedArgument.Value) + " ");
+                                ? "\"" + extendedArgument.Value + "\""
+                                : extendedArgument.Value) + " ");
                             continue;
                         }
                         toReturn = extendedArgument.Values.Aggregate(toReturn,
                             (current, value) =>
                                 toReturn.Append((Type == ArgumentsGroupType.JVM && value.Contains(' ')
-                                                    ? "\"" + value + "\""
-                                                    : value) + " "));
+                                    ? "\"" + value + "\""
+                                    : value) + " "));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
