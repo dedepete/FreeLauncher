@@ -8,8 +8,8 @@ namespace dotMCLauncher.Core
 {
     public class RawVersionListManifest
     {
-        [JsonProperty("latest")] public RawVersionListManifestLatest LatestVersions;
-        [JsonProperty("versions")] public List<RawVersionListManifestEntry> Versions;
+        [JsonProperty("latest")] public RawVersionListManifestLatest LatestVersions { get; set; }
+        [JsonProperty("versions")] public List<RawVersionListManifestEntry> Versions { get; set; }
 
         public List<RawVersionListManifestEntry> GetVersionsByType(string type)
             => GetVersionsByType(type, RawVersionListManifestSortMethod.INCLUDE);

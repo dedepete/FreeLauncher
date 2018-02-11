@@ -15,7 +15,7 @@ namespace FreeLauncher.Forms
     {
         private readonly ApplicationContext _applicationContext;
 
-        public Profile CurrentProfile;
+        public Profile CurrentProfile { get; set; }
 
         public ProfileForm(Profile profile, ApplicationContext appContext)
         {

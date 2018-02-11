@@ -10,9 +10,14 @@ namespace dotMCLauncher.Core
     {
         public ArgumentsGroupType Type { get; set; }
 
-        public List<Argument> Arguments;
+        public List<Argument> Arguments { get; set; }
 
-        public string ToString(Dictionary<string, string> values, Rule[] rules = null)
+        public string ToString(Dictionary<string, string> values)
+        {
+            return ToString(values, null);
+        }
+
+        public string ToString(Dictionary<string, string> values, Rule[] rules)
         {
             StringBuilder toReturn = new StringBuilder();
             foreach (Argument argument in Arguments) {

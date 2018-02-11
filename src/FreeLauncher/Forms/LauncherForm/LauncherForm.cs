@@ -36,7 +36,7 @@ namespace FreeLauncher.Forms
         private string _versionToLaunch;
         private bool _restoreVersion;
 
-        public int LinuxTimeStamp => (int) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        public static int LinuxTimeStamp => (int) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
         private int StatusBarValue
         {
@@ -48,56 +48,40 @@ namespace FreeLauncher.Forms
             }
         }
 
-        private int StatusBarMaxValue
+        private void SetControlBlockState(bool block)
         {
-            set {
-                SetStatusBarMaxValue(value);
-            }
+            LaunchButton.Enabled = !block;
+            profilesDropDownBox.Enabled = !block;
+            DeleteProfileButton.Enabled = !block && (_profileManager.Profiles.Count > 1);
+            EditProfile.Enabled = !block;
+            AddProfile.Enabled = !block;
+            NicknameDropDownList.Enabled = !block;
         }
 
-        private bool StatusBarVisible
-        {
-            set {
-                SetStatusBarVisibility(value);
-            }
-        }
-
-        private bool BlockControls
-        {
-            set {
-                LaunchButton.Enabled = !value;
-                profilesDropDownBox.Enabled = !value;
-                DeleteProfileButton.Enabled = !value && (_profileManager.Profiles.Count > 1);
-                EditProfile.Enabled = !value;
-                AddProfile.Enabled = !value;
-                NicknameDropDownList.Enabled = !value;
-            }
-        }
-
-        private void SetStatusBarValue(int i)
+        private void SetStatusBarValue(int value)
         {
             if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<int>(SetStatusBarValue), i);
+                logBox.Invoke(new Action<int>(SetStatusBarValue), value);
             } else {
-                StatusBar.Value1 = i;
+                StatusBar.Value1 = value;
             }
         }
 
-        private void SetStatusBarMaxValue(int i)
+        private void SetStatusBarMaxValue(int value)
         {
             if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<int>(SetStatusBarMaxValue), i);
+                logBox.Invoke(new Action<int>(SetStatusBarMaxValue), value);
             } else {
-                StatusBar.Maximum = i;
+                StatusBar.Maximum = value;
             }
         }
 
-        private void SetStatusBarVisibility(bool b)
+        private void SetStatusBarVisibility(bool visible)
         {
             if (logBox.InvokeRequired) {
-                logBox.Invoke(new Action<bool>(SetStatusBarVisibility), b);
+                logBox.Invoke(new Action<bool>(SetStatusBarVisibility), visible);
             } else {
-                StatusBar.Visible = b;
+                StatusBar.Visible = visible;
             }
         }
 
@@ -275,7 +259,7 @@ Please, check for your Internet configuration and restart the launcher.
 
         private void LaunchButton_Click(object sender, EventArgs e)
         {
-            BlockControls = true;
+            SetControlBlockState(true);
             if (string.IsNullOrWhiteSpace(NicknameDropDownList.Text)) {
                 NicknameDropDownList.Text = $"Player{LinuxTimeStamp}";
             }
@@ -298,13 +282,13 @@ Please, check for your Internet configuration and restart the launcher.
                         } else {
                             AppendLog("Assets download skipped.");
                         }
-                        StatusBarVisible = false;
+                        SetStatusBarVisibility(false);
                     };
                     bgw2.RunWorkerCompleted += delegate {
                         if (_restoreVersion) {
                             AppendLog($"Successfully restored \"{_versionToLaunch}\" version.");
                             _restoreVersion = false;
-                            BlockControls = false;
+                            SetControlBlockState(false);
                             UpdateVersionListView();
                             _versionToLaunch = null;
                             return;
@@ -471,7 +455,7 @@ Please, check for your Internet configuration and restart the launcher.
                             }, this,
                             _selectedProfile).Launch();
                         AppendLog($"Version {selectedVersionManifest.VersionId} successfuly executed.");
-                        BlockControls = false;
+                        SetControlBlockState(false);
                         UpdateVersionListView();
                         _versionToLaunch = null;
                     };
@@ -695,8 +679,27 @@ Please, check for your Internet configuration and restart the launcher.
                                         "name", ProductName
                                     }, {
                                         "allowedReleaseTypes", new JArray {
-                                            "release",
                                             "other"
+                                        }
+                                    }, {
+                                        "launcherVisibilityOnGameClose", "keep the launcher open"
+                                    }
+                                }
+                            }, {
+                                "Latest Release", new JObject {
+                                    {
+                                        "name", "Latest Release"
+                                    }, {
+                                        "launcherVisibilityOnGameClose", "keep the launcher open"
+                                    }
+                                }
+                            }, {
+                                "Latest Snapshot", new JObject {
+                                    {
+                                        "name", "Latest Snapshot"
+                                    }, {
+                                        "allowedReleaseTypes", new JArray {
+                                            "snapshot"
                                         }
                                     }, {
                                         "launcherVisibilityOnGameClose", "keep the launcher open"
@@ -754,8 +757,8 @@ Please, check for your Internet configuration and restart the launcher.
             downloader.DownloadProgressChanged += (sender, e) => {
                 StatusBarValue = e.ProgressPercentage;
             };
-            StatusBarVisible = true;
-            StatusBarMaxValue = 100;
+            SetStatusBarVisibility(true);
+            SetStatusBarMaxValue(100);
             StatusBarValue = 0;
             UpdateStatusBarText(string.Format(_applicationContext.ProgramLocalization.CheckingVersionAvailability, version));
             AppendLog($"Checking '{version}' version availability...");
@@ -808,7 +811,7 @@ Please, check for your Internet configuration and restart the launcher.
                 new DirectoryInfo(_applicationContext.McVersions + @"\" +
                 (_versionToLaunch ??
                     (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
-            StatusBarVisible = true;
+            SetStatusBarVisibility(true);
             StatusBarValue = 0;
             UpdateStatusBarText(_applicationContext.ProgramLocalization.CheckingLibraries);
             AppendLog("Preparing required libraries...");
@@ -832,7 +835,7 @@ Please, check for your Internet configuration and restart the launcher.
                     libsToDownload.Add(entry, entry.IsNative);
                 }
             }
-            StatusBarMaxValue = libsToDownload.Count + 1;
+            SetStatusBarMaxValue(libsToDownload.Count + 1);
             foreach (DownloadEntry entry in libsToDownload.Keys) {
                 StatusBarValue++;
                 if (!File.Exists(_applicationContext.McLibs + @"\" + entry.Path) ||
@@ -907,12 +910,12 @@ Please, check for your Internet configuration and restart the launcher.
             }
             JObject jo = JObject.Parse(File.ReadAllText(file));
             StatusBarValue = 0;
-            StatusBarMaxValue = jo["objects"].Cast<JProperty>()
+            SetStatusBarMaxValue(jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c.Substring(0, 2) + @"\" + c)
                 .Count(filename =>
                     !File.Exists(_applicationContext.McDirectory + @"\assets\objects\" +
-                        filename) || _restoreVersion) + 1;
+                        filename) || _restoreVersion) + 1);
             foreach (string resourseFile in jo["objects"].Cast<JProperty>()
                 .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
                 .Select(c => c.Substring(0, 2) + @"\" + c)
@@ -936,11 +939,11 @@ Please, check for your Internet configuration and restart the launcher.
             AppendLog("Finished checking game assets.");
             if (selectedVersionManifest.AssetsIndex == null) {
                 StatusBarValue = 0;
-                StatusBarMaxValue = jo["objects"].Cast<JProperty>()
+                SetStatusBarMaxValue(jo["objects"].Cast<JProperty>()
                     .Count(
                         res =>
                             !File.Exists(_applicationContext.McDirectory + @"\assets\legacy\" +
-                                res.Name)) + 1;
+                                res.Name)) + 1);
                 UpdateStatusBarAndLog("Converting assets...");
                 foreach (
                     JProperty res in
@@ -970,7 +973,7 @@ Please, check for your Internet configuration and restart the launcher.
                 }
                 AppendLog("Finished converting assets.");
             }
-            StatusBarVisible = false;
+            SetStatusBarVisibility(false);
         }
 
         private string GetLatestVersion(Profile profile)
@@ -1027,8 +1030,7 @@ Please, check for your Internet configuration and restart the launcher.
                 McVersion = _versionToLaunch ?? (
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
                 McType = VersionManifest.ParseVersion(
-                    new DirectoryInfo(_applicationContext.McVersions + @"\" + (_versionToLaunch ?? (
-                        (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))))).ReleaseType,
+                    new DirectoryInfo(_applicationContext.McVersions + @"\" + (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))).ReleaseType,
                 Panel = panel
             };
         }
@@ -1334,13 +1336,13 @@ Please, check for your Internet configuration and restart the launcher.
         }
     }
 
-    public struct LauncherFormOutput
+    public class LauncherFormOutput
     {
-        public RichTextBox OutputBox;
-        public RadButton CloseButton;
-        public RadButton KillButton;
-        public RadPanel Panel;
-        public string McVersion;
-        public string McType;
+        public RichTextBox OutputBox { get; set; }
+        public RadButton CloseButton { get; set; }
+        public RadButton KillButton { get; set; }
+        public RadPanel Panel { get; set; }
+        public string McVersion { get; set; }
+        public string McType { get; set; }
     }
 }

@@ -5,9 +5,9 @@ namespace dotMCLauncher.Core
     public class RawVersionListManifestLatest
     {
         [JsonProperty("release")]
-        public string Release;
+        public string Release { get; set; }
 
         [JsonProperty("snapshot")]
-        public string Snapshot;
+        public string Snapshot { get; set; }
     }
 }

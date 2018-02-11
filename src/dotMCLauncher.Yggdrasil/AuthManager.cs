@@ -31,7 +31,7 @@ namespace dotMCLauncher.Yggdrasil
 
         public JArray UserProperties { get; set; }
 
-        public Authenticate Login()
+        public void Login()
         {
             Authenticate auth = Login(Email, Password);
             ClientToken = auth.ClientToken;
@@ -39,10 +39,9 @@ namespace dotMCLauncher.Yggdrasil
             Username = auth.SelectedProfile.Name;
             Uuid = auth.SelectedProfile.Id;
             UserProperties = (JArray) auth.User["properties"];
-            return auth;
         }
 
-        private Authenticate Login(string email, string password)
+        public static Authenticate Login(string email, string password)
         {
             Authenticate auth = new Authenticate(email, password);
             auth = (Authenticate) auth.DoPost();

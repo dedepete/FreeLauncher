@@ -166,7 +166,7 @@ namespace FreeLauncher.Forms
         public string SelectedUsername { get; set; }
 
         [JsonProperty("users")]
-        public Dictionary<string, User> Accounts = new Dictionary<string, User>();
+        public Dictionary<string, User> Accounts { get; set; } = new Dictionary<string, User>();
     }
 
     public class User

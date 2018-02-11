@@ -31,8 +31,11 @@ namespace dotMCLauncher.Core
         /// Arguments. v2
         /// </summary>
         [JsonProperty("arguments")]
-        public JObject SetArgumentGroups
+        private JObject ArgumentGroups
         {
+            get {
+                return ArgGroups != null ? JObject.Parse(JsonConvert.SerializeObject(ArgGroups)) : null;
+            }
             set {
                 Type = VersionManifestType.V2;
                 ArgGroups = new List<ArgumentsGroup>();
@@ -196,6 +199,11 @@ namespace dotMCLauncher.Core
         {
             return InheritsFrom == null ? VersionId : InheritableVersionManifest.GetBaseJar();
         }
+
+        public void SetArgumentGroups(JObject jobject)
+        {
+            
+        }
     }
 
     public class VersionCorruptedOrNotExists : Exception
@@ -206,7 +214,7 @@ namespace dotMCLauncher.Core
 
     public class VersionCorrupted : Exception
     {
-        public string Version;
+        public string Version { get; set; }
         public VersionCorrupted(string message) : base(message) { }
     }
 }
