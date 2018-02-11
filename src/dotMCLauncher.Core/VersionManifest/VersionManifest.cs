@@ -203,7 +203,7 @@ namespace dotMCLauncher.Core
 
     public class VersionCorruptedOrNotExists : Exception
     {
-        public string Version;
+        public string Version { get; set; }
         public VersionCorruptedOrNotExists(string message) : base(message) { }
     }
 
