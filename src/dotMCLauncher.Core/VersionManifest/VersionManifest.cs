@@ -199,11 +199,6 @@ namespace dotMCLauncher.Core
         {
             return InheritsFrom == null ? VersionId : InheritableVersionManifest.GetBaseJar();
         }
-
-        public void SetArgumentGroups(JObject jobject)
-        {
-            
-        }
     }
 
     public class VersionCorruptedOrNotExists : Exception
