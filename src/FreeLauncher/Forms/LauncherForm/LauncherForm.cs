@@ -327,7 +327,7 @@ Please, check for your Internet configuration and restart the launcher.
                                 bool check = am.Validate();
                                 if (!check) {
                                     RadMessageBox.Show(
-                                        "Session token is not valid. Please, head up to user manager and re-add your account.",
+                                        _applicationContext.ProgramLocalization.InvalidSessionMessage,
                                         _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
                                         RadMessageIcon.Exclamation);
                                     User user = new User {
@@ -637,9 +637,7 @@ Please, check for your Internet configuration and restart the launcher.
                 if (File.Exists(_applicationContext.McVersions + @"\versions.json")) {
                     return;
                 }
-                MessageBox.Show("Looks like this is your first time using this launcher.\n" +
-                    "Unfortunately, some required files are missing and we are unable to download them without the Internet connection.\n" +
-                    "Please, check for your Internet configuration and restart the launcher.");
+                MessageBox.Show(_applicationContext.ProgramLocalization.SomeFilesMissingMessage);
                 Environment.Exit(0);
             }
             AppendLog("Checking version.json...");
@@ -1008,8 +1006,9 @@ Please, check for your Internet configuration and restart the launcher.
             };
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
             closeButton.Click += (sender, e) => {
-                if (!mainPageView.Pages.Contains(outputPage))
+                if (!mainPageView.Pages.Contains(outputPage)) {
                     return;
+                }
                 mainPageView.Pages.Remove(outputPage);
             };
             killProcessButton.Location = new Point(panel.Size.Width - (killProcessButton.Size.Width + 5),
@@ -1046,6 +1045,7 @@ Please, check for your Internet configuration and restart the launcher.
             LaunchButton.Text = _applicationContext.ProgramLocalization.LaunchButtonText;
             AddProfile.Text = _applicationContext.ProgramLocalization.AddProfileButtonText;
             EditProfile.Text = _applicationContext.ProgramLocalization.EditProfileButtonText;
+            SetToClipboardButton.Text = _applicationContext.ProgramLocalization.SetToClipboardButtonText;
 
             DevInfoLabel.Text = _applicationContext.ProgramLocalization.DevInfo;
             GratitudesLabel.Text = _applicationContext.ProgramLocalization.GratitudesText;
@@ -1054,7 +1054,9 @@ Please, check for your Internet configuration and restart the launcher.
             MCofflineDescLabel.Text = _applicationContext.ProgramLocalization.MCofflineDescription;
             CopyrightInfoLabel.Text = _applicationContext.ProgramLocalization.CopyrightInfo;
 
+            MainGroupBox.Text = _applicationContext.ProgramLocalization.MainSettingsTitle;
             DownloadAssetsBox.Text = _applicationContext.ProgramLocalization.SkipAssetsDownload;
+            LoggerGroupBox.Text = _applicationContext.ProgramLocalization.LoggerSettingsTitle;
             EnableMinecraftLogging.Text = _applicationContext.ProgramLocalization.EnableMinecraftLoggingText;
             CloseGameOutput.Text = _applicationContext.ProgramLocalization.CloseGameOutputText;
         }

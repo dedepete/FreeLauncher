@@ -96,19 +96,19 @@ namespace dotMCLauncher.Core
         /// Argument line. v1
         /// </summary>
         [JsonIgnore]
-        private string _arguments;
+        private string _arguments { get; set; }
 
         /// <summary>
         /// Argument list. v1
         /// </summary>
         [JsonIgnore]
-        public ArgumentCollection ArgCollection;
+        public ArgumentCollection ArgCollection { get; set; }
 
         /// <summary>
         /// Groups of arguments. v2
         /// </summary>
         [JsonIgnore]
-        public List<ArgumentsGroup> ArgGroups;
+        public List<ArgumentsGroup> ArgGroups { get; set; }
 
         [JsonIgnore]
         public string GetClientDownloadUrl

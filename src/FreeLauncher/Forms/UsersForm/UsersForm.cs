@@ -163,7 +163,7 @@ namespace FreeLauncher.Forms
     public class UserManager
     {
         [JsonProperty("selectedUsername")]
-        public string SelectedUsername;
+        public string SelectedUsername { get; set; }
 
         [JsonProperty("users")]
         public Dictionary<string, User> Accounts = new Dictionary<string, User>();
@@ -172,21 +172,21 @@ namespace FreeLauncher.Forms
     public class User
     {
         [JsonProperty("username")]
-        public string Username;
+        public string Username { get; set; }
 
         [JsonProperty("type")]
-        public string Type;
+        public string Type { get; set; }
 
         [JsonProperty("uuid")]
-        public string Uuid;
+        public string Uuid { get; set; }
 
         [JsonProperty("sessionToken")]
-        public string ClientToken;
+        public string ClientToken { get; set; }
 
         [JsonProperty("accessToken")]
-        public string AccessToken;
+        public string AccessToken { get; set; }
 
         [JsonProperty("properties")]
-        public JArray UserProperties;
+        public JArray UserProperties { get; set; }
     }
 }

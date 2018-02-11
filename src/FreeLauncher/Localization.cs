@@ -24,6 +24,7 @@
         public string LaunchButtonText = "Запуск игры";
         public string AddProfileButtonText = "Добавить профиль";
         public string EditProfileButtonText = "Изменить профиль";
+        public string SetToClipboardButtonText = "Скопировать в буфер";
 
         #endregion
 
@@ -42,9 +43,11 @@
 
         #region Settings Tab
 
+        public string MainSettingsTitle = "Основные";
         public string SkipAssetsDownload = "Пропускать загрузку ресурсов";
         public string EnableMinecraftLoggingText = "Выводить лог игры в консоль";
 
+        public string LoggerSettingsTitle = "Основные";
         public string CloseGameOutputText =
             "Закрывать вкладку, если завершение было вызвано\nпринудительно или прошло без ошибок";
 
@@ -65,7 +68,9 @@
         public string CheckingLibraries = "Выполняется проверка библиотек";
         public string GameOutput = "ВЫВОД ИГРЫ";
         public string KillProcess = "Убить процесс";
-        public string Independent = "Независимая";
+        public string Independent = "Самостоятельная";
+        public string InvalidSessionMessage = "Токен сеанса устарел. Пожалуйста, выполните вход в свой аккаунт ещё раз.";
+        public string SomeFilesMissingMessage = "Похоже, вы впервые используете этот лаунчер.\nК сожалению, некоторые необходимые файлы отсутствуют и они не могут быть загружены без подключения к Интернету.\nПожалуйста, проверьте свои настройки Сети и перезапустите лаунчер.";
 
         #endregion
 

@@ -57,10 +57,10 @@ namespace FreeLauncher.Forms
             this.AboutPageViewPage = new Telerik.WinControls.UI.RadPageViewPage();
             this.radScrollablePanel2 = new Telerik.WinControls.UI.RadScrollablePanel();
             this.CopyrightInfoLabel = new System.Windows.Forms.Label();
-            this.radGroupBox2 = new Telerik.WinControls.UI.RadGroupBox();
+            this.LoggerGroupBox = new Telerik.WinControls.UI.RadGroupBox();
             this.CloseGameOutput = new Telerik.WinControls.UI.RadCheckBox();
             this.EnableMinecraftLogging = new Telerik.WinControls.UI.RadCheckBox();
-            this.radGroupBox1 = new Telerik.WinControls.UI.RadGroupBox();
+            this.MainGroupBox = new Telerik.WinControls.UI.RadGroupBox();
             this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
             this.LangDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.DownloadAssetsBox = new Telerik.WinControls.UI.RadCheckBox();
@@ -113,12 +113,12 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.radScrollablePanel2)).BeginInit();
             this.radScrollablePanel2.PanelContainer.SuspendLayout();
             this.radScrollablePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).BeginInit();
-            this.radGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoggerGroupBox)).BeginInit();
+            this.LoggerGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseGameOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftLogging)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
-            this.radGroupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainGroupBox)).BeginInit();
+            this.MainGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).BeginInit();
@@ -345,6 +345,7 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
+            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(426F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -359,8 +360,8 @@ namespace FreeLauncher.Forms
             // radScrollablePanel2.PanelContainer
             // 
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.CopyrightInfoLabel);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.radGroupBox2);
-            this.radScrollablePanel2.PanelContainer.Controls.Add(this.radGroupBox1);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.LoggerGroupBox);
+            this.radScrollablePanel2.PanelContainer.Controls.Add(this.MainGroupBox);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.AboutVersion);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.mcOfflineURL);
             this.radScrollablePanel2.PanelContainer.Controls.Add(this.MCofflineDescLabel);
@@ -391,19 +392,19 @@ namespace FreeLauncher.Forms
     "ляется дочерней студией Microsoft Studios.\r\n";
             this.CopyrightInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // radGroupBox2
+            // LoggerGroupBox
             // 
-            this.radGroupBox2.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-            this.radGroupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.radGroupBox2.Controls.Add(this.CloseGameOutput);
-            this.radGroupBox2.Controls.Add(this.EnableMinecraftLogging);
-            this.radGroupBox2.HeaderText = "Логирование";
-            this.radGroupBox2.Location = new System.Drawing.Point(469, 141);
-            this.radGroupBox2.Name = "radGroupBox2";
-            this.radGroupBox2.Size = new System.Drawing.Size(357, 121);
-            this.radGroupBox2.TabIndex = 13;
-            this.radGroupBox2.Text = "Логирование";
-            this.radGroupBox2.ThemeName = "VisualStudio2012Dark";
+            this.LoggerGroupBox.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
+            this.LoggerGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.LoggerGroupBox.Controls.Add(this.CloseGameOutput);
+            this.LoggerGroupBox.Controls.Add(this.EnableMinecraftLogging);
+            this.LoggerGroupBox.HeaderText = "Логирование";
+            this.LoggerGroupBox.Location = new System.Drawing.Point(469, 141);
+            this.LoggerGroupBox.Name = "LoggerGroupBox";
+            this.LoggerGroupBox.Size = new System.Drawing.Size(357, 121);
+            this.LoggerGroupBox.TabIndex = 13;
+            this.LoggerGroupBox.Text = "Логирование";
+            this.LoggerGroupBox.ThemeName = "VisualStudio2012Dark";
             // 
             // CloseGameOutput
             // 
@@ -425,20 +426,20 @@ namespace FreeLauncher.Forms
             this.EnableMinecraftLogging.ThemeName = "VisualStudio2012Dark";
             this.EnableMinecraftLogging.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
             // 
-            // radGroupBox1
+            // MainGroupBox
             // 
-            this.radGroupBox1.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
-            this.radGroupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.radGroupBox1.Controls.Add(this.radLabel4);
-            this.radGroupBox1.Controls.Add(this.LangDropDownList);
-            this.radGroupBox1.Controls.Add(this.DownloadAssetsBox);
-            this.radGroupBox1.HeaderText = "Основные";
-            this.radGroupBox1.Location = new System.Drawing.Point(469, 14);
-            this.radGroupBox1.Name = "radGroupBox1";
-            this.radGroupBox1.Size = new System.Drawing.Size(357, 121);
-            this.radGroupBox1.TabIndex = 12;
-            this.radGroupBox1.Text = "Основные";
-            this.radGroupBox1.ThemeName = "VisualStudio2012Dark";
+            this.MainGroupBox.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
+            this.MainGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.MainGroupBox.Controls.Add(this.radLabel4);
+            this.MainGroupBox.Controls.Add(this.LangDropDownList);
+            this.MainGroupBox.Controls.Add(this.DownloadAssetsBox);
+            this.MainGroupBox.HeaderText = "Основные";
+            this.MainGroupBox.Location = new System.Drawing.Point(469, 14);
+            this.MainGroupBox.Name = "MainGroupBox";
+            this.MainGroupBox.Size = new System.Drawing.Size(357, 121);
+            this.MainGroupBox.TabIndex = 12;
+            this.MainGroupBox.Text = "Основные";
+            this.MainGroupBox.ThemeName = "VisualStudio2012Dark";
             // 
             // radLabel4
             // 
@@ -620,6 +621,7 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
+            this.LicensesPage.ItemSize = new System.Drawing.SizeF(421F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -877,14 +879,14 @@ namespace FreeLauncher.Forms
             this.radScrollablePanel2.PanelContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radScrollablePanel2)).EndInit();
             this.radScrollablePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.radGroupBox2)).EndInit();
-            this.radGroupBox2.ResumeLayout(false);
-            this.radGroupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoggerGroupBox)).EndInit();
+            this.LoggerGroupBox.ResumeLayout(false);
+            this.LoggerGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseGameOutput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftLogging)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).EndInit();
-            this.radGroupBox1.ResumeLayout(false);
-            this.radGroupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainGroupBox)).EndInit();
+            this.MainGroupBox.ResumeLayout(false);
+            this.MainGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).EndInit();
@@ -966,10 +968,10 @@ namespace FreeLauncher.Forms
         private RadToggleButton DebugModeButton;
         private RadButton DeleteProfileButton;
         private RadButton SetToClipboardButton;
-        private RadGroupBox radGroupBox2;
+        private RadGroupBox LoggerGroupBox;
         public RadCheckBox CloseGameOutput;
         public RadCheckBox EnableMinecraftLogging;
-        private RadGroupBox radGroupBox1;
+        private RadGroupBox MainGroupBox;
         public RadLabel radLabel4;
         private RadDropDownList LangDropDownList;
         public RadCheckBox DownloadAssetsBox;
