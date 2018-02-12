@@ -28,6 +28,17 @@
 
         #endregion
 
+        #region Build Managment Tab
+
+        public string VersionHeader { get; set; } = "Версия";
+        public string TypeHeader { get; set; } = "Тип";
+        public string ReleaseDateHeader { get; set; } = "Дата выхода";
+        public string LastUpdatedHeader { get; set; } = "Последнее обновление";
+        public string AssetsIndexHeader { get; set; } = "Индекс ресурсов";
+        public string DependencyHeader { get; set; } = "Зависимость";
+
+        #endregion
+
         #region About Tab
 
         public string DevInfo { get; set; } = "Разработано dedepete";

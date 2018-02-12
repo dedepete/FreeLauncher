@@ -1049,6 +1049,13 @@ Please, check for your Internet configuration and restart the launcher.
             EditProfile.Text = _applicationContext.ProgramLocalization.EditProfileButtonText;
             SetToClipboardButton.Text = _applicationContext.ProgramLocalization.SetToClipboardButtonText;
 
+            versionsListView.Columns[0].HeaderText = _applicationContext.ProgramLocalization.VersionHeader;
+            versionsListView.Columns[1].HeaderText = _applicationContext.ProgramLocalization.TypeHeader;
+            versionsListView.Columns[2].HeaderText = _applicationContext.ProgramLocalization.ReleaseDateHeader;
+            versionsListView.Columns[3].HeaderText = _applicationContext.ProgramLocalization.LastUpdatedHeader;
+            versionsListView.Columns[4].HeaderText = _applicationContext.ProgramLocalization.AssetsIndexHeader;
+            versionsListView.Columns[5].HeaderText = _applicationContext.ProgramLocalization.DependencyHeader;
+
             DevInfoLabel.Text = _applicationContext.ProgramLocalization.DevInfo;
             GratitudesLabel.Text = _applicationContext.ProgramLocalization.GratitudesText;
             GratitudesDescLabel.Text = _applicationContext.ProgramLocalization.GratitudesDescription;
@@ -1075,8 +1082,8 @@ Please, check for your Internet configuration and restart the launcher.
                         .Select(versionDir => new DirectoryInfo(versionDir))
                         .Where(VersionManifest.IsValid)
                         .Select(info => VersionManifest.ParseVersion(info, false))) {
-                    versionsListView.Items.Add(version.VersionId, version.ReleaseType,
-                        version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
+                    versionsListView.Items.Add(version.VersionId, version.ReleaseType, version.ReleaseTime, version.LastUpdateTime,
+                        version.GetAssetsIndex(), version.InheritsFrom ?? _applicationContext.ProgramLocalization.Independent);
                 }
                 string path = Path.Combine(_applicationContext.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + @"\");

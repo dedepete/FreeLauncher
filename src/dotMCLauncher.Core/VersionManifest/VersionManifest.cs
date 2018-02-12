@@ -81,6 +81,18 @@ namespace dotMCLauncher.Core
         public List<Lib> Libs { get; set; }
 
         /// <summary>
+        /// Release date and time.
+        /// </summary>
+        [JsonProperty("releaseTime")]
+        public string ReleaseTime { get; set; }
+
+        /// <summary>
+        /// Date and time of last update.
+        /// </summary>
+        [JsonProperty("time")]
+        public string LastUpdateTime { get; set; }
+
+        /// <summary>
         /// Parent's ID.
         /// </summary>
         [JsonProperty("inheritsFrom")]
