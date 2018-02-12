@@ -263,6 +263,7 @@ namespace FreeLauncher.Forms
                     });
                 }
             }
+            versionsDropDownList.Items[0].Text = string.Format(versionsDropDownList.Items[0].Text, versionsDropDownList.Items[1].Tag);
             if (CurrentProfile.SelectedVersion != null) {
                 foreach (
                     RadListDataItem a in

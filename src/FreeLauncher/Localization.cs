@@ -12,7 +12,7 @@
 
         public string NewsTabText { get; set; } = "НОВОСТИ";
         public string ConsoleTabText { get; set; } = "КОНСОЛЬ";
-        public string ManageVersionsTabText { get; set; } = "УПРАВЛЕНИЕ ВЕРСИЯМИ";
+        public string ManageVersionsTabText { get; set; } = "УПРАВЛЕНИЕ СБОРКАМИ";
         public string AboutTabText { get; set; } = "О ЛАУНЧЕРЕ";
         public string LicensesTabText { get; set; } = "ЛИЦЕНЗИИ";
         public string SettingsTabText { get; set; } = "НАСТРОЙКИ";
@@ -37,7 +37,7 @@
         public string MCofflineDescription { get; set; } = "MCoffline - лучшая программа для серверных администраторов!";
 
         public string CopyrightInfo { get; set; } =
-            "\"Minecraft\" является торговой маркой Mojang AB. Все права защищены.\nMojang AB является дочерней студией Microsoft Studios.";
+            "\"Minecraft\" является торговой маркой Mojang Synergies AB. Все права защищены.\nMojang Synergies AB является дочерней студией Microsoft Studios.";
 
         #endregion
 
@@ -56,16 +56,16 @@
 
         public string Launch { get; set; } = "Запустить";
         public string OpenLocation { get; set; } = "Открыть расположение";
-        public string DeleteVersion { get; set; } = "Удалить версию";
+        public string DeleteVersion { get; set; } = "Удалить сборку";
         public string DeleteConfirmationTitle { get; set; } = "Подтверждение удаления";
-        public string DeleteConfirmationText { get; set; } = "Вы действительно хотите удалить версию {0}?";
-        public string ReadyToLaunch { get; set; } = "Готов к запуску версии {0}";
-        public string ReadyToDownload { get; set; } = "Готов к загрузке версии {0}";
+        public string DeleteConfirmationText { get; set; } = "Вы действительно хотите удалить сборку '{0}'?";
+        public string ReadyToLaunch { get; set; } = "Готов к запуску сборки {0}";
+        public string ReadyToDownload { get; set; } = "Готов к загрузке сборки {0}";
         public string EditingProfileTitle { get; set; } = "Редактирование профиля";
         public string ProfileAlreadyExistsErrorText { get; set; } = "Данный профиль уже существует в списке!";
         public string ProfileDeleteConfirmationText { get; set; } = "Вы действительно хотите удалить профиль '{0}'?";
         public string AddingProfileTitle { get; set; } = "Добавление профиля";
-        public string CheckingVersionAvailability { get; set; } = "Выполняется проверка доступности версии '{0}'";
+        public string CheckingVersionAvailability { get; set; } = "Выполняется проверка доступности сборки '{0}'";
         public string CheckingLibraries { get; set; } = "Выполняется проверка библиотек";
         public string GameOutput { get; set; } = "ВЫВОД ИГРЫ";
         public string KillProcess { get; set; } = "Убить процесс";
@@ -92,8 +92,8 @@
         public string Snapshots { get; set; } = "Отображать экспериментальные сборки (\"snapshots\")";
         public string Beta { get; set; } = "Отображать \"Beta\" сборки (2011-2012 гг.)";
         public string Alpha { get; set; } = "Отображать \"Alpha\" сборки (до 2011 г.)";
-        public string Other { get; set; } = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
-        public string UseLatestVersion { get; set; } = "Использовать последнюю версию";
+        public string Other { get; set; } = "Отображать сторонние сборки (Forge, LiteLoader, etc.)";
+        public string UseLatestVersion { get; set; } = "Использовать последнюю сборку '{0}'";
 
         #endregion
 

@@ -1237,6 +1237,7 @@ Please, check for your Internet configuration and restart the launcher.
                             _outputErrorBuilder.Clear();
                         }
                     });
+                    Thread.Sleep(1);
                 }
                 if (_minecraftProcess.HasExited) {
                     PrintExitInfo();
