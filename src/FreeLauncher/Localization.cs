@@ -35,7 +35,7 @@
         public string ReleaseDateHeader { get; set; } = "Дата выхода";
         public string LastUpdatedHeader { get; set; } = "Последнее обновление";
         public string AssetsIndexHeader { get; set; } = "Индекс ресурсов";
-        public string DependencyHeader { get; set; } = "Зависимость";
+        public string DependencyHeader { get; set; } = "Зависит от";
 
         #endregion
 
@@ -88,12 +88,23 @@
 
         #region ProfileForm
 
+        #region GroupBoxes
+
+        public string MainProfileSettingsGroup { get; set; } = "Главные настройки профиля";
+        public string VersionSettingsGroup { get; set; } = "Выбор версии";
+        public string JavaSettingsGroup { get; set; } = "Настройки Java";
+
+        #endregion
+
         #region Main Settings
 
         public string ProfileName { get; set; } = "Название профиля:";
         public string WorkingDirectory { get; set; } = "Рабочая директория:";
         public string WindowResolution { get; set; } = "Разрешение окна:";
         public string ActionAfterLaunch { get; set; } = "Действие после запуска:";
+        public string KeepLauncherOpen { get; set; } = "Оставить лаунчер открытым";
+        public string HideLauncher { get; set; } = "Скрыть лаунчер";
+        public string CloseLauncher { get; set; } = "Закрыть лаунчер";
         public string Autoconnect { get; set; } = "Автоподключение:";
 
         #endregion

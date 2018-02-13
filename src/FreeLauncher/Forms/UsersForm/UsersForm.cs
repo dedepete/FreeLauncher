@@ -15,17 +15,17 @@ namespace FreeLauncher.Forms
 {
     public partial class UsersForm : RadForm
     {
-        private readonly ApplicationContext _applicationContext;
+        private readonly Configuration _configuration;
 
         private readonly UserManager _userManager;
 
-        public UsersForm(ApplicationContext appContext)
+        public UsersForm(Configuration configuration)
         {
-            _applicationContext = appContext;
+            _configuration = configuration;
             InitializeComponent();
             LoadLocalization();
-            _userManager = File.Exists(_applicationContext.McLauncher + @"\users.json")
-                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_applicationContext.McLauncher + @"\users.json"))
+            _userManager = File.Exists(_configuration.McLauncher + @"\users.json")
+                ? JsonConvert.DeserializeObject<UserManager>(File.ReadAllText(_configuration.McLauncher + @"\users.json"))
                 : new UserManager();
             UpdateUsers();
         }
@@ -43,7 +43,7 @@ namespace FreeLauncher.Forms
             PasswordTextBox.Enabled = false;
             YesNoToggleSwitch.Enabled = false;
             ControlBox = false;
-            AddUserButton.Text = _applicationContext.ProgramLocalization.PleaseWait;
+            AddUserButton.Text = _configuration.Localization.PleaseWait;
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += delegate {
                 User user = new User {
@@ -81,8 +81,8 @@ namespace FreeLauncher.Forms
                     if (ex.Status != WebExceptionStatus.ProtocolError) {
                         return;
                     }
-                    RadMessageBox.Show(_applicationContext.ProgramLocalization.IncorrectLoginOrPassword,
-                        _applicationContext.ProgramLocalization.Error, MessageBoxButtons.OK,
+                    RadMessageBox.Show(_configuration.Localization.IncorrectLoginOrPassword,
+                        _configuration.Localization.Error, MessageBoxButtons.OK,
                         RadMessageIcon.Error);
                     return;
                 }
@@ -97,7 +97,7 @@ namespace FreeLauncher.Forms
                 UsernameTextBox.Enabled = true;
                 YesNoToggleSwitch.Enabled = true;
                 ControlBox = true;
-                AddUserButton.Text = _applicationContext.ProgramLocalization.AddNewUserButton;
+                AddUserButton.Text = _configuration.Localization.AddNewUserButton;
                 YesNoToggleSwitch_ValueChanged(this, EventArgs.Empty);
             };
             bgw.RunWorkerAsync();
@@ -115,7 +115,7 @@ namespace FreeLauncher.Forms
 
         private void SaveUsers()
         {
-            File.WriteAllText(_applicationContext.McLauncher + @"\users.json",
+            File.WriteAllText(_configuration.McLauncher + @"\users.json",
                 JsonConvert.SerializeObject(_userManager, Formatting.Indented,
                     new JsonSerializerSettings {
                         NullValueHandling = NullValueHandling.Ignore
@@ -151,12 +151,13 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            DeleteUserButton.Text = _applicationContext.ProgramLocalization.RemoveSelectedUser;
-            AddNewUserBox.Text = _applicationContext.ProgramLocalization.AddNewUserBox;
-            NicknameLabel.Text = _applicationContext.ProgramLocalization.Nickname;
-            LicenseQuestionLabel.Text = _applicationContext.ProgramLocalization.LicenseQuestion;
-            PasswordLabel.Text = _applicationContext.ProgramLocalization.Password;
-            AddUserButton.Text = _applicationContext.ProgramLocalization.AddNewUserButton;
+            Localization localization = _configuration.Localization;
+            DeleteUserButton.Text = localization.RemoveSelectedUser;
+            AddNewUserBox.Text = localization.AddNewUserBox;
+            NicknameLabel.Text = localization.Nickname;
+            LicenseQuestionLabel.Text = localization.LicenseQuestion;
+            PasswordLabel.Text = localization.Password;
+            AddUserButton.Text = localization.AddNewUserButton;
         }
     }
 

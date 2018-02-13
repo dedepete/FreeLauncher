@@ -2,7 +2,7 @@
 
 namespace FreeLauncher
 {
-    public class Arguments
+    public class ApplicationArguments
     {
         [Option('d', "working-directory")]
         public string WorkingDirectory { get; set; }
