@@ -29,6 +29,7 @@
   "EnableMinecraftLoggingText": "Display logs from OUTPUT thread",
   "CloseGameOutputText": "Close tabs automaticly if there was no errors",
   "Launch": "Launch",
+  "Restore": "Restore",
   "OpenLocation": "Open location",
   "DeleteVersion": "Delete",
   "DeleteConfirmationTitle": "Delete confirmation",

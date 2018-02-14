@@ -532,7 +532,7 @@ Please, check for your Internet configuration and restart the launcher.
             (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
                 ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
             RadMenuItem restoreVerButton = new RadMenuItem {
-                Text = "Restore", Enabled = enableRestoreButton
+                Text = _configuration.Localization.Restore, Enabled = enableRestoreButton
             };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;

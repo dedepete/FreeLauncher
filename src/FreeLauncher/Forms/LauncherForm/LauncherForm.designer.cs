@@ -655,7 +655,6 @@ namespace FreeLauncher.Forms
             // 
             // FreeLauncherLicense
             // 
-            this.FreeLauncherLicense.AutoScroll = true;
             this.FreeLauncherLicense.Controls.Add(this.FreeLauncherLicenseText);
             this.FreeLauncherLicense.Location = new System.Drawing.Point(155, 4);
             this.FreeLauncherLicense.Name = "FreeLauncherLicense";
@@ -972,7 +971,6 @@ namespace FreeLauncher.Forms
         private RadButton AddProfile;
         private RadPageViewPage dotMCLauncherLicense;
         private RadPageViewPage FreeLauncherLicense;
-        private RadLabel FreeLauncherLicenseText;
         private RadLabel dotMCLauncherLicenseText;
         private RadProgressBar StatusBar;
         private RadPanel ConsoleOptionsPanel;
@@ -988,5 +986,6 @@ namespace FreeLauncher.Forms
         public RadCheckBox DownloadAssetsBox;
         private Label CopyrightInfoLabel;
         private LinkLabel langWikiLink;
+        private RadLabel FreeLauncherLicenseText;
     }
 }

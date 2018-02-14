@@ -66,6 +66,7 @@
         #endregion
 
         public string Launch { get; set; } = "Запустить";
+        public string Restore { get; set; } = "Восстановить";
         public string OpenLocation { get; set; } = "Открыть расположение";
         public string DeleteVersion { get; set; } = "Удалить сборку";
         public string DeleteConfirmationTitle { get; set; } = "Подтверждение удаления";
