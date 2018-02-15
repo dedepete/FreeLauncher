@@ -83,7 +83,7 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            Localization localization = _configuration.Localization;
+            ApplicationLocalization localization = _configuration.Localization;
 
             MainProfileSettingsGroupBox.Text = localization.MainProfileSettingsGroup;
             VersionSettingsGroupBox.Text = localization.VersionSettingsGroup;

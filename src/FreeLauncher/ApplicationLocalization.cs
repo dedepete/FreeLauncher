@@ -1,6 +1,6 @@
 ﻿namespace FreeLauncher
 {
-    public class Localization
+    public class ApplicationLocalization
     {
         public string Name { get; set; } = "Русский";
         public string LanguageTag { get; set; } = "ru-RU";

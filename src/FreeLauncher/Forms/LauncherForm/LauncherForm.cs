@@ -113,7 +113,7 @@ namespace FreeLauncher.Forms
             AppendLog(new string('=', 12));
 
             if (_configuration.LocalizationsList.Count != 0) {
-                foreach (KeyValuePair<string, Localization> keyvalue in _configuration.LocalizationsList) {
+                foreach (KeyValuePair<string, ApplicationLocalization> keyvalue in _configuration.LocalizationsList) {
                     LangDropDownList.Items.Add(new RadListDataItem {
                         Text = $"{keyvalue.Value.Name} ({keyvalue.Key})",
                         Tag = keyvalue.Key
@@ -1037,7 +1037,7 @@ Please, check for your Internet configuration and restart the launcher.
 
         private void LoadLocalization()
         {
-            Localization localization = _configuration.Localization;
+            ApplicationLocalization localization = _configuration.Localization;
 
             News.Text = localization.NewsTabText;
             ConsolePage.Text = localization.ConsoleTabText;

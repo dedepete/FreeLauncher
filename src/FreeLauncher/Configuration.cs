@@ -17,8 +17,8 @@ namespace FreeLauncher
 
         public ApplicationArguments Arguments { get; private set; }
 
-        public Localization Localization { get; private set; }
-        public Dictionary<string, Localization> LocalizationsList { get; private set; }
+        public ApplicationLocalization Localization { get; private set; }
+        public Dictionary<string, ApplicationLocalization> LocalizationsList { get; private set; }
 
         public string McDirectory { get; private set; }
         public string McLauncher { get; private set; }
@@ -30,8 +30,8 @@ namespace FreeLauncher
         public Configuration(string[] args)
         {
             Arguments = new ApplicationArguments();
-            Localization = new Localization();
-            LocalizationsList = new Dictionary<string, Localization>();
+            Localization = new ApplicationLocalization();
+            LocalizationsList = new Dictionary<string, ApplicationLocalization>();
             Parser.Default.ParseArguments(args, Arguments);
             McDirectory = Arguments.WorkingDirectory ??
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -47,7 +47,7 @@ namespace FreeLauncher
 
         public void SetLocalization(string localizationName)
         {
-            Localization = string.IsNullOrEmpty(localizationName) ? new Localization() : LocalizationsList[localizationName];
+            Localization = string.IsNullOrEmpty(localizationName) ? new ApplicationLocalization() : LocalizationsList[localizationName];
         }
 
         public void SaveConfiguration()
@@ -69,7 +69,7 @@ namespace FreeLauncher
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             string s = new StreamReader(assembly.GetManifestResourceStream("FreeLauncher.Translations.en_UK.lang.json")).ReadToEnd();
-            LocalizationsList.Add(JObject.Parse(s)["LanguageTag"].ToString(), JsonConvert.DeserializeObject<Localization>(s));
+            LocalizationsList.Add(JObject.Parse(s)["LanguageTag"].ToString(), JsonConvert.DeserializeObject<ApplicationLocalization>(s));
             if (ApplicationConfiguration.SelectedLanguage == "en-UK") {
                 Localization = LocalizationsList["en-UK"];
             }
@@ -81,7 +81,7 @@ namespace FreeLauncher
                 .GetFiles("*.json", SearchOption.AllDirectories)
                 .Where(file => file.Name.Contains("lang"))
                 .Select(file => JObject.Parse(File.ReadAllText(file.FullName)))
-                .Select(jo => JsonConvert.DeserializeObject<Localization>(jo.ToString()))) {
+                .Select(jo => JsonConvert.DeserializeObject<ApplicationLocalization>(jo.ToString()))) {
                 if (LocalizationsList.ContainsKey(local.LanguageTag)) {
                     continue;
                 }

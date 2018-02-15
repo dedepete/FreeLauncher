@@ -151,7 +151,7 @@ namespace FreeLauncher.Forms
 
         private void LoadLocalization()
         {
-            Localization localization = _configuration.Localization;
+            ApplicationLocalization localization = _configuration.Localization;
             DeleteUserButton.Text = localization.RemoveSelectedUser;
             AddNewUserBox.Text = localization.AddNewUserBox;
             NicknameLabel.Text = localization.Nickname;

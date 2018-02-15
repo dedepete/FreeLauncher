@@ -212,7 +212,6 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 # Custom files
-/src/FreeLauncher/Properties/licenses.licx
 /FreeLauncher.sln.ide
 /FreeLauncher_Report.htm
 /FreeLauncher_Backup_*/
