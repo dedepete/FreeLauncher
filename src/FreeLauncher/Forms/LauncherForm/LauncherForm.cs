@@ -619,6 +619,7 @@ Please, check for your Internet configuration and restart the launcher.
             if (_configuration.Arguments.OfflineMode) {
                 AppendLog("Unable to get new version list: offline-mode enabled.");
                 if (File.Exists(_configuration.McVersions + @"\versions.json")) {
+                    _versionList = RawVersionListManifest.ParseList(File.ReadAllText(_configuration.McVersions + @"\versions.json"));
                     return;
                 }
                 MessageBox.Show(_configuration.Localization.SomeFilesMissingMessage);
