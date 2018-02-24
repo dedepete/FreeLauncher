@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace dotMCLauncher.Core
+namespace dotMCLauncher.Profiling
 {
     public class ProfileManager
     {

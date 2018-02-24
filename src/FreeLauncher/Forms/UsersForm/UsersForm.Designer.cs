@@ -63,7 +63,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(201, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Powered by dotMCLauncher.Yggdrasil";
+            this.label1.Text = "Powered by dotMCLauncher.Networking";
             // 
             // UsersListControl
             // 

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using dotMCLauncher.Yggdrasil;
+using dotMCLauncher.Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Telerik.WinControls;

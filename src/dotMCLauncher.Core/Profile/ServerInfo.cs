@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace dotMCLauncher.Core
+namespace dotMCLauncher.Profiling
 {
     public class ServerInfo
     {

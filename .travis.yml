@@ -3,5 +3,7 @@ solution: FreeLauncher.sln
 install:
 - travis_retry nuget restore -source "https://www.nuget.org/api/v2" FreeLauncher.sln
 script:
-- xbuild /validate ./src/dotMCLauncher.Core/dotMCLauncher.Core.csproj
-- xbuild /validate ./src/dotMCLauncher.Yggdrasil/dotMCLauncher.Yggdrasil.csproj
+- xbuild /validate ./src/dotMCLauncher/dotMCLauncher.csproj
+- xbuild /validate ./src/dotMCLauncher.Networking/dotMCLauncher.Networking.csproj
+- xbuild /validate ./src/dotMCLauncher.Profiling/dotMCLauncher.Profiling.csproj
+- xbuild /validate ./src/dotMCLauncher.Versioning/dotMCLauncher.Versioning.csproj

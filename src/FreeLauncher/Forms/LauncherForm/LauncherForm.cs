@@ -9,8 +9,9 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using dotMCLauncher.Core;
-using dotMCLauncher.Yggdrasil;
+using dotMCLauncher.Versioning;
+using dotMCLauncher.Profiling;
+using dotMCLauncher.Networking;
 using Ionic.Zip;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ using Newtonsoft.Json.Linq;
 using Telerik.WinControls;
 using Telerik.WinControls.UI;
 using Telerik.WinControls.UI.Data;
-using OS = dotMCLauncher.Core.OperatingSystem;
+using OS = dotMCLauncher.OperatingSystem;
 
 namespace FreeLauncher.Forms
 {
@@ -400,7 +401,7 @@ Please, check for your Internet configuration and restart the launcher.
                         if (selectedVersionManifest.Type == VersionManifestType.V2) {
                             List<Rule> requiredRules = new List<Rule> {
                                 new Rule {
-                                    Action = "allow", Os = new dotMCLauncher.Core.OS {
+                                    Action = "allow", Os = new dotMCLauncher.Versioning.OS {
                                         Name = "windows"
                                     }
                                 }
@@ -408,7 +409,7 @@ Please, check for your Internet configuration and restart the launcher.
                             if (new ComputerInfo().OSFullName.ToUpperInvariant().Contains("WINDOWS 10")) {
                                 requiredRules.Add(new Rule {
                                     Action = "allow",
-                                    Os = new dotMCLauncher.Core.OS {
+                                    Os = new dotMCLauncher.Versioning.OS {
                                         Name = "windows", Version = "^10\\."
                                     }
                                 });
