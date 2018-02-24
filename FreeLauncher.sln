@@ -32,7 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Networking", 
 		{56C1E499-2F30-4892-A71A-4F72913A2116} = {56C1E499-2F30-4892-A71A-4F72913A2116}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Profiling", "src\dotMCLauncher.Core\dotMCLauncher.Profiling.csproj", "{E0F782F2-153E-4285-862C-1279A32B1141}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Profiling", "src\dotMCLauncher.Profiling\dotMCLauncher.Profiling.csproj", "{E0F782F2-153E-4285-862C-1279A32B1141}"
 	ProjectSection(ProjectDependencies) = postProject
 		{56C1E499-2F30-4892-A71A-4F72913A2116} = {56C1E499-2F30-4892-A71A-4F72913A2116}
 	EndProjectSection

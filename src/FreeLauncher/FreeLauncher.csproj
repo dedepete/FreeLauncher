@@ -88,8 +88,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -103,9 +103,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Telerik.WinControls, Version=2017.1.221.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
@@ -215,7 +213,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotMCLauncher.Core\dotMCLauncher.Profiling.csproj">
+    <ProjectReference Include="..\dotMCLauncher.Profiling\dotMCLauncher.Profiling.csproj">
       <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
       <Name>dotMCLauncher.Profiling</Name>
     </ProjectReference>
@@ -251,13 +249,13 @@
     <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\post_build.bat $(Configuration) @(VersionNumber)" />
     <Exec Condition="$(OS) != 'Windows_NT'" Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" />
   </Target>
-  <Import Project="..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.2.0.6\build\dotnet\Fody.targets'))" />
     <Error Condition="!Exists('..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Fody.2.4.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.2.4.4\build\Fody.targets'))" />
   </Target>
   <Import Project="..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets" Condition="Exists('..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets')" />
+  <Import Project="..\..\packages\Fody.2.4.4\build\Fody.targets" Condition="Exists('..\..\packages\Fody.2.4.4\build\Fody.targets')" />
 </Project>
