@@ -99,7 +99,7 @@ namespace FreeLauncher.Forms
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
 
-            Text = ProductName + " " + ProductVersion;
+            Text = $"{ProductName} {ProductVersion}";
             AboutVersion.Text = ProductVersion;
             AppendLog($"Application: {ProductName}");
             AppendLog($"Version: {ProductVersion}");
@@ -434,9 +434,11 @@ Please, check for your Internet configuration and restart the launcher.
                                     ag => ag.Type == ArgumentsGroupType.JVM)
                                 .ToString(jvmArgumentDictionary, requiredRules.ToArray());
                         } else {
+                            string nativesPath = _configuration.McDirectory + @"\natives\";
+                            nativesPath = nativesPath.Contains(' ') ? $@"""{nativesPath}""" : nativesPath;
                             gameArguments = selectedVersionManifest.ArgCollection.ToString(gameArgumentDictionary);
                             jvmArguments = javaArguments +
-                                $"-Djava.library.path={_configuration.McDirectory + @"\natives\"} -cp {(libraries.Contains(' ') ? $"\"{libraries}\"" : libraries)}";
+                                $"-Djava.library.path={nativesPath} -cp {(libraries.Contains(' ') ? $@"""{libraries}""" : libraries)}";
                         }
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
@@ -719,6 +721,14 @@ Please, check for your Internet configuration and restart the launcher.
             DeleteProfileButton.Enabled = _profileManager.Profiles.Count > 1;
             profilesDropDownBox.Items.AddRange(_profileManager.Profiles.Keys);
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(_profileManager.LastUsedProfile, true);
+            foreach (KeyValuePair<string, Profile> keyValuePair in _profileManager.Profiles) {
+                Profile profile = keyValuePair.Value;
+                string allowedReleaseTypes = "release";
+                if (profile.AllowedReleaseTypes != null) {
+                    allowedReleaseTypes = profile.AllowedReleaseTypes.Aggregate(allowedReleaseTypes, (current, type) => current + $", {type}");
+                }
+                profilesListView.Items.Add(keyValuePair.Key, profile.ProfileName, profile.SelectedVersion, allowedReleaseTypes);
+            }
         }
 
         private void UpdateUserList()
@@ -1176,6 +1186,43 @@ Please, check for your Internet configuration and restart the launcher.
                 return;
             }
             AppendText(text, "DEBUG", methodName ?? new StackFrame(1).GetMethod().Name);
+        }
+
+        private void profilesListView_ItemMouseClick(object sender, ListViewItemEventArgs e)
+        {
+            profilesListView.SelectedItem = e.Item;
+            profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(profilesListView.SelectedItem[0].ToString(), true);
+            RadMenuItem launchButton = new RadMenuItem
+            {
+                Text = "Launch"
+            };
+            RadMenuItem moveUpButton = new RadMenuItem {
+                Text = "Move up",
+                Enabled = profilesListView.SelectedIndex != 0
+            };
+            RadMenuItem moveDownButton = new RadMenuItem
+            {
+                Text = "Move down",
+                Enabled = profilesListView.SelectedIndex != profilesListView.Items.Count - 1
+            };
+            RadMenuItem deleteButton = new RadMenuItem
+            {
+                Text = "Delete",
+                Enabled = profilesListView.Items.Count > 1
+            };
+            RadMenuItem editButton = new RadMenuItem
+            {
+                Text = "Edit"
+            };
+            RadContextMenu menuStrip = new RadContextMenu();
+            menuStrip.Items.Add(launchButton);
+            menuStrip.Items.Add(new RadMenuSeparatorItem());
+            menuStrip.Items.Add(moveUpButton);
+            menuStrip.Items.Add(moveDownButton);
+            menuStrip.Items.Add(new RadMenuSeparatorItem());
+            menuStrip.Items.Add(deleteButton);
+            menuStrip.Items.Add(editButton);
+            new RadContextMenuManager().SetRadContextMenu(profilesListView, menuStrip);
         }
     }
 

@@ -39,6 +39,11 @@ namespace FreeLauncher.Forms
             Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn4 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 4", "Последнего обновление");
             Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn5 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 5", "Индекс ресурсов");
             Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn6 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Зависимость");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn7 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 1", "Идентификатор");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn8 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 0", "Название");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn9 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 2", "Версия");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn10 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 3", "Конфигурация релизов");
+            Telerik.WinControls.UI.ListViewDetailColumn listViewDetailColumn11 = new Telerik.WinControls.UI.ListViewDetailColumn("Column 4", "Видимость лаунчера");
             Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
             this.vs12theme = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
@@ -55,6 +60,8 @@ namespace FreeLauncher.Forms
             this.DebugModeButton = new Telerik.WinControls.UI.RadToggleButton();
             this.EditVersions = new Telerik.WinControls.UI.RadPageViewPage();
             this.versionsListView = new Telerik.WinControls.UI.RadListView();
+            this.EditProfiles = new Telerik.WinControls.UI.RadPageViewPage();
+            this.profilesListView = new Telerik.WinControls.UI.RadListView();
             this.AboutPage = new Telerik.WinControls.UI.RadPageViewPage();
             this.AboutPageView = new Telerik.WinControls.UI.RadPageView();
             this.AboutPageViewPage = new Telerik.WinControls.UI.RadPageViewPage();
@@ -109,6 +116,8 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.DebugModeButton)).BeginInit();
             this.EditVersions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.versionsListView)).BeginInit();
+            this.EditProfiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.profilesListView)).BeginInit();
             this.AboutPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AboutPageView)).BeginInit();
             this.AboutPageView.SuspendLayout();
@@ -155,6 +164,7 @@ namespace FreeLauncher.Forms
             this.mainPageView.Controls.Add(this.News);
             this.mainPageView.Controls.Add(this.ConsolePage);
             this.mainPageView.Controls.Add(this.EditVersions);
+            this.mainPageView.Controls.Add(this.EditProfiles);
             this.mainPageView.Controls.Add(this.AboutPage);
             this.mainPageView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPageView.Location = new System.Drawing.Point(0, 0);
@@ -329,6 +339,50 @@ namespace FreeLauncher.Forms
             this.versionsListView.VerticalScrollState = Telerik.WinControls.UI.ScrollState.AlwaysShow;
             this.versionsListView.ViewType = Telerik.WinControls.UI.ListViewType.DetailsView;
             this.versionsListView.ItemMouseClick += new Telerik.WinControls.UI.ListViewItemEventHandler(this.versionsListView_ItemMouseClick);
+            // 
+            // EditProfiles
+            // 
+            this.EditProfiles.Controls.Add(this.profilesListView);
+            this.EditProfiles.ItemSize = new System.Drawing.SizeF(158F, 24F);
+            this.EditProfiles.Location = new System.Drawing.Point(5, 30);
+            this.EditProfiles.Name = "EditProfiles";
+            this.EditProfiles.Size = new System.Drawing.Size(848, 328);
+            this.EditProfiles.Text = "УПРАВЛЕНИЕ ПРОФИЛЯМИ";
+            // 
+            // profilesListView
+            // 
+            this.profilesListView.AllowColumnReorder = false;
+            this.profilesListView.AllowColumnResize = false;
+            this.profilesListView.AllowEdit = false;
+            this.profilesListView.AllowRemove = false;
+            this.profilesListView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.profilesListView.CheckOnClickMode = Telerik.WinControls.UI.CheckOnClickMode.FirstClick;
+            listViewDetailColumn7.HeaderText = "Идентификатор";
+            listViewDetailColumn8.HeaderText = "Название";
+            listViewDetailColumn9.HeaderText = "Версия";
+            listViewDetailColumn10.HeaderText = "Конфигурация релизов";
+            listViewDetailColumn11.HeaderText = "Видимость лаунчера";
+            this.profilesListView.Columns.AddRange(new Telerik.WinControls.UI.ListViewDetailColumn[] {
+            listViewDetailColumn7,
+            listViewDetailColumn8,
+            listViewDetailColumn9,
+            listViewDetailColumn10,
+            listViewDetailColumn11});
+            this.profilesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.profilesListView.EnableColumnSort = true;
+            this.profilesListView.EnableFiltering = true;
+            this.profilesListView.EnableSorting = true;
+            this.profilesListView.ItemSpacing = -1;
+            this.profilesListView.Location = new System.Drawing.Point(0, 0);
+            this.profilesListView.Name = "profilesListView";
+            this.profilesListView.SelectLastAddedItem = false;
+            this.profilesListView.ShowItemToolTips = false;
+            this.profilesListView.Size = new System.Drawing.Size(848, 328);
+            this.profilesListView.TabIndex = 1;
+            this.profilesListView.ThemeName = "VisualStudio2012Dark";
+            this.profilesListView.VerticalScrollState = Telerik.WinControls.UI.ScrollState.AlwaysShow;
+            this.profilesListView.ViewType = Telerik.WinControls.UI.ListViewType.DetailsView;
+            this.profilesListView.ItemMouseClick += new Telerik.WinControls.UI.ListViewItemEventHandler(this.profilesListView_ItemMouseClick);
             // 
             // AboutPage
             // 
@@ -881,6 +935,8 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.DebugModeButton)).EndInit();
             this.EditVersions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.versionsListView)).EndInit();
+            this.EditProfiles.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.profilesListView)).EndInit();
             this.AboutPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AboutPageView)).EndInit();
             this.AboutPageView.ResumeLayout(false);
@@ -987,5 +1043,7 @@ namespace FreeLauncher.Forms
         private Label CopyrightInfoLabel;
         private LinkLabel langWikiLink;
         private RadLabel FreeLauncherLicenseText;
+        private RadPageViewPage EditProfiles;
+        private RadListView profilesListView;
     }
 }
