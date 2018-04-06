@@ -213,6 +213,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\dotMCLauncher.Profiling.V2\dotMCLauncher.Profiling.V2.csproj">
+      <Project>{55a338d8-496a-4a25-a8fc-2c55238188c5}</Project>
+      <Name>dotMCLauncher.Profiling.V2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\dotMCLauncher.Profiling\dotMCLauncher.Profiling.csproj">
       <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
       <Name>dotMCLauncher.Profiling</Name>
