@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -25,7 +25,7 @@ namespace dotMCLauncher.Profiling.V2
         public Dictionary<string, object> Settings { get; set; }
 
         /// <summary>
-        /// Launcher settings. 
+        /// Launcher version. 
         /// </summary>
         [JsonProperty("launcherVersion")]
         public LauncherVersion LauncherVersion { get; set; }
@@ -37,7 +37,7 @@ namespace dotMCLauncher.Profiling.V2
         public Dictionary<string, object> AuthenticationDatabase { get; set; }
 
         /// <summary>
-        /// Launcher settings. 
+        /// Last used entry from authenrication database. 
         /// </summary>
         [JsonProperty("selectedUser")]
         public SelectedUser SelectedUser { get; set; }
@@ -66,6 +66,7 @@ namespace dotMCLauncher.Profiling.V2
         {
             return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof(ProfileManager));
         }
+
         public string ToJson()
         {
             return ToJson(Formatting.Indented, new JsonSerializerSettings
