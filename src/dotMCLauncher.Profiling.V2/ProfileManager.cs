@@ -25,7 +25,7 @@ namespace dotMCLauncher.Profiling.V2
         public Dictionary<string, object> Settings { get; set; }
 
         /// <summary>
-        /// Launcher version. 
+        /// Launcher settings. 
         /// </summary>
         [JsonProperty("launcherVersion")]
         public LauncherVersion LauncherVersion { get; set; }
@@ -37,7 +37,7 @@ namespace dotMCLauncher.Profiling.V2
         public Dictionary<string, object> AuthenticationDatabase { get; set; }
 
         /// <summary>
-        /// Last used entry from authenrication database. 
+        /// Launcher settings. 
         /// </summary>
         [JsonProperty("selectedUser")]
         public SelectedUser SelectedUser { get; set; }
@@ -59,8 +59,6 @@ namespace dotMCLauncher.Profiling.V2
         /// </summary>
         [JsonProperty("clientToken")]
         public string SessionToken { get; set; }
-
-
 
         public static ProfileManager ParseProfiles(string pathToFile)
         {
