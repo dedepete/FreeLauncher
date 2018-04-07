@@ -5,9 +5,9 @@ namespace dotMCLauncher.Profiling.V2
     public class SelectedUser
     {
         [JsonProperty("account")]
-        public string SelectedGUID { get; set; } = "2.0.1003";
+        public string SelectedGuid { get; set; }
 
         [JsonProperty("profile")]
-        public string SelectedProfile { get; set; } = "2.0.1003";
+        public string SelectedProfile { get; set; }
     }
 }

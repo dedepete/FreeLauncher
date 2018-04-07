@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace dotMCLauncher.Profiling.V2
@@ -60,6 +61,13 @@ namespace dotMCLauncher.Profiling.V2
         [JsonProperty("clientToken")]
         public string SessionToken { get; set; }
 
+        private void AssociateIds()
+        {
+            foreach (KeyValuePair<string, Profile> pair in Profiles) {
+                pair.Value.AssociatedId = pair.Key;
+            }
+        }
+
         public static ProfileManager ParseProfiles(string pathToFile)
         {
             return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof(ProfileManager));
@@ -88,6 +96,12 @@ namespace dotMCLauncher.Profiling.V2
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
+        }
+
+        [OnDeserialized]
+        internal void OnSerializedMethod(StreamingContext context)
+        {
+            AssociateIds();
         }
     }
 }
