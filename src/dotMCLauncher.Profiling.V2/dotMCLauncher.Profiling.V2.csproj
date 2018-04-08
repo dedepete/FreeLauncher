@@ -16,12 +16,12 @@
     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>ShortYearStamp.MonthStamp.DayStamp.IncrementOnDemand</AssemblyVersionSettings>
+    <AssemblyVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyVersionSettings>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-    <AssemblyFileVersionSettings>ShortYearStamp.MonthStamp.DayStamp.IncrementOnDemand</AssemblyFileVersionSettings>
-    <AssemblyInfoVersionSettings>ShortYearStamp.MonthStamp.DayStamp.IncrementOnDemand</AssemblyInfoVersionSettings>
+    <AssemblyFileVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyInfoVersionSettings>
     <AssemblyInfoVersionSemVerSettings>
     </AssemblyInfoVersionSemVerSettings>
   </PropertyGroup>
@@ -51,10 +51,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Serializable.cs" />
     <Compile Include="ProfileIcon.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ProfileManager.cs" />
     <Compile Include="LauncherVersion.cs" />
+    <Compile Include="ProfileResolution.cs" />
     <Compile Include="ProfileType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectedUser.cs" />

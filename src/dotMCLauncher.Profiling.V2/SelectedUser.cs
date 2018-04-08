@@ -2,7 +2,7 @@
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class SelectedUser
+    public class SelectedUser : Serializable
     {
         [JsonProperty("account")]
         public string SelectedGuid { get; set; }

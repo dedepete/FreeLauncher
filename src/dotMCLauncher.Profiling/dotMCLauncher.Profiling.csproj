@@ -24,7 +24,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <ShouldCreateLogs>False</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
+    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>

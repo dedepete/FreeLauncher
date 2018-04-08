@@ -2,7 +2,7 @@
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class LauncherVersion
+    public class LauncherVersion : Serializable
     {
         [JsonProperty("name")]
         public string Version { get; set; } = "2.0.1003";

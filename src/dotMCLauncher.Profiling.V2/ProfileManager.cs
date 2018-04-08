@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class ProfileManager
+    public class ProfileManager : Serializable
     {
         /// <summary>
         /// Last used profile. 
@@ -68,38 +70,62 @@ namespace dotMCLauncher.Profiling.V2
             }
         }
 
+        public void AddProfile(Profile profile)
+        {
+            AddProfile(profile.Name, profile);
+        }
+
+        public void AddProfile(string id, Profile profile)
+        {
+            if (string.IsNullOrWhiteSpace(id)) {
+                throw new ArgumentNullException(nameof(id));
+            }
+            if (Profiles.Keys.Contains(id)) {
+                throw new ArgumentException($"Profile with id '{id}' already exists.");
+            }
+            profile.AssociatedId = id;
+            Profiles.Add(id, profile);
+        }
+
+        public void RemoveProfile(Profile profile)
+        {
+            RemoveProfile(profile.AssociatedId);
+        }
+
+        public void RemoveProfile(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) {
+                throw new ArgumentNullException(nameof(id));
+            }
+            Profiles.Remove(id);
+        }
+
+        public void ChangeProfileId(Profile profile, string newId)
+        {
+            ChangeProfileId(profile.AssociatedId, newId);
+        }
+
+        public void ChangeProfileId(string id, string newId)
+        {
+            Dictionary<string, Profile> newProfiles = new Dictionary<string, Profile>();
+            foreach (KeyValuePair<string, Profile> pair in Profiles) {
+                if (pair.Key != id) {
+                    newProfiles.Add(pair.Key, pair.Value);
+                    continue;
+                }
+                pair.Value.AssociatedId = newId;
+                newProfiles.Add(newId, pair.Value);
+            }
+            Profiles = newProfiles;
+        }
+
         public static ProfileManager ParseProfiles(string pathToFile)
         {
-            return (ProfileManager) JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof(ProfileManager));
-        }
-
-        public string ToJson()
-        {
-            return ToJson(Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-        }
-
-        public string ToJson(Formatting formatting)
-        {
-            return ToJson(formatting, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-        }
-
-        public string ToJson(Formatting formatting, JsonSerializerSettings settings)
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented,
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
+            return (ProfileManager)JsonConvert.DeserializeObject(File.ReadAllText(pathToFile), typeof(ProfileManager));
         }
 
         [OnDeserialized]
-        internal void OnSerializedMethod(StreamingContext context)
+        internal void OnDeserialized(StreamingContext context)
         {
             AssociateIds();
         }

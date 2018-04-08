@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class Profile
+    public class Profile : Serializable
     {
         [JsonIgnore]
         public string AssociatedId { get; set; }
@@ -381,6 +381,9 @@ namespace dotMCLauncher.Profiling.V2
         [JsonProperty("lastVersionId")]
         public string SelectedVersion { get; set; }
 
+        [JsonProperty("resolution")]
+        public ProfileResolution Resolution { get; set; }
+
         [JsonProperty("created")]
         public DateTime Created { get; set; } = new DateTime(1970, 1, 1, 0, 0, 0);
 
@@ -395,5 +398,11 @@ namespace dotMCLauncher.Profiling.V2
 
         [JsonProperty("javaArgs")]
         public string JavaArguments { get; set; }
+
+        [JsonProperty("logConfig")]
+        public string LogConfiguration { get; set; }
+
+        [JsonProperty("logConfigIsXML", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool IsLogConfigurationXml { get; set; }
     }
 }
