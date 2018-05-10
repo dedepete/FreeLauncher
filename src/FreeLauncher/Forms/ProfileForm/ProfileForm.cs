@@ -78,8 +78,8 @@ namespace FreeLauncher.Forms
             }
             javaExecutableBox.Text = Profile.JavaExecutable ?? Java.JavaExecutable;
             JavaExecutableCheckBox.Checked = javaExecutableBox.Text != Java.JavaExecutable;
-            javaArgumentsBox.Text = Profile.JavaArguments ?? "-Xmx1G";
-            JavaArgumentsCheckBox.Checked = javaArgumentsBox.Text != "-Xmx1G";
+            javaArgumentsBox.Text = Profile.JavaArguments ?? "-Xmx1024M";
+            JavaArgumentsCheckBox.Checked = javaArgumentsBox.Text != "-Xmx1024M";
         }
 
         private void LoadLocalization()
@@ -175,7 +175,7 @@ namespace FreeLauncher.Forms
             }
             Profile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
             Profile.AllowedReleaseTypes = types?.ToArray();
-            if (JavaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1G" &&
+            if (JavaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1024M" &&
                 javaArgumentsBox.Text != string.Empty) {
                 Profile.JavaArguments = javaArgumentsBox.Text;
             } else {

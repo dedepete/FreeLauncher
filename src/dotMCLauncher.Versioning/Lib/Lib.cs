@@ -77,7 +77,7 @@ namespace dotMCLauncher.Versioning
         /// </summary>
         public string GetUrl()
         {
-            return Url != null ? Url += GetPath() : null;
+            return Url != null ? Url + GetPath() : null;
         }
     }
 }
