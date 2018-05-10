@@ -834,7 +834,7 @@ Please, check for your Internet configuration and restart the launcher.
                 }
                 if (a.DownloadInfo == null) {
                     libsToDownload.Add(new DownloadEntry {
-                        Path = a.GetPath(), Url = a.Url
+                        Path = a.GetPath(), Url = a.GetUrl()
                     }, false);
                     continue;
                 }

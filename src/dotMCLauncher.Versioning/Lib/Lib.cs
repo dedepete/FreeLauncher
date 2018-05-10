@@ -71,5 +71,13 @@ namespace dotMCLauncher.Versioning
                 (!string.IsNullOrEmpty(IsNative) ? "-" + IsNative : string.Empty) + ".jar",
                 s[0].Replace('.', '\\'), s[1], s[2]);
         }
+
+        /// <summary>
+        /// Returns full URL. Null if Url is not presented.
+        /// </summary>
+        public string GetUrl()
+        {
+            return Url != null ? Url += GetPath() : null;
+        }
     }
 }
