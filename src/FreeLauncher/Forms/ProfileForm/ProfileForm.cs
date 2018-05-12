@@ -16,7 +16,7 @@ namespace FreeLauncher.Forms
     {
         private readonly Configuration _configuration;
 
-        public Profile Profile { get; set; }
+        public Profile Profile { get; }
 
         public ProfileForm(Profile profile, Configuration configuration)
         {

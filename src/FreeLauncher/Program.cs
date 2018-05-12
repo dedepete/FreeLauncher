@@ -5,7 +5,7 @@ using Telerik.WinControls;
 
 namespace FreeLauncher
 {
-    internal class Program
+    internal static class Program
     {
         [STAThread]
         public static void Main(string[] args)

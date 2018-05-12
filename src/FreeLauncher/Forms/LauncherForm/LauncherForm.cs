@@ -401,7 +401,7 @@ Please, check for your Internet configuration and restart the launcher.
                         if (selectedVersionManifest.Type == VersionManifestType.V2) {
                             List<Rule> requiredRules = new List<Rule> {
                                 new Rule {
-                                    Action = "allow", Os = new dotMCLauncher.Versioning.OS {
+                                    Action = "allow", Os = new Os {
                                         Name = "windows"
                                     }
                                 }
@@ -409,7 +409,7 @@ Please, check for your Internet configuration and restart the launcher.
                             if (new ComputerInfo().OSFullName.ToUpperInvariant().Contains("WINDOWS 10")) {
                                 requiredRules.Add(new Rule {
                                     Action = "allow",
-                                    Os = new dotMCLauncher.Versioning.OS {
+                                    Os = new Os {
                                         Name = "windows", Version = "^10\\."
                                     }
                                 });

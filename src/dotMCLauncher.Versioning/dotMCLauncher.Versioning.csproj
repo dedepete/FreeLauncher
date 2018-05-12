@@ -53,7 +53,7 @@
     <Compile Include="RawVersionList\RawVersionListManifestEntry.cs" />
     <Compile Include="RawVersionList\RawVersionListManifestLatest.cs" />
     <Compile Include="Rule\Features.cs" />
-    <Compile Include="Rule\OS.cs" />
+    <Compile Include="Rule\Os.cs" />
     <Compile Include="Rule\Rule.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="VersionDownloadInfo.cs" />

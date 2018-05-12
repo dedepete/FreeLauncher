@@ -2,7 +2,7 @@
 
 namespace dotMCLauncher.Versioning
 {
-    public class OS
+    public class Os
     {
         [JsonProperty("name")]
         public string Name { get; set; }

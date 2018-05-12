@@ -33,7 +33,7 @@ SET DLLS=
 FOR %%I IN ("%TARGETDIR%\*.DLL") DO (
 	SET DLLS=!DLLS!/%%I
 )
-"%ROOTDIR%\reactor.exe" -file "%TARGETDIR%\FreeLauncher.exe" -merge 1 -satellite_assemblies "%DLLS:~1%" -targetfile "%TARGETDIR%\FreeLauncher-%VERSION%.exe" -q
+"%ROOTDIR%\reactor.exe" -file "%TARGETDIR%\FreeLauncher.exe" -merge 1 -satellite_assemblies "%DLLS:~1%" -targetfile "%TARGETDIR%\FreeLauncher-%VERSION%.exe" -obfuscation 0 -stringencryption 0 -suppressildasm 0 -q
 
 :STEP4
 ECHO Step 4/4: Creating zip archives...

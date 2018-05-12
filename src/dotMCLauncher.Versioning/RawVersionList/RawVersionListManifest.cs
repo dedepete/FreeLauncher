@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Newtonsoft.Json;
 
 namespace dotMCLauncher.Versioning

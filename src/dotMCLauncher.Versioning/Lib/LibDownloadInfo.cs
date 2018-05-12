@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using dotMCLauncher;
 
 namespace dotMCLauncher.Versioning
 {
@@ -16,7 +15,7 @@ namespace dotMCLauncher.Versioning
         [JsonIgnore]
         public Lib ParentLib { get; set; }
 
-        public List<DownloadEntry> GetDownloadsEntries(OperatingSystem os)
+        public IEnumerable<DownloadEntry> GetDownloadsEntries(OperatingSystem os)
         {
             List<DownloadEntry> result = new List<DownloadEntry>();
             if (os == OperatingSystem.OTHER || Classifiers == null) {
