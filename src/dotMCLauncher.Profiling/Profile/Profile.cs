@@ -35,6 +35,12 @@ namespace dotMCLauncher.Profiling
         public string[] AllowedReleaseTypes { get; set; }
 
         /// <summary>
+        /// Disallowed build types. Not used in official launcher.
+        /// </summary>
+        [JsonProperty("disallowedReleaseTypes")]
+        public string[] DisallowedReleaseTypes { get; set; }
+
+        /// <summary>
         /// Java executable file. 
         /// </summary>
         [JsonProperty("javaDir")]

@@ -37,7 +37,7 @@ namespace FreeLauncher.Forms
         private string _versionToLaunch;
         private bool _restoreVersion;
 
-        public static int LinuxTimeStamp => (int) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        private static int LinuxTimeStamp => (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
         private int StatusBarValue
         {
@@ -766,7 +766,7 @@ Please, check for your Internet configuration and restart the launcher.
         {
             string filename;
             WebClient downloader = new WebClient();
-            downloader.DownloadProgressChanged += (sender, e) => {
+            downloader.DownloadProgressChanged += (_, e) => {
                 StatusBarValue = e.ProgressPercentage;
             };
             SetStatusBarVisibility(true);
@@ -1020,7 +1020,7 @@ Please, check for your Internet configuration and restart the launcher.
                 Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font
             };
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
-            closeButton.Click += (sender, e) => {
+            closeButton.Click += delegate {
                 if (!mainPageView.Pages.Contains(outputPage)) {
                     return;
                 }
@@ -1034,7 +1034,7 @@ Please, check for your Internet configuration and restart the launcher.
             outputPage.Controls.Add(panel);
             mainPageView.Pages.Add(outputPage);
             mainPageView.SelectedPage = outputPage;
-            reportBox.LinkClicked += (sender, e) => Process.Start(e.LinkText);
+            reportBox.LinkClicked += (_, e) => Process.Start(e.LinkText);
             return new LauncherFormOutput {
                 OutputBox = reportBox,
                 CloseButton = closeButton,
@@ -1109,9 +1109,12 @@ Please, check for your Internet configuration and restart the launcher.
                     if (_configuration.Arguments.OfflineMode) {
                         LaunchButton.Enabled = false;
                     }
+                    SelectedVersion.Text = string.Format(state, _selectedProfile.SelectedVersion ??
+                        GetLatestVersion(_selectedProfile));
+                    return;
                 }
                 if (!File.Exists(string.Format(@"{0}\{1}.jar", path, _selectedProfile.SelectedVersion ??
-                    GetLatestVersion(_selectedProfile)))) {
+                    GetLatestVersion(_selectedProfile))) && VersionManifest.ParseVersion(new DirectoryInfo(path)).InheritsFrom == null) {
                     state = _configuration.Localization.ReadyToDownload;
                     if (_configuration.Arguments.OfflineMode) {
                         LaunchButton.Enabled = false;
@@ -1122,7 +1125,7 @@ Please, check for your Internet configuration and restart the launcher.
             }
         }
 
-        public static bool CheckForInternetConnection()
+        private static bool CheckForInternetConnection()
         {
             try {
                 using (WebClient client = new WebClient()) {
@@ -1373,15 +1376,15 @@ Please, check for your Internet configuration and restart the launcher.
             }
         }
 
-        private void AppendLog(string text, bool iserror = false)
+        private void AppendLog(string text, bool isError = false)
         {
             if (_output.OutputBox.IsDisposed) {
                 return;
             }
             if (_output.OutputBox.InvokeRequired) {
-                _output.OutputBox.Invoke(new Action<string, bool>(AppendLog), text, iserror);
+                _output.OutputBox.Invoke(new Action<string, bool>(AppendLog), text, isError);
             } else {
-                Color color = iserror ? Color.Red : Color.DarkSlateGray;
+                Color color = isError ? Color.Red : Color.DarkSlateGray;
                 string line = text + "\n";
                 int start = _output.OutputBox.TextLength;
                 _output.OutputBox.AppendText(line);

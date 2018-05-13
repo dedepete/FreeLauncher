@@ -24,6 +24,7 @@ namespace FreeLauncher.Forms
             Profile = profile;
             InitializeComponent();
             LoadLocalization();
+            otherCheckBox.Checked = true;
             if (Profile.AllowedReleaseTypes != null) {
                 foreach (string item in Profile.AllowedReleaseTypes) {
                     switch (item) {
@@ -36,8 +37,16 @@ namespace FreeLauncher.Forms
                         case "old_alpha":
                             alphaCheckBox.Checked = true;
                             break;
-                        case "other":
-                            otherCheckBox.Checked = true;
+                        default:
+                            continue;
+                    }
+                }
+            }
+            if (Profile.DisallowedReleaseTypes != null) {
+                foreach (string item in Profile.DisallowedReleaseTypes) {
+                    switch (item) {
+                        case "modified":
+                            otherCheckBox.Checked = false;
                             break;
                         default:
                             continue;
@@ -157,24 +166,29 @@ namespace FreeLauncher.Forms
                     Profile.LauncherVisibilityOnGameClose = Profile.LauncherVisibility.VISIBLE;
                     break;
             }
-            List<string> types = new List<string>();
+            List<string> allowedTypes = new List<string>();
+            List<string> disallowedTypes = new List<string>();
             if (snapshotsCheckBox.Checked) {
-                types.Add("snapshot");
+                allowedTypes.Add("snapshot");
             }
             if (betaCheckBox.Checked) {
-                types.Add("old_beta");
+                allowedTypes.Add("old_beta");
             }
             if (alphaCheckBox.Checked) {
-                types.Add("old_alpha");
+                allowedTypes.Add("old_alpha");
             }
-            if (otherCheckBox.Checked) {
-                types.Add("other");
+            if (!otherCheckBox.Checked) {
+                disallowedTypes.Add("modified");
             }
-            if (types.Count == 0) {
-                types = null;
+            if (allowedTypes.Count == 0) {
+                allowedTypes = null;
+            }
+            if (disallowedTypes.Count == 0) {
+                disallowedTypes = null;
             }
             Profile.SelectedVersion = versionsDropDownList.SelectedItem.Tag?.ToString();
-            Profile.AllowedReleaseTypes = types?.ToArray();
+            Profile.AllowedReleaseTypes = allowedTypes?.ToArray();
+            Profile.DisallowedReleaseTypes = disallowedTypes?.ToArray();
             if (JavaArgumentsCheckBox.Checked && javaArgumentsBox.Text != "-Xmx1024M" &&
                 javaArgumentsBox.Text != string.Empty) {
                 Profile.JavaArguments = javaArgumentsBox.Text;
