@@ -6,4 +6,6 @@ script:
 - xbuild /validate ./src/dotMCLauncher/dotMCLauncher.csproj
 - xbuild /validate ./src/dotMCLauncher.Networking/dotMCLauncher.Networking.csproj
 - xbuild /validate ./src/dotMCLauncher.Profiling/dotMCLauncher.Profiling.csproj
+- xbuild /validate ./src/dotMCLauncher.Profiling/dotMCLauncher.Profiling.V2.csproj
+- xbuild /validate ./src/dotMCLauncher.Profiling/dotMCLauncher.Resourcing.csproj
 - xbuild /validate ./src/dotMCLauncher.Versioning/dotMCLauncher.Versioning.csproj

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("dotMCLauncher.Profiling.V2")]
+[assembly: AssemblyTitle("dotMCLauncher.Resourcing")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("dotMCLauncher.Profiling.V2")]
+[assembly: AssemblyProduct("dotMCLauncher.Resourcing")]
 [assembly: AssemblyCopyright("Copyright Igor Popov© 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("55a338d8-496a-4a25-a8fc-2c55238188c5")]
+[assembly: Guid("98ced877-cfe5-4dbc-a54e-1d98c3d44095")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("18.5.16.15")]
-[assembly: AssemblyFileVersion("18.5.16.15")]
+[assembly: AssemblyVersion("18.5.16.7")]
+[assembly: AssemblyFileVersion("18.5.16.7")]

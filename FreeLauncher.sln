@@ -78,6 +78,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher", "src\dotMCL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Profiling.V2", "src\dotMCLauncher.Profiling.V2\dotMCLauncher.Profiling.V2.csproj", "{55A338D8-496A-4A25-A8FC-2C55238188C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotMCLauncher.Resourcing", "src\dotMCLauncher.Resourcing\dotMCLauncher.Resourcing.csproj", "{98CED877-CFE5-4DBC-A54E-1D98C3D44095}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,18 @@ Global
 		{55A338D8-496A-4A25-A8FC-2C55238188C5}.Release|x64.Build.0 = Release|Any CPU
 		{55A338D8-496A-4A25-A8FC-2C55238188C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{55A338D8-496A-4A25-A8FC-2C55238188C5}.Release|x86.Build.0 = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|x64.Build.0 = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Debug|x86.Build.0 = Debug|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|x64.ActiveCfg = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|x64.Build.0 = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|x86.ActiveCfg = Release|Any CPU
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,5 +194,6 @@ Global
 		{E41644A8-2949-4CC3-B1B1-CEBF32B055A2} = {E42ABFDD-4269-48E1-8139-FD2FC6CAAC2F}
 		{56C1E499-2F30-4892-A71A-4F72913A2116} = {E42ABFDD-4269-48E1-8139-FD2FC6CAAC2F}
 		{55A338D8-496A-4A25-A8FC-2C55238188C5} = {E42ABFDD-4269-48E1-8139-FD2FC6CAAC2F}
+		{98CED877-CFE5-4DBC-A54E-1D98C3D44095} = {E42ABFDD-4269-48E1-8139-FD2FC6CAAC2F}
 	EndGlobalSection
 EndGlobal

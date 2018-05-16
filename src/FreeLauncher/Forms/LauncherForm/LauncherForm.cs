@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using dotMCLauncher.Versioning;
 using dotMCLauncher.Profiling;
 using dotMCLauncher.Networking;
+using dotMCLauncher.Resourcing;
 using Ionic.Zip;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
@@ -905,8 +906,8 @@ Please, check for your Internet configuration and restart the launcher.
             UpdateStatusBarAndLog("Checking game assets...");
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_configuration.McVersions + @"\" +
-                (_versionToLaunch ??
-                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
+                    (_versionToLaunch ??
+                        (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             if (selectedVersionManifest.InheritsFrom != null) {
                 selectedVersionManifest = selectedVersionManifest.InheritableVersionManifest;
             }
@@ -920,64 +921,51 @@ Please, check for your Internet configuration and restart the launcher.
                     string.Format("https://s3.amazonaws.com/Minecraft.Download/indexes/{0}.json",
                         selectedVersionManifest.AssetsIndex ?? "legacy"), file);
             }
-            JObject jo = JObject.Parse(File.ReadAllText(file));
+            AssetsManifest manifest = AssetsManifest.Parse(file);
             StatusBarValue = 0;
-            SetStatusBarMaxValue(jo["objects"].Cast<JProperty>()
-                .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
-                .Select(c => c.Substring(0, 2) + @"\" + c)
-                .Count(filename =>
-                    !File.Exists(_configuration.McDirectory + @"\assets\objects\" +
-                        filename) || _restoreVersion) + 1);
-            foreach (string resourseFile in jo["objects"].Cast<JProperty>()
-                .Select(peep => jo["objects"][peep.Name]["hash"].ToString())
-                .Select(c => c.Substring(0, 2) + @"\" + c)
-                .Where(filename =>
-                    !File.Exists(_configuration.McDirectory + @"\assets\objects\" + filename) ||
-                    _restoreVersion)) {
-                string path = _configuration.McDirectory + @"\assets\objects\" + resourseFile.Substring(0, 2) +
-                    @"\";
-                if (!Directory.Exists(path)) {
-                    Directory.CreateDirectory(path);
+            SetStatusBarMaxValue(manifest.Objects.Select(pair => pair.Value.Hash.GetFullPath()).Count(filename => !File.Exists(_configuration.McDirectory + @"\assets\objects\" +
+                filename) || _restoreVersion) + 1);
+            foreach (Asset asset in manifest.Objects.Select(pair => pair.Value).Where(asset => !File.Exists(_configuration.McDirectory + @"\assets\objects\" +
+                asset.Hash.GetFullPath()) || _restoreVersion)) {
+                string directory = _configuration.McDirectory + @"\assets\objects\" + asset.Hash.GetDirectoryName();
+                if (!Directory.Exists(directory)) {
+                    Directory.CreateDirectory(directory);
                 }
                 try {
-                    AppendDebug($"Downloading {resourseFile}...");
-                    new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + resourseFile,
-                        _configuration.McDirectory + @"\assets\objects\" + resourseFile);
+                    AppendDebug($"Downloading {asset.Hash}...");
+                    new WebClient().DownloadFile(@"http://resources.download.minecraft.net/" + asset.Hash.GetFullPath(),
+                        _configuration.McDirectory + @"\assets\objects\" + asset.Hash.GetFullPath());
                 } catch (Exception ex) {
                     AppendException(ex.ToString());
                 }
                 StatusBarValue++;
             }
             AppendLog("Finished checking game assets.");
-            if (selectedVersionManifest.AssetsIndex == null) {
+            if (selectedVersionManifest.AssetsIndex == null || selectedVersionManifest.AssetsIndex == "legacy") {
                 StatusBarValue = 0;
-                SetStatusBarMaxValue(jo["objects"].Cast<JProperty>()
+                SetStatusBarMaxValue(manifest.Objects.Select(pair => pair.Value.Hash.GetFullPath())
                     .Count(
-                        res =>
+                        filename =>
                             !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
-                                res.Name)) + 1);
+                                filename) || _restoreVersion) + 1);
                 UpdateStatusBarAndLog("Converting assets...");
-                foreach (
-                    JProperty res in
-                    jo["objects"].Cast<JProperty>()
-                        .Where(
-                            res =>
-                                !File.Exists(_configuration.McDirectory + @"\assets\legacy\" + res.Name) ||
-                                _restoreVersion)) {
+                foreach (Asset asset in manifest.Objects.Select(pair => pair.Value)
+                    .Where(asset =>
+                        !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
+                            asset.Hash.GetFullPath()) || _restoreVersion)) {
                     try {
                         if (!Directory.Exists(
-                            new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + res.Name)
+                            new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName)
                                 .DirectoryName)) {
                             Directory.CreateDirectory(
-                                new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + res.Name)
+                                new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName)
                                     .DirectoryName);
                         }
                         AppendDebug(
-                            $"Converting '{@"\assets\objects\" + res.Value["hash"].ToString().Substring(0, 2) + @"\" + res.Value["hash"]}' to '{@"\assets\legacy\" + res.Name}'");
+                            $"Converting '{asset.Hash.GetFullPath()}' to '{asset.AssociatedName}'");
                         File.Copy(
-                            _configuration.McDirectory + @"\assets\objects\" +
-                            res.Value["hash"].ToString().Substring(0, 2) + @"\" + res.Value["hash"],
-                            _configuration.McDirectory + @"\assets\legacy\" + res.Name);
+                            _configuration.McDirectory + @"\assets\objects\" + asset.Hash.GetFullPath(),
+                            _configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName);
                     } catch (Exception ex) {
                         AppendLog(ex.ToString());
                     }
@@ -1129,7 +1117,7 @@ Please, check for your Internet configuration and restart the launcher.
         {
             try {
                 using (WebClient client = new WebClient()) {
-                    using (client.OpenRead("https://www.gstatic.com/generate_204")) {
+                    using (client.OpenRead("https://captive.apple.com/generate_204")) {
                         return true;
                     }
                 }
