@@ -1,6 +1,6 @@
 ﻿namespace dotMCLauncher.Profiling.V2
 {
-    public enum ProfileIcon
+    public enum LauncherProfileIcon
     {
         BEDROCK,
         BOOKSHELF,

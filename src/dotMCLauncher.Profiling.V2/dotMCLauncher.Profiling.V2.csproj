@@ -51,13 +51,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationEntry.cs" />
+    <Compile Include="AuthenticationProfile.cs" />
     <Compile Include="Serializable.cs" />
-    <Compile Include="ProfileIcon.cs" />
-    <Compile Include="Profile.cs" />
+    <Compile Include="LauncherProfileIcon.cs" />
+    <Compile Include="LauncherProfile.cs" />
     <Compile Include="ProfileManager.cs" />
     <Compile Include="LauncherVersion.cs" />
-    <Compile Include="ProfileResolution.cs" />
-    <Compile Include="ProfileType.cs" />
+    <Compile Include="LauncherProfileResolution.cs" />
+    <Compile Include="LauncherProfileType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectedUser.cs" />
   </ItemGroup>

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class Profile : Serializable
+    public class LauncherProfile : Serializable
     {
         [JsonIgnore]
         public string AssociatedId { get; set; }
@@ -15,327 +15,327 @@ namespace dotMCLauncher.Profiling.V2
         private string _icon { get; set; }
 
         [JsonIgnore]
-        public ProfileIcon Icon
+        public LauncherProfileIcon Icon
         {
             get {
                 switch (_icon) {
                     case "Bedrock":
-                        return ProfileIcon.BEDROCK;
+                        return LauncherProfileIcon.BEDROCK;
                     case "Bookshelf":
-                        return ProfileIcon.BOOKSHELF;
+                        return LauncherProfileIcon.BOOKSHELF;
                     case "Chest":
-                        return ProfileIcon.CHEST;
+                        return LauncherProfileIcon.CHEST;
                     case "Clay":
-                        return ProfileIcon.CLAY;
+                        return LauncherProfileIcon.CLAY;
                     case "Coal_Block":
-                        return ProfileIcon.COAL_BLOCK;
+                        return LauncherProfileIcon.COAL_BLOCK;
                     case "Coal_Ore":
-                        return ProfileIcon.COAL_ORE;
+                        return LauncherProfileIcon.COAL_ORE;
                     case "Cobblestone":
-                        return ProfileIcon.COBBLESTONE;
+                        return LauncherProfileIcon.COBBLESTONE;
                     case "Diamond_Block":
-                        return ProfileIcon.DIAMOND_BLOCK;
+                        return LauncherProfileIcon.DIAMOND_BLOCK;
                     case "Diamond_Ore":
-                        return ProfileIcon.DIAMOND_ORE;
+                        return LauncherProfileIcon.DIAMOND_ORE;
                     case "Dirt":
-                        return ProfileIcon.DIRT;
+                        return LauncherProfileIcon.DIRT;
                     case "Dirt_Podzol":
-                        return ProfileIcon.DIRT_PODZOL;
+                        return LauncherProfileIcon.DIRT_PODZOL;
                     case "Dirt_Snow":
-                        return ProfileIcon.DIRT_SNOW;
+                        return LauncherProfileIcon.DIRT_SNOW;
                     case "Emerald_Block":
-                        return ProfileIcon.EMERALD_BLOCK;
+                        return LauncherProfileIcon.EMERALD_BLOCK;
                     case "Emerald_Ore":
-                        return ProfileIcon.EMERALD_ORE;
+                        return LauncherProfileIcon.EMERALD_ORE;
                     case "End_Stone":
-                        return ProfileIcon.END_STONE;
+                        return LauncherProfileIcon.END_STONE;
                     case "Farmland":
-                        return ProfileIcon.FARMLAND;
+                        return LauncherProfileIcon.FARMLAND;
                     case "Furnace_On":
-                        return ProfileIcon.FURNACE_ON;
+                        return LauncherProfileIcon.FURNACE_ON;
                     case "Glass":
-                        return ProfileIcon.GLASS;
+                        return LauncherProfileIcon.GLASS;
                     case "Glowstone":
-                        return ProfileIcon.GLOWSTONE;
+                        return LauncherProfileIcon.GLOWSTONE;
                     case "Gold_Block":
-                        return ProfileIcon.GOLD_BLOCK;
+                        return LauncherProfileIcon.GOLD_BLOCK;
                     case "Gold_Ore":
-                        return ProfileIcon.GOLD_ORE;
+                        return LauncherProfileIcon.GOLD_ORE;
                     case "Gravel":
-                        return ProfileIcon.GRAVEL;
+                        return LauncherProfileIcon.GRAVEL;
                     case "Hardened_Clay":
-                        return ProfileIcon.HARDENED_CLAY;
+                        return LauncherProfileIcon.HARDENED_CLAY;
                     case "Ice_Packed":
-                        return ProfileIcon.ICE_PACKED;
+                        return LauncherProfileIcon.ICE_PACKED;
                     case "Iron_Block":
-                        return ProfileIcon.IRON_BLOCK;
+                        return LauncherProfileIcon.IRON_BLOCK;
                     case "Iron_Ore":
-                        return ProfileIcon.IRON_ORE;
+                        return LauncherProfileIcon.IRON_ORE;
                     case "Lapis_Ore":
-                        return ProfileIcon.LAPIS_ORE;
+                        return LauncherProfileIcon.LAPIS_ORE;
                     case "Leaves_Birch":
-                        return ProfileIcon.LEAVES_BIRCH;
+                        return LauncherProfileIcon.LEAVES_BIRCH;
                     case "Leaves_Jungle":
-                        return ProfileIcon.LEAVES_JUNGLE;
+                        return LauncherProfileIcon.LEAVES_JUNGLE;
                     case "Leaves_Oak":
-                        return ProfileIcon.LEAVES_OAK;
+                        return LauncherProfileIcon.LEAVES_OAK;
                     case "Leaves_Spruce":
-                        return ProfileIcon.LEAVES_SPRUCE;
+                        return LauncherProfileIcon.LEAVES_SPRUCE;
                     case "Log_Acacia":
-                        return ProfileIcon.LOG_ACACIA;
+                        return LauncherProfileIcon.LOG_ACACIA;
                     case "Log_Birch":
-                        return ProfileIcon.LOG_BIRCH;
+                        return LauncherProfileIcon.LOG_BIRCH;
                     case "Log_DarkOak":
-                        return ProfileIcon.LOG_DARK_OAK;
+                        return LauncherProfileIcon.LOG_DARK_OAK;
                     case "Log_Jungle":
-                        return ProfileIcon.LOG_JUNGLE;
+                        return LauncherProfileIcon.LOG_JUNGLE;
                     case "Log_Oak":
-                        return ProfileIcon.LOG_OAK;
+                        return LauncherProfileIcon.LOG_OAK;
                     case "Log_Spruce":
-                        return ProfileIcon.LOG_SPRUCE;
+                        return LauncherProfileIcon.LOG_SPRUCE;
                     case "Mycelium":
-                        return ProfileIcon.MYCELIUM;
+                        return LauncherProfileIcon.MYCELIUM;
                     case "Nether_Brick":
-                        return ProfileIcon.NETHER_BRICK;
+                        return LauncherProfileIcon.NETHER_BRICK;
                     case "Netherrack":
-                        return ProfileIcon.NETHERRACK;
+                        return LauncherProfileIcon.NETHERRACK;
                     case "Obsidian":
-                        return ProfileIcon.OBSIDIAN;
+                        return LauncherProfileIcon.OBSIDIAN;
                     case "Planks_Acacia":
-                        return ProfileIcon.PLANKS_ACACIA;
+                        return LauncherProfileIcon.PLANKS_ACACIA;
                     case "Planks_Birch":
-                        return ProfileIcon.PLANKS_BIRCH;
+                        return LauncherProfileIcon.PLANKS_BIRCH;
                     case "Planks_DarkOak":
-                        return ProfileIcon.PLANKS_DARK_OAK;
+                        return LauncherProfileIcon.PLANKS_DARK_OAK;
                     case "Planks_Jungle":
-                        return ProfileIcon.PLANKS_JUNGLE;
+                        return LauncherProfileIcon.PLANKS_JUNGLE;
                     case "Planks_Oak":
-                        return ProfileIcon.PLANKS_OAK;
+                        return LauncherProfileIcon.PLANKS_OAK;
                     case "Planks_Spruce":
-                        return ProfileIcon.PLANKS_SPRUCE;
+                        return LauncherProfileIcon.PLANKS_SPRUCE;
                     case "Quartz_Ore":
-                        return ProfileIcon.QUARTZ_ORE;
+                        return LauncherProfileIcon.QUARTZ_ORE;
                     case "Red_Sand":
-                        return ProfileIcon.RED_SAND;
+                        return LauncherProfileIcon.RED_SAND;
                     case "Red_Sandstone":
-                        return ProfileIcon.RED_SANDSTONE;
+                        return LauncherProfileIcon.RED_SANDSTONE;
                     case "Redstone_Block":
-                        return ProfileIcon.REDSTONE_BLOCK;
+                        return LauncherProfileIcon.REDSTONE_BLOCK;
                     case "Redstone_Ore":
-                        return ProfileIcon.REDSTONE_ORE;
+                        return LauncherProfileIcon.REDSTONE_ORE;
                     case "Sand":
-                        return ProfileIcon.SAND;
+                        return LauncherProfileIcon.SAND;
                     case "Sandstone":
-                        return ProfileIcon.SANDSTONE;
+                        return LauncherProfileIcon.SANDSTONE;
                     case "Snow":
-                        return ProfileIcon.SNOW;
+                        return LauncherProfileIcon.SNOW;
                     case "Soul_Sand":
-                        return ProfileIcon.SOUL_SAND;
+                        return LauncherProfileIcon.SOUL_SAND;
                     case "Stone":
-                        return ProfileIcon.STONE;
+                        return LauncherProfileIcon.STONE;
                     case "Stone_Andesite":
-                        return ProfileIcon.STONE_ANDESITE;
+                        return LauncherProfileIcon.STONE_ANDESITE;
                     case "Stone_Diorite":
-                        return ProfileIcon.STONE_DIORITE;
+                        return LauncherProfileIcon.STONE_DIORITE;
                     case "Stone_Granite":
-                        return ProfileIcon.STONE_GRANITE;
+                        return LauncherProfileIcon.STONE_GRANITE;
                     case "TNT":
-                        return ProfileIcon.TNT;
+                        return LauncherProfileIcon.TNT;
                     case "Wool":
-                        return ProfileIcon.WOOL;
+                        return LauncherProfileIcon.WOOL;
                     default:
-                        return ProfileIcon.FURNACE;
+                        return LauncherProfileIcon.FURNACE;
                 }
             }
             set {
                 switch (value) {
-                    case ProfileIcon.BEDROCK:
+                    case LauncherProfileIcon.BEDROCK:
                         _icon = "Bedrock";
                         break;
-                    case ProfileIcon.BOOKSHELF:
+                    case LauncherProfileIcon.BOOKSHELF:
                         _icon = "Bookshelf";
                         break;
-                    case ProfileIcon.CHEST:
+                    case LauncherProfileIcon.CHEST:
                         _icon = "Chest";
                         break;
-                    case ProfileIcon.CLAY:
+                    case LauncherProfileIcon.CLAY:
                         _icon = "Clay";
                         break;
-                    case ProfileIcon.COAL_BLOCK:
+                    case LauncherProfileIcon.COAL_BLOCK:
                         _icon = "Coal_Block";
                         break;
-                    case ProfileIcon.COAL_ORE:
+                    case LauncherProfileIcon.COAL_ORE:
                         _icon = "Coal_Ore";
                         break;
-                    case ProfileIcon.COBBLESTONE:
+                    case LauncherProfileIcon.COBBLESTONE:
                         _icon = "Cobblestone";
                         break;
-                    case ProfileIcon.DIAMOND_BLOCK:
+                    case LauncherProfileIcon.DIAMOND_BLOCK:
                         _icon = "Diamond_Block";
                         break;
-                    case ProfileIcon.DIAMOND_ORE:
+                    case LauncherProfileIcon.DIAMOND_ORE:
                         _icon = "Diamond_Ore";
                         break;
-                    case ProfileIcon.DIRT:
+                    case LauncherProfileIcon.DIRT:
                         _icon = "Dirt";
                         break;
-                    case ProfileIcon.DIRT_PODZOL:
+                    case LauncherProfileIcon.DIRT_PODZOL:
                         _icon = "Dirt_Podzol";
                         break;
-                    case ProfileIcon.DIRT_SNOW:
+                    case LauncherProfileIcon.DIRT_SNOW:
                         _icon = "Dirt_Snow";
                         break;
-                    case ProfileIcon.EMERALD_BLOCK:
+                    case LauncherProfileIcon.EMERALD_BLOCK:
                         _icon = "Emerald_Block";
                         break;
-                    case ProfileIcon.EMERALD_ORE:
+                    case LauncherProfileIcon.EMERALD_ORE:
                         _icon = "Emerald_Ore";
                         break;
-                    case ProfileIcon.END_STONE:
+                    case LauncherProfileIcon.END_STONE:
                         _icon = "End_Stone";
                         break;
-                    case ProfileIcon.FARMLAND:
+                    case LauncherProfileIcon.FARMLAND:
                         _icon = "Farmland";
                         break;
-                    case ProfileIcon.FURNACE:
+                    case LauncherProfileIcon.FURNACE:
                         _icon = null;
                         break;
-                    case ProfileIcon.FURNACE_ON:
+                    case LauncherProfileIcon.FURNACE_ON:
                         _icon = "Furnace_On";
                         break;
-                    case ProfileIcon.GLASS:
+                    case LauncherProfileIcon.GLASS:
                         _icon = "Glass";
                         break;
-                    case ProfileIcon.GLOWSTONE:
+                    case LauncherProfileIcon.GLOWSTONE:
                         _icon = "Glowstone";
                         break;
-                    case ProfileIcon.GOLD_BLOCK:
+                    case LauncherProfileIcon.GOLD_BLOCK:
                         _icon = "Gold_Block";
                         break;
-                    case ProfileIcon.GOLD_ORE:
+                    case LauncherProfileIcon.GOLD_ORE:
                         _icon = "Gold_Ore";
                         break;
-                    case ProfileIcon.GRAVEL:
+                    case LauncherProfileIcon.GRAVEL:
                         _icon = "Gravel";
                         break;
-                    case ProfileIcon.HARDENED_CLAY:
+                    case LauncherProfileIcon.HARDENED_CLAY:
                         _icon = "Hardened_Clay";
                         break;
-                    case ProfileIcon.ICE_PACKED:
+                    case LauncherProfileIcon.ICE_PACKED:
                         _icon = "Ice_Packed";
                         break;
-                    case ProfileIcon.IRON_BLOCK:
+                    case LauncherProfileIcon.IRON_BLOCK:
                         _icon = "Iron_Block";
                         break;
-                    case ProfileIcon.IRON_ORE:
+                    case LauncherProfileIcon.IRON_ORE:
                         _icon = "Iron_Ore";
                         break;
-                    case ProfileIcon.LAPIS_ORE:
+                    case LauncherProfileIcon.LAPIS_ORE:
                         _icon = "Lapis_Ore";
                         break;
-                    case ProfileIcon.LEAVES_BIRCH:
+                    case LauncherProfileIcon.LEAVES_BIRCH:
                         _icon = "Leaves_Birch";
                         break;
-                    case ProfileIcon.LEAVES_JUNGLE:
+                    case LauncherProfileIcon.LEAVES_JUNGLE:
                         _icon = "Leaves_Jungle";
                         break;
-                    case ProfileIcon.LEAVES_OAK:
+                    case LauncherProfileIcon.LEAVES_OAK:
                         _icon = "Leaves_Oak";
                         break;
-                    case ProfileIcon.LEAVES_SPRUCE:
+                    case LauncherProfileIcon.LEAVES_SPRUCE:
                         _icon = "Leaves_Spruce";
                         break;
-                    case ProfileIcon.LOG_ACACIA:
+                    case LauncherProfileIcon.LOG_ACACIA:
                         _icon = "Log_Acacia";
                         break;
-                    case ProfileIcon.LOG_BIRCH:
+                    case LauncherProfileIcon.LOG_BIRCH:
                         _icon = "Log_Birch";
                         break;
-                    case ProfileIcon.LOG_DARK_OAK:
+                    case LauncherProfileIcon.LOG_DARK_OAK:
                         _icon = "Log_DarkOak";
                         break;
-                    case ProfileIcon.LOG_JUNGLE:
+                    case LauncherProfileIcon.LOG_JUNGLE:
                         _icon = "Log_Jungle";
                         break;
-                    case ProfileIcon.LOG_OAK:
+                    case LauncherProfileIcon.LOG_OAK:
                         _icon = "Log_Oak";
                         break;
-                    case ProfileIcon.LOG_SPRUCE:
+                    case LauncherProfileIcon.LOG_SPRUCE:
                         _icon = "Log_Spruce";
                         break;
-                    case ProfileIcon.MYCELIUM:
+                    case LauncherProfileIcon.MYCELIUM:
                         _icon = "Mycelium";
                         break;
-                    case ProfileIcon.NETHER_BRICK:
+                    case LauncherProfileIcon.NETHER_BRICK:
                         _icon = "Nether_Brick";
                         break;
-                    case ProfileIcon.NETHERRACK:
+                    case LauncherProfileIcon.NETHERRACK:
                         _icon = "Netherrack";
                         break;
-                    case ProfileIcon.OBSIDIAN:
+                    case LauncherProfileIcon.OBSIDIAN:
                         _icon = "Obsidian";
                         break;
-                    case ProfileIcon.PLANKS_ACACIA:
+                    case LauncherProfileIcon.PLANKS_ACACIA:
                         _icon = "Planks_Acacia";
                         break;
-                    case ProfileIcon.PLANKS_BIRCH:
+                    case LauncherProfileIcon.PLANKS_BIRCH:
                         _icon = "Planks_Birch";
                         break;
-                    case ProfileIcon.PLANKS_DARK_OAK:
+                    case LauncherProfileIcon.PLANKS_DARK_OAK:
                         _icon = "Planks_DarkOak";
                         break;
-                    case ProfileIcon.PLANKS_JUNGLE:
+                    case LauncherProfileIcon.PLANKS_JUNGLE:
                         _icon = "Planks_Jungle";
                         break;
-                    case ProfileIcon.PLANKS_OAK:
+                    case LauncherProfileIcon.PLANKS_OAK:
                         _icon = "Planks_Oak";
                         break;
-                    case ProfileIcon.PLANKS_SPRUCE:
+                    case LauncherProfileIcon.PLANKS_SPRUCE:
                         _icon = "Planks_Spruce";
                         break;
-                    case ProfileIcon.QUARTZ_ORE:
+                    case LauncherProfileIcon.QUARTZ_ORE:
                         _icon = "Quartz_Ore";
                         break;
-                    case ProfileIcon.RED_SAND:
+                    case LauncherProfileIcon.RED_SAND:
                         _icon = "Red_Sand";
                         break;
-                    case ProfileIcon.RED_SANDSTONE:
+                    case LauncherProfileIcon.RED_SANDSTONE:
                         _icon = "Red_Sandstone";
                         break;
-                    case ProfileIcon.REDSTONE_BLOCK:
+                    case LauncherProfileIcon.REDSTONE_BLOCK:
                         _icon = "Redstone_Block";
                         break;
-                    case ProfileIcon.REDSTONE_ORE:
+                    case LauncherProfileIcon.REDSTONE_ORE:
                         _icon = "Redstone_Ore";
                         break;
-                    case ProfileIcon.SAND:
+                    case LauncherProfileIcon.SAND:
                         _icon = "Sand";
                         break;
-                    case ProfileIcon.SANDSTONE:
+                    case LauncherProfileIcon.SANDSTONE:
                         _icon = "Sandstone";
                         break;
-                    case ProfileIcon.SNOW:
+                    case LauncherProfileIcon.SNOW:
                         _icon = "Snow";
                         break;
-                    case ProfileIcon.SOUL_SAND:
+                    case LauncherProfileIcon.SOUL_SAND:
                         _icon = "Soul_Sand";
                         break;
-                    case ProfileIcon.STONE:
+                    case LauncherProfileIcon.STONE:
                         _icon = "Stone";
                         break;
-                    case ProfileIcon.STONE_ANDESITE:
+                    case LauncherProfileIcon.STONE_ANDESITE:
                         _icon = "Stone_Andesite";
                         break;
-                    case ProfileIcon.STONE_DIORITE:
+                    case LauncherProfileIcon.STONE_DIORITE:
                         _icon = "Stone_Diorite";
                         break;
-                    case ProfileIcon.STONE_GRANITE:
+                    case LauncherProfileIcon.STONE_GRANITE:
                         _icon = "Stone_Granite";
                         break;
-                    case ProfileIcon.TNT:
+                    case LauncherProfileIcon.TNT:
                         _icon = "TNT";
                         break;
-                    case ProfileIcon.WOOL:
+                    case LauncherProfileIcon.WOOL:
                         _icon = "Wool";
                         break;
                     default:
@@ -349,26 +349,26 @@ namespace dotMCLauncher.Profiling.V2
         private string _type { get; set; }
 
         [JsonIgnore]
-        public ProfileType Type
+        public LauncherProfileType Type
         {
             get {
                 switch (_type)
                 {
                     case "latest-release":
-                        return ProfileType.LATEST_RELEASE;
+                        return LauncherProfileType.LATEST_RELEASE;
                     case "latest-snapshot":
-                        return ProfileType.LATEST_SNAPSHOT;
+                        return LauncherProfileType.LATEST_SNAPSHOT;
                     default:
-                        return ProfileType.CUSTOM;
+                        return LauncherProfileType.CUSTOM;
                 }
             }
             set {
                 switch (value)
                 {
-                    case ProfileType.LATEST_RELEASE:
+                    case LauncherProfileType.LATEST_RELEASE:
                         _type = "latest-release";
                         break;
-                    case ProfileType.LATEST_SNAPSHOT:
+                    case LauncherProfileType.LATEST_SNAPSHOT:
                         _type = "latest-snapshot";
                         break;
                     default:
@@ -382,7 +382,7 @@ namespace dotMCLauncher.Profiling.V2
         public string SelectedVersion { get; set; }
 
         [JsonProperty("resolution")]
-        public ProfileResolution Resolution { get; set; }
+        public LauncherProfileResolution Resolution { get; set; }
 
         [JsonProperty("created")]
         public DateTime Created { get; set; } = new DateTime(1970, 1, 1, 0, 0, 0);

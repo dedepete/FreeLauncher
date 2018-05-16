@@ -2,7 +2,7 @@
 
 namespace dotMCLauncher.Profiling.V2
 {
-    public class ProfileResolution : Serializable
+    public class LauncherProfileResolution : Serializable
     {
         [JsonProperty("width")]
         public int Width { get; set; } = 854;

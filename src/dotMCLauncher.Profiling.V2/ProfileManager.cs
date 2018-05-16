@@ -19,7 +19,7 @@ namespace dotMCLauncher.Profiling.V2
         /// Profile list. 
         /// </summary>
         [JsonProperty("profiles")]
-        public Dictionary<string, Profile> Profiles { get; set; }
+        public Dictionary<string, LauncherProfile> Profiles { get; set; }
 
         /// <summary>
         /// Launcher settings. 
@@ -37,7 +37,7 @@ namespace dotMCLauncher.Profiling.V2
         /// Authentication database. 
         /// </summary>
         [JsonProperty("authenticationDatabase")]
-        public Dictionary<string, object> AuthenticationDatabase { get; set; }
+        public Dictionary<string, AuthenticationEntry> AuthenticationDatabase { get; set; }
 
         /// <summary>
         /// Last used entry from authentication database. 
@@ -65,17 +65,17 @@ namespace dotMCLauncher.Profiling.V2
 
         private void AssociateIds()
         {
-            foreach (KeyValuePair<string, Profile> pair in Profiles) {
+            foreach (KeyValuePair<string, LauncherProfile> pair in Profiles) {
                 pair.Value.AssociatedId = pair.Key;
             }
         }
 
-        public void AddProfile(Profile profile)
+        public void AddProfile(LauncherProfile launcherProfile)
         {
-            AddProfile(profile.Name, profile);
+            AddProfile(launcherProfile.Name, launcherProfile);
         }
 
-        public void AddProfile(string id, Profile profile)
+        public void AddProfile(string id, LauncherProfile launcherProfile)
         {
             if (string.IsNullOrWhiteSpace(id)) {
                 throw new ArgumentNullException(nameof(id));
@@ -83,13 +83,13 @@ namespace dotMCLauncher.Profiling.V2
             if (Profiles.Keys.Contains(id)) {
                 throw new ArgumentException($"Profile with id '{id}' already exists.");
             }
-            profile.AssociatedId = id;
-            Profiles.Add(id, profile);
+            launcherProfile.AssociatedId = id;
+            Profiles.Add(id, launcherProfile);
         }
 
-        public void RemoveProfile(Profile profile)
+        public void RemoveProfile(LauncherProfile launcherProfile)
         {
-            RemoveProfile(profile.AssociatedId);
+            RemoveProfile(launcherProfile.AssociatedId);
         }
 
         public void RemoveProfile(string id)
@@ -100,15 +100,15 @@ namespace dotMCLauncher.Profiling.V2
             Profiles.Remove(id);
         }
 
-        public void ChangeProfileId(Profile profile, string newId)
+        public void ChangeProfileId(LauncherProfile launcherProfile, string newId)
         {
-            ChangeProfileId(profile.AssociatedId, newId);
+            ChangeProfileId(launcherProfile.AssociatedId, newId);
         }
 
         public void ChangeProfileId(string id, string newId)
         {
-            Dictionary<string, Profile> newProfiles = new Dictionary<string, Profile>();
-            foreach (KeyValuePair<string, Profile> pair in Profiles) {
+            Dictionary<string, LauncherProfile> newProfiles = new Dictionary<string, LauncherProfile>();
+            foreach (KeyValuePair<string, LauncherProfile> pair in Profiles) {
                 if (pair.Key != id) {
                     newProfiles.Add(pair.Key, pair.Value);
                     continue;
