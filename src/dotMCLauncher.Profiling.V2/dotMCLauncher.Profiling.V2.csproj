@@ -4,21 +4,26 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E41644A8-2949-4CC3-B1B1-CEBF32B055A2}</ProjectGuid>
+    <ProjectGuid>{55A338D8-496A-4A25-A8FC-2C55238188C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dotMCLauncher.Versioning</RootNamespace>
-    <AssemblyName>dotMCLauncher.Versioning</AssemblyName>
+    <RootNamespace>dotMCLauncher.Profiling.V2</RootNamespace>
+    <AssemblyName>dotMCLauncher.Profiling.V2</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ShouldCreateLogs>False</ShouldCreateLogs>
     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyVersionSettings>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+    <AssemblyFileVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>ShortYearStamp.MonthStamp.DayStamp.Increment</AssemblyInfoVersionSettings>
+    <AssemblyInfoVersionSemVerSettings>
+    </AssemblyInfoVersionSemVerSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,43 +44,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentCollection.cs" />
-    <Compile Include="Argument\Argument.cs" />
-    <Compile Include="Argument\ArgumentsGroup.cs" />
-    <Compile Include="Argument\ArgumentsGroupType.cs" />
-    <Compile Include="Argument\ArgumentType.cs" />
-    <Compile Include="Argument\ExtendedArgument.cs" />
-    <Compile Include="Argument\SingleArgument.cs" />
-    <Compile Include="DownloadEntry.cs" />
-    <Compile Include="Lib\Lib.cs" />
-    <Compile Include="Lib\LibDownloadInfo.cs" />
+    <Compile Include="AuthenticationEntry.cs" />
+    <Compile Include="AuthenticationProfile.cs" />
+    <Compile Include="Serializable.cs" />
+    <Compile Include="LauncherProfileIcon.cs" />
+    <Compile Include="LauncherProfile.cs" />
+    <Compile Include="ProfileManager.cs" />
+    <Compile Include="LauncherVersion.cs" />
+    <Compile Include="LauncherProfileResolution.cs" />
+    <Compile Include="LauncherProfileType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawVersionList\RawVersionListManifest.cs" />
-    <Compile Include="RawVersionList\RawVersionListManifestEntry.cs" />
-    <Compile Include="RawVersionList\RawVersionListManifestLatest.cs" />
-    <Compile Include="Rule\Features.cs" />
-    <Compile Include="Rule\Os.cs" />
-    <Compile Include="Rule\Rule.cs" />
-    <Compile Include="Version.cs" />
-    <Compile Include="VersionDownloadInfo.cs" />
-    <Compile Include="VersionManifest\VersionManifest.cs" />
-    <Compile Include="VersionManifest\VersionManifestType.cs" />
+    <Compile Include="SelectedUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\dotMCLauncher\dotMCLauncher.csproj">
-      <Project>{56c1e499-2f30-4892-a71a-4f72913a2116}</Project>
-      <Name>dotMCLauncher</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
