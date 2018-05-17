@@ -34,6 +34,7 @@ namespace FreeLauncher.Forms
         private Profile _selectedProfile;
         private UserManager _userManager;
         private User _selectedUser;
+        private readonly Dictionary<string, Tuple<string, DateTime>> _nicknameDictionary;
         private readonly ApplicationConfiguration _cfg;
         private string _versionToLaunch;
         private bool _restoreVersion;
@@ -92,6 +93,7 @@ namespace FreeLauncher.Forms
         public LauncherForm(Configuration configuration)
         {
             _configuration = configuration;
+            _nicknameDictionary = new Dictionary<string, Tuple<string, DateTime>>();
             InitializeComponent();
 
             _cfg = _configuration.ApplicationConfiguration;
@@ -352,14 +354,39 @@ Please, check for your Internet configuration and restart the launcher.
                             !Directory.Exists(_selectedProfile.WorkingDirectory)) {
                             Directory.CreateDirectory(_selectedProfile.WorkingDirectory);
                         }
+                        string username;
+                        if (_selectedUser.Type != "offline") {
+                            while (true) {
+                                try {
+                                    if (_nicknameDictionary.ContainsKey(_selectedUser.Uuid) && _nicknameDictionary[_selectedUser.Uuid].Item2 > DateTime.Now) {
+                                        username = _nicknameDictionary[_selectedUser.Uuid].Item1;
+                                        break;
+                                    }
+                                    if (_nicknameDictionary.ContainsKey(_selectedUser.Uuid) && _nicknameDictionary[_selectedUser.Uuid].Item2 <= DateTime.Now) {
+                                        _nicknameDictionary.Remove(_selectedUser.Uuid);
+                                    }
+                                    _nicknameDictionary.Add(_selectedUser.Uuid, new Tuple<string, DateTime>(
+                                        new Username {
+                                            Uuid = _selectedUser.Uuid
+                                        }.GetUsernameByUuid(),
+                                        DateTime.Now.AddMinutes(30)));
+                                    username = _nicknameDictionary[_selectedUser.Uuid].Item1;
+                                    break;
+                                } catch (WebException ex) {
+                                    if ((int) ((HttpWebResponse) ex.Response).StatusCode != 429) {
+                                        AppendException($"An unhandled exception has occured while getting username by UUID:{Environment.NewLine}{ex}");
+                                        username = NicknameDropDownList.Text;
+                                        break;
+                                    }
+                                    Thread.Sleep(10000);
+                                }
+                            }
+                        } else {
+                            username = NicknameDropDownList.Text;
+                        }
                         Dictionary<string, string> gameArgumentDictionary = new Dictionary<string, string> {
                             {
-                                "auth_player_name",
-                                _selectedUser.Type == "offline"
-                                    ? NicknameDropDownList.Text
-                                    : new Username {
-                                        Uuid = _selectedUser.Uuid
-                                    }.GetUsernameByUuid()
+                                "auth_player_name", username
                             }, {
                                 "version_name", _selectedProfile.ProfileName
                             }, {
