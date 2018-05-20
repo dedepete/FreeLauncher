@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -97,6 +98,7 @@ namespace FreeLauncher.Forms
             InitializeComponent();
 
             _cfg = _configuration.ApplicationConfiguration;
+            CheckUpdatesCheckBox.Checked = _cfg.CheckLauncherUpdates;
             DownloadAssetsBox.Checked = _cfg.SkipAssetsDownload;
             EnableMinecraftLogging.Checked = _cfg.EnableGameLogging;
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
@@ -141,6 +143,8 @@ namespace FreeLauncher.Forms
                 Directory.CreateDirectory(_configuration.McLauncher);
             }
 
+            CheckLauncherUpdates();
+
             if (!_configuration.Arguments.NotAStandalone) {
                 UpdateVersions();
             }
@@ -168,6 +172,7 @@ Please, check for your Internet configuration and restart the launcher.
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _cfg.CheckLauncherUpdates = CheckUpdatesCheckBox.Checked;
             _cfg.SkipAssetsDownload = DownloadAssetsBox.Checked;
             _cfg.EnableGameLogging = EnableMinecraftLogging.Checked;
             _cfg.CloseTabAfterSuccessfulExitCode = CloseGameOutput.Checked;
@@ -1093,6 +1098,7 @@ Please, check for your Internet configuration and restart the launcher.
             CopyrightInfoLabel.Text = localization.CopyrightInfo;
 
             MainGroupBox.Text = localization.MainSettingsTitle;
+            CheckUpdatesCheckBox.Text = localization.CheckUpdatesCheckBox;
             DownloadAssetsBox.Text = localization.SkipAssetsDownload;
             LoggerGroupBox.Text = localization.LoggerSettingsTitle;
             EnableMinecraftLogging.Text = localization.EnableMinecraftLoggingText;
@@ -1241,6 +1247,37 @@ Please, check for your Internet configuration and restart the launcher.
             menuStrip.Items.Add(deleteButton);
             menuStrip.Items.Add(editButton);
             new RadContextMenuManager().SetRadContextMenu(profilesListView, menuStrip);
+        }
+
+        private void CheckLauncherUpdates()
+        {
+            if (!_cfg.CheckLauncherUpdates) {
+                return;
+            }
+            AppendLog("Checking for launcher updates...");
+            if (_configuration.Arguments.OfflineMode) {
+                AppendLog("Unable to check for launcher updates. Internet connection is not established or OFFLINE mode was force enabled.");
+            }
+            try {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                WebClient wc = new WebClient();
+                wc.Headers.Add("User-Agent", "request");
+                GitHubRelease latest = JsonConvert.DeserializeObject<GitHubRelease>(wc.DownloadString(new Uri("https://api.github.com/repos/dedepete/FreeLauncher/releases/latest")));
+                string latestVersion = latest.Tag.Substring(1, latest.Tag.Length - 1),
+                       currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString().Substring(0, Assembly.GetEntryAssembly().GetName().Version.ToString().LastIndexOf(".", StringComparison.Ordinal));
+                AppendLog($"Current version: {currentVersion}");
+                AppendLog($"Latest version: {latestVersion}");
+                if (System.Version.Parse(currentVersion) >= System.Version.Parse(latestVersion)) {
+                    AppendLog("No update found.");
+                    return;
+                }
+                AppendLog("Found update.");
+                UpdateForm updateForm = new UpdateForm(latest, _configuration);
+                updateForm.ShowDialog();
+                CheckUpdatesCheckBox.Checked = updateForm.autocheckCheckBox.Checked;
+            } catch (Exception ex) {
+                AppendException($"Unable to check for launcher updates. Exception:{Environment.NewLine}{ex}");
+            }
         }
     }
 

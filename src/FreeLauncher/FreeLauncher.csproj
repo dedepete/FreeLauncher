@@ -145,12 +145,19 @@
     <Compile Include="Forms\ProfileForm\ProfileForm.Designer.cs">
       <DependentUpon>ProfileForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UpdateForm\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateForm\UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UsersForm\UsersForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\UsersForm\UsersForm.Designer.cs">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GitHubRelease.cs" />
     <Compile Include="Java.cs" />
     <Compile Include="ApplicationLocalization.cs" />
     <Compile Include="Program.cs" />
@@ -162,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileForm\ProfileForm.resx">
       <DependentUpon>ProfileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateForm\UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UsersForm\UsersForm.resx">
       <DependentUpon>UsersForm.cs</DependentUpon>
@@ -177,7 +187,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

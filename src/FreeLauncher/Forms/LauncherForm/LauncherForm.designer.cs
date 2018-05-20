@@ -71,6 +71,7 @@ namespace FreeLauncher.Forms
             this.CloseGameOutput = new Telerik.WinControls.UI.RadCheckBox();
             this.EnableMinecraftLogging = new Telerik.WinControls.UI.RadCheckBox();
             this.MainGroupBox = new Telerik.WinControls.UI.RadGroupBox();
+            this.CheckUpdatesCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.radLabel4 = new Telerik.WinControls.UI.RadLabel();
             this.LangDropDownList = new Telerik.WinControls.UI.RadDropDownList();
             this.DownloadAssetsBox = new Telerik.WinControls.UI.RadCheckBox();
@@ -131,6 +132,7 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.EnableMinecraftLogging)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainGroupBox)).BeginInit();
             this.MainGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckUpdatesCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).BeginInit();
@@ -412,6 +414,7 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
+            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(426F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -474,28 +477,29 @@ namespace FreeLauncher.Forms
             // 
             // CloseGameOutput
             // 
+            this.CloseGameOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CloseGameOutput.Location = new System.Drawing.Point(5, 45);
             this.CloseGameOutput.Name = "CloseGameOutput";
             this.CloseGameOutput.Size = new System.Drawing.Size(327, 18);
             this.CloseGameOutput.TabIndex = 2;
             this.CloseGameOutput.Text = "Закрывать вкладку, если завершение прошло без ошибок";
             this.CloseGameOutput.ThemeName = "VisualStudio2012Dark";
+            this.CloseGameOutput.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
             // 
             // EnableMinecraftLogging
             // 
-            this.EnableMinecraftLogging.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableMinecraftLogging.Location = new System.Drawing.Point(5, 21);
             this.EnableMinecraftLogging.Name = "EnableMinecraftLogging";
             this.EnableMinecraftLogging.Size = new System.Drawing.Size(177, 18);
             this.EnableMinecraftLogging.TabIndex = 0;
             this.EnableMinecraftLogging.Text = "Выводить лог игры в консоль";
             this.EnableMinecraftLogging.ThemeName = "VisualStudio2012Dark";
-            this.EnableMinecraftLogging.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
             // 
             // MainGroupBox
             // 
             this.MainGroupBox.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping;
             this.MainGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.MainGroupBox.Controls.Add(this.CheckUpdatesCheckBox);
             this.MainGroupBox.Controls.Add(this.radLabel4);
             this.MainGroupBox.Controls.Add(this.LangDropDownList);
             this.MainGroupBox.Controls.Add(this.DownloadAssetsBox);
@@ -506,6 +510,17 @@ namespace FreeLauncher.Forms
             this.MainGroupBox.TabIndex = 12;
             this.MainGroupBox.Text = "Основные";
             this.MainGroupBox.ThemeName = "VisualStudio2012Dark";
+            // 
+            // CheckUpdatesCheckBox
+            // 
+            this.CheckUpdatesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckUpdatesCheckBox.Location = new System.Drawing.Point(5, 51);
+            this.CheckUpdatesCheckBox.Name = "CheckUpdatesCheckBox";
+            this.CheckUpdatesCheckBox.Size = new System.Drawing.Size(245, 18);
+            this.CheckUpdatesCheckBox.TabIndex = 6;
+            this.CheckUpdatesCheckBox.Text = "Проверять наличие обновлений лаунчера";
+            this.CheckUpdatesCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.CheckUpdatesCheckBox.ToggleState = Telerik.WinControls.Enumerations.ToggleState.On;
             // 
             // radLabel4
             // 
@@ -536,7 +551,7 @@ namespace FreeLauncher.Forms
             // 
             // DownloadAssetsBox
             // 
-            this.DownloadAssetsBox.Location = new System.Drawing.Point(5, 45);
+            this.DownloadAssetsBox.Location = new System.Drawing.Point(5, 75);
             this.DownloadAssetsBox.Name = "DownloadAssetsBox";
             this.DownloadAssetsBox.Size = new System.Drawing.Size(181, 18);
             this.DownloadAssetsBox.TabIndex = 0;
@@ -687,6 +702,7 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
+            this.LicensesPage.ItemSize = new System.Drawing.SizeF(421F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -953,6 +969,7 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.MainGroupBox)).EndInit();
             this.MainGroupBox.ResumeLayout(false);
             this.MainGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckUpdatesCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LangDropDownList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownloadAssetsBox)).EndInit();
@@ -1045,5 +1062,6 @@ namespace FreeLauncher.Forms
         private RadLabel FreeLauncherLicenseText;
         private RadPageViewPage EditProfiles;
         private RadListView profilesListView;
+        public RadCheckBox CheckUpdatesCheckBox;
     }
 }

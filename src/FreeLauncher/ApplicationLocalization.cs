@@ -55,10 +55,10 @@
         #region Settings Tab
 
         public string MainSettingsTitle { get; set; } = "Основные";
+        public string CheckUpdatesCheckBox { get; set; } = "Проверять наличие обновлений лаунчера";
         public string SkipAssetsDownload { get; set; } = "Пропускать загрузку ресурсов";
         public string EnableMinecraftLoggingText { get; set; } = "Выводить лог игры в консоль";
-
-        public string LoggerSettingsTitle { get; set; } = "Основные";
+        public string LoggerSettingsTitle { get; set; } = "Логирование";
 
         public string CloseGameOutputText { get; set; } =
             "Закрывать вкладку, если завершение было вызвано\nпринудительно или прошло без ошибок";
@@ -144,6 +144,13 @@
         public string RemoveSelectedUser { get; set; } = "Удалить выбранного пользователя";
         public string IncorrectLoginOrPassword { get; set; } = "Логин и/или пароль введены неверно!";
         public string PleaseWait { get; set; } = "Пожалуйста, подождите";
+
+        #endregion
+
+        #region UpdateForm
+
+        public string GoToGitHub { get; set; } = "Перейти на GitHub";
+        public string SupportDeveloper { get; set; } = "Поддержать разработчика";
 
         #endregion
 
