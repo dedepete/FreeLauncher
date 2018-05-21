@@ -100,7 +100,7 @@ namespace FreeLauncher.Forms
             this.LogoBox = new System.Windows.Forms.PictureBox();
             this.LaunchButton = new Telerik.WinControls.UI.RadButton();
             this.profilesDropDownBox = new Telerik.WinControls.UI.RadDropDownList();
-            this.EditProfile = new Telerik.WinControls.UI.RadButton();
+            this.EditProfileButton = new Telerik.WinControls.UI.RadButton();
             this.AddProfile = new Telerik.WinControls.UI.RadButton();
             this.langWikiLink = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.mainPageView)).BeginInit();
@@ -156,7 +156,7 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LaunchButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.profilesDropDownBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EditProfile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EditProfileButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddProfile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
@@ -414,7 +414,6 @@ namespace FreeLauncher.Forms
             // AboutPageViewPage
             // 
             this.AboutPageViewPage.Controls.Add(this.radScrollablePanel2);
-            this.AboutPageViewPage.ItemSize = new System.Drawing.SizeF(426F, 24F);
             this.AboutPageViewPage.Location = new System.Drawing.Point(5, 5);
             this.AboutPageViewPage.Name = "AboutPageViewPage";
             this.AboutPageViewPage.Size = new System.Drawing.Size(838, 293);
@@ -702,7 +701,6 @@ namespace FreeLauncher.Forms
             // LicensesPage
             // 
             this.LicensesPage.Controls.Add(this.licensePageView);
-            this.LicensesPage.ItemSize = new System.Drawing.SizeF(421F, 24F);
             this.LicensesPage.Location = new System.Drawing.Point(5, 5);
             this.LicensesPage.Name = "LicensesPage";
             this.LicensesPage.Size = new System.Drawing.Size(838, 293);
@@ -785,7 +783,7 @@ namespace FreeLauncher.Forms
             this.radPanel1.Controls.Add(this.LogoBox);
             this.radPanel1.Controls.Add(this.LaunchButton);
             this.radPanel1.Controls.Add(this.profilesDropDownBox);
-            this.radPanel1.Controls.Add(this.EditProfile);
+            this.radPanel1.Controls.Add(this.EditProfileButton);
             this.radPanel1.Controls.Add(this.AddProfile);
             this.radPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.radPanel1.Location = new System.Drawing.Point(0, 387);
@@ -882,16 +880,16 @@ namespace FreeLauncher.Forms
             this.profilesDropDownBox.ThemeName = "VisualStudio2012Dark";
             this.profilesDropDownBox.SelectedIndexChanged += new Telerik.WinControls.UI.Data.PositionChangedEventHandler(this.profilesDropDownBox_SelectedIndexChanged);
             // 
-            // EditProfile
+            // EditProfileButton
             // 
-            this.EditProfile.Location = new System.Drawing.Point(122, 33);
-            this.EditProfile.Name = "EditProfile";
-            this.EditProfile.Size = new System.Drawing.Size(110, 22);
-            this.EditProfile.TabIndex = 1;
-            this.EditProfile.Text = "Изменить профиль";
-            this.EditProfile.TextWrap = true;
-            this.EditProfile.ThemeName = "VisualStudio2012Dark";
-            this.EditProfile.Click += new System.EventHandler(this.EditProfile_Click);
+            this.EditProfileButton.Location = new System.Drawing.Point(122, 33);
+            this.EditProfileButton.Name = "EditProfileButton";
+            this.EditProfileButton.Size = new System.Drawing.Size(110, 22);
+            this.EditProfileButton.TabIndex = 1;
+            this.EditProfileButton.Text = "Изменить профиль";
+            this.EditProfileButton.TextWrap = true;
+            this.EditProfileButton.ThemeName = "VisualStudio2012Dark";
+            this.EditProfileButton.Click += new System.EventHandler(this.EditProfile_Click);
             // 
             // AddProfile
             // 
@@ -996,7 +994,7 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LaunchButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.profilesDropDownBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EditProfile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EditProfileButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddProfile)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
@@ -1040,7 +1038,7 @@ namespace FreeLauncher.Forms
         private PictureBox LogoBox;
         private RadButton LaunchButton;
         public RadDropDownList profilesDropDownBox;
-        private RadButton EditProfile;
+        private RadButton EditProfileButton;
         private RadButton AddProfile;
         private RadPageViewPage dotMCLauncherLicense;
         private RadPageViewPage FreeLauncherLicense;

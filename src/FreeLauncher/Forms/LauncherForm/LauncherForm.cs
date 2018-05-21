@@ -57,7 +57,7 @@ namespace FreeLauncher.Forms
             LaunchButton.Enabled = !block;
             profilesDropDownBox.Enabled = !block;
             DeleteProfileButton.Enabled = !block && (_profileManager.Profiles.Count > 1);
-            EditProfile.Enabled = !block;
+            EditProfileButton.Enabled = !block;
             AddProfile.Enabled = !block;
             NicknameDropDownList.Enabled = !block;
         }
@@ -185,7 +185,7 @@ Please, check for your Internet configuration and restart the launcher.
                 return;
             }
             _profileManager.LastUsedProfile = profilesDropDownBox.SelectedItem.Text;
-            _selectedProfile = _profileManager.Profiles[profilesDropDownBox.SelectedItem.Text];
+            _selectedProfile = _profileManager.GetProfile(profilesDropDownBox.SelectedItem.Text);
             UpdateVersionListView();
             SaveProfiles();
         }
@@ -207,15 +207,15 @@ Please, check for your Internet configuration and restart the launcher.
             };
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
-                _profileManager.Profiles.Remove(_profileManager.LastUsedProfile);
-                if (_profileManager.Profiles.ContainsKey(pf.Profile.ProfileName)) {
+                _profileManager.RemoveProfile(_profileManager.LastUsedProfile);
+                if (_profileManager.Profiles.Any(pair => pair.Key == pf.Profile.ProfileName)) {
                     RadMessageBox.Show(_configuration.Localization.ProfileAlreadyExistsErrorText,
                         _configuration.Localization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     UpdateProfileList();
                     return;
                 }
-                _profileManager.Profiles.Add(pf.Profile.ProfileName, pf.Profile);
+                _profileManager.AddProfile(pf.Profile);
                 _profileManager.LastUsedProfile = pf.Profile.ProfileName;
             }
             SaveProfiles();
@@ -231,13 +231,13 @@ Please, check for your Internet configuration and restart the launcher.
             };
             pf.ShowDialog();
             if (pf.DialogResult == DialogResult.OK) {
-                if (_profileManager.Profiles.ContainsKey(editedProfile.ProfileName)) {
+                if (_profileManager.Profiles.Any(pair => pair.Key == editedProfile.ProfileName)) {
                     RadMessageBox.Show(_configuration.Localization.ProfileAlreadyExistsErrorText,
                         _configuration.Localization.Error,
                         MessageBoxButtons.OK, RadMessageIcon.Error);
                     return;
                 }
-                _profileManager.Profiles.Add(editedProfile.ProfileName, editedProfile);
+                _profileManager.AddProfile(editedProfile);
                 _profileManager.LastUsedProfile = pf.Profile.ProfileName;
             }
             SaveProfiles();
@@ -254,7 +254,7 @@ Please, check for your Internet configuration and restart the launcher.
             if (dr != DialogResult.Yes) {
                 return;
             }
-            _profileManager.Profiles.Remove(_profileManager.LastUsedProfile);
+            _profileManager.RemoveProfile(_profileManager.LastUsedProfile);
             _profileManager.LastUsedProfile = _profileManager.Profiles.FirstOrDefault().Key;
             SaveProfiles();
             UpdateProfileList();
@@ -693,6 +693,7 @@ Please, check for your Internet configuration and restart the launcher.
         private void UpdateProfileList()
         {
             profilesDropDownBox.Items.Clear();
+            profilesListView.Items.Clear();
             try {
                 _profileManager =
                     ProfileManager.ParseProfile(_configuration.McDirectory + @"\launcher_profiles.json");
@@ -752,7 +753,7 @@ Please, check for your Internet configuration and restart the launcher.
                 SaveProfiles();
             }
             DeleteProfileButton.Enabled = _profileManager.Profiles.Count > 1;
-            profilesDropDownBox.Items.AddRange(_profileManager.Profiles.Keys);
+            profilesDropDownBox.Items.AddRange(_profileManager.Profiles.Select(pair => pair.Key));
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(_profileManager.LastUsedProfile, true);
             foreach (KeyValuePair<string, Profile> keyValuePair in _profileManager.Profiles) {
                 Profile profile = keyValuePair.Value;
@@ -760,7 +761,7 @@ Please, check for your Internet configuration and restart the launcher.
                 if (profile.AllowedReleaseTypes != null) {
                     allowedReleaseTypes = profile.AllowedReleaseTypes.Aggregate(allowedReleaseTypes, (current, type) => current + $", {type}");
                 }
-                profilesListView.Items.Add(keyValuePair.Key, profile.ProfileName, profile.SelectedVersion, allowedReleaseTypes);
+                profilesListView.Items.Add(keyValuePair.Key, profile.ProfileName, profile.SelectedVersion ?? "latest", allowedReleaseTypes, profile.LauncherVisibilityOnGameClose);
             }
         }
 
@@ -1080,7 +1081,7 @@ Please, check for your Internet configuration and restart the launcher.
 
             LaunchButton.Text = localization.LaunchButtonText;
             AddProfile.Text = localization.AddProfileButtonText;
-            EditProfile.Text = localization.EditProfileButtonText;
+            EditProfileButton.Text = localization.EditProfileButtonText;
             SetToClipboardButton.Text = localization.SetToClipboardButtonText;
 
             versionsListView.Columns[0].HeaderText = localization.VersionHeader;
@@ -1216,37 +1217,55 @@ Please, check for your Internet configuration and restart the launcher.
         {
             profilesListView.SelectedItem = e.Item;
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(profilesListView.SelectedItem[0].ToString(), true);
+            RadContextMenu contextMenu = new RadContextMenu();
             RadMenuItem launchButton = new RadMenuItem
             {
                 Text = "Launch"
             };
+            launchButton.Click += delegate {
+                LaunchButton.PerformClick();
+            };
             RadMenuItem moveUpButton = new RadMenuItem {
                 Text = "Move up",
                 Enabled = profilesListView.SelectedIndex != 0
+            };
+            moveUpButton.Click += delegate {
+                _profileManager.MoveDownProfile(_profileManager.GetProfile(profilesDropDownBox.SelectedItem.Text));
+                SaveProfiles();
+                UpdateProfileList();
             };
             RadMenuItem moveDownButton = new RadMenuItem
             {
                 Text = "Move down",
                 Enabled = profilesListView.SelectedIndex != profilesListView.Items.Count - 1
             };
+            moveDownButton.Click += delegate {
+                _profileManager.MoveUpProfile(_profileManager.GetProfile(profilesDropDownBox.SelectedItem.Text));
+                SaveProfiles();
+                UpdateProfileList();
+            };
             RadMenuItem deleteButton = new RadMenuItem
             {
                 Text = "Delete",
                 Enabled = profilesListView.Items.Count > 1
             };
-            RadMenuItem editButton = new RadMenuItem
-            {
+            deleteButton.Click += delegate {
+                DeleteProfileButton.PerformClick();
+            };
+            RadMenuItem editButton = new RadMenuItem {
                 Text = "Edit"
             };
-            RadContextMenu menuStrip = new RadContextMenu();
-            menuStrip.Items.Add(launchButton);
-            menuStrip.Items.Add(new RadMenuSeparatorItem());
-            menuStrip.Items.Add(moveUpButton);
-            menuStrip.Items.Add(moveDownButton);
-            menuStrip.Items.Add(new RadMenuSeparatorItem());
-            menuStrip.Items.Add(deleteButton);
-            menuStrip.Items.Add(editButton);
-            new RadContextMenuManager().SetRadContextMenu(profilesListView, menuStrip);
+            editButton.Click += delegate {
+                EditProfileButton.PerformClick();
+            };
+            contextMenu.Items.Add(launchButton);
+            contextMenu.Items.Add(new RadMenuSeparatorItem());
+            contextMenu.Items.Add(moveUpButton);
+            contextMenu.Items.Add(moveDownButton);
+            contextMenu.Items.Add(new RadMenuSeparatorItem());
+            contextMenu.Items.Add(deleteButton);
+            contextMenu.Items.Add(editButton);
+            new RadContextMenuManager().SetRadContextMenu(profilesListView, contextMenu);
         }
 
         private void CheckLauncherUpdates()

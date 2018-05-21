@@ -17,8 +17,22 @@ namespace dotMCLauncher.Profiling
         /// <summary>
         /// Profile list. 
         /// </summary>
+        [JsonIgnore]
+        public List<KeyValuePair<string, Profile>> Profiles { get; set; }
+
         [JsonProperty("profiles")]
-        public Dictionary<string, Profile> Profiles { get; set; }
+        private Dictionary<string, Profile> _profiles
+        {
+            get {
+                if (Profiles == null || !Profiles.Any()) {
+                    return null;
+                }
+                return Profiles.ToDictionary(pair => pair.Key, pair => pair.Value);
+            }
+            set {
+                Profiles = value.ToList();
+            }
+        }
 
         /// <summary>
         /// Parses profiles. 
@@ -50,6 +64,11 @@ namespace dotMCLauncher.Profiling
             });
         }
 
+        public Profile GetProfile(string name)
+        {
+            return Profiles.First(pair => pair.Key == name).Value;
+        }
+
         /// <summary>
         /// Returns profiles data in JSON format. 
         /// </summary>
@@ -72,22 +91,34 @@ namespace dotMCLauncher.Profiling
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
                 throw new ArgumentNullException(nameof(profile.ProfileName));
             }
-            if (Profiles.Keys.Contains(profile.ProfileName)) {
+            if (Profiles.ToArray().Any(pair => pair.Key == profile.ProfileName)) {
                 throw new ArgumentException("Profile '" + profile.ProfileName + "' already exists.");
             }
-            Profiles.Add(profile.ProfileName, profile);
+            Profiles.Add(new KeyValuePair<string, Profile>(profile.ProfileName, profile));
         }
 
         /// <summary>
         /// Removes profile from list. 
         /// </summary>
         /// <param name="profile">Profile.</param>
-        public void DeleteProfile(Profile profile)
+        public void RemoveProfile(Profile profile)
         {
             if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
                 throw new ArgumentNullException(nameof(profile.ProfileName));
             }
-            Profiles.Remove(profile.ProfileName);
+            Profiles.Remove(Profiles.First(pair => pair.Key == profile.ProfileName));
+        }
+
+        /// <summary>
+        /// Removes profile from list. 
+        /// </summary>
+        /// <param name="profileName">Profile name.</param>
+        public void RemoveProfile(string profileName)
+        {
+            if (string.IsNullOrWhiteSpace(profileName)) {
+                throw new ArgumentNullException(nameof(profileName));
+            }
+            Profiles.Remove(Profiles.First(pair => pair.Key == profileName));
         }
 
         /// <summary>
@@ -100,9 +131,38 @@ namespace dotMCLauncher.Profiling
             if (LastUsedProfile == profile.ProfileName) {
                 LastUsedProfile = newName;
             }
-            Profiles.Remove(profile.ProfileName);
+            RemoveProfile(profile);
             profile.ProfileName = newName;
-            Profiles[newName] = profile;
+            AddProfile(profile);
+        }
+
+        public void MoveUpProfile(Profile profile)
+        {
+            ChangeProfilesOrder(profile, false);
+        }
+
+        public void MoveDownProfile(Profile profile)
+        {
+            ChangeProfilesOrder(profile, true);
+        }
+
+        private void ChangeProfilesOrder(Profile profile, bool moveDown)
+        {
+            if (string.IsNullOrWhiteSpace(profile.ProfileName)) {
+                throw new ArgumentNullException(nameof(profile.ProfileName));
+            }
+            if (Profiles.All(pair => pair.Key != profile.ProfileName)) {
+                throw new ArgumentException("Profile '" + profile.ProfileName + "' does not exist.");
+            }
+            int index = Profiles.IndexOf(Profiles.First(pair => pair.Key == profile.ProfileName));
+            if (index != 0 && moveDown) {
+                Profiles.RemoveAt(index);
+                Profiles.Insert(index - 1, new KeyValuePair<string, Profile>(profile.ProfileName, profile));
+            }
+            if (index != Profiles.Count - 1 && !moveDown) {
+                Profiles.RemoveAt(index);
+                Profiles.Insert(index + 1, new KeyValuePair<string, Profile>(profile.ProfileName, profile));
+            }
         }
     }
 }
