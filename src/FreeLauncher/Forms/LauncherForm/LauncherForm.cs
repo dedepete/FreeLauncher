@@ -1218,8 +1218,7 @@ Please, check for your Internet configuration and restart the launcher.
             profilesListView.SelectedItem = e.Item;
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(profilesListView.SelectedItem[0].ToString(), true);
             RadContextMenu contextMenu = new RadContextMenu();
-            RadMenuItem launchButton = new RadMenuItem
-            {
+            RadMenuItem launchButton = new RadMenuItem {
                 Text = "Launch"
             };
             launchButton.Click += delegate {
@@ -1234,8 +1233,7 @@ Please, check for your Internet configuration and restart the launcher.
                 SaveProfiles();
                 UpdateProfileList();
             };
-            RadMenuItem moveDownButton = new RadMenuItem
-            {
+            RadMenuItem moveDownButton = new RadMenuItem {
                 Text = "Move down",
                 Enabled = profilesListView.SelectedIndex != profilesListView.Items.Count - 1
             };
@@ -1244,8 +1242,7 @@ Please, check for your Internet configuration and restart the launcher.
                 SaveProfiles();
                 UpdateProfileList();
             };
-            RadMenuItem deleteButton = new RadMenuItem
-            {
+            RadMenuItem deleteButton = new RadMenuItem {
                 Text = "Delete",
                 Enabled = profilesListView.Items.Count > 1
             };

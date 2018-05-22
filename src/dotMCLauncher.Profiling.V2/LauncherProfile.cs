@@ -197,9 +197,7 @@ namespace dotMCLauncher.Profiling.V2
                     case LauncherProfileIcon.FARMLAND:
                         _icon = "Farmland";
                         break;
-                    case LauncherProfileIcon.FURNACE:
-                        _icon = null;
-                        break;
+                    // LauncherProfileIcon.FURNACE icon as null.
                     case LauncherProfileIcon.FURNACE_ON:
                         _icon = "Furnace_On";
                         break;
