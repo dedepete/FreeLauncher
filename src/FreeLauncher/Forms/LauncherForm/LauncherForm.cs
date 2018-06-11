@@ -976,7 +976,7 @@ Please, check for your Internet configuration and restart the launcher.
             AppendLog("Finished checking game assets.");
             if (selectedVersionManifest.AssetsIndex == null || selectedVersionManifest.AssetsIndex == "legacy") {
                 StatusBarValue = 0;
-                SetStatusBarMaxValue(manifest.Objects.Select(pair => pair.Value.Hash.GetFullPath())
+                SetStatusBarMaxValue(manifest.Objects.Select(pair => pair.Value.AssociatedName)
                     .Count(
                         filename =>
                             !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
@@ -985,7 +985,7 @@ Please, check for your Internet configuration and restart the launcher.
                 foreach (Asset asset in manifest.Objects.Select(pair => pair.Value)
                     .Where(asset =>
                         !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
-                            asset.Hash.GetFullPath()) || _restoreVersion)) {
+                            asset.AssociatedName) || _restoreVersion)) {
                     try {
                         if (!Directory.Exists(
                             new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName)
