@@ -400,13 +400,13 @@ Please, check for your Internet configuration and restart the launcher.
                             }, {
                                 "assets_root", _configuration.McDirectory + @"\assets\"
                             }, {
-                                "game_assets", _configuration.McDirectory + @"\assets\legacy\"
+                                "game_assets", _configuration.McDirectory + @"\assets\virtual\legacy\"
                             }, {
                                 "assets_index_name", selectedVersionManifest.GetAssetsIndex()
                             }, {
                                 "version_type", selectedVersionManifest.ReleaseType
                             }, {
-                                "auth_session", _selectedUser.ClientToken ?? "sample_token"
+                                "auth_session", $"token:{_selectedUser.ClientToken}:{_selectedUser.Uuid}" ?? "token:sample_token:sample_token"
                             }, {
                                 "auth_access_token", _selectedUser.AccessToken ?? "sample_token"
                             }, {
@@ -979,26 +979,22 @@ Please, check for your Internet configuration and restart the launcher.
                 SetStatusBarMaxValue(manifest.Objects.Select(pair => pair.Value.AssociatedName)
                     .Count(
                         filename =>
-                            !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
+                            !File.Exists(_configuration.McDirectory + @"\assets\virtual\legacy\" +
                                 filename) || _restoreVersion) + 1);
                 UpdateStatusBarAndLog("Converting assets...");
                 foreach (Asset asset in manifest.Objects.Select(pair => pair.Value)
                     .Where(asset =>
-                        !File.Exists(_configuration.McDirectory + @"\assets\legacy\" +
+                        !File.Exists(_configuration.McDirectory + @"\assets\virtual\legacy\" +
                             asset.AssociatedName) || _restoreVersion)) {
+                    string filename = _configuration.McDirectory + @"\assets\virtual\legacy\" + asset.AssociatedName;
                     try {
-                        if (!Directory.Exists(
-                            new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName)
-                                .DirectoryName)) {
-                            Directory.CreateDirectory(
-                                new FileInfo(_configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName)
-                                    .DirectoryName);
+                        if (!Directory.Exists(new FileInfo(filename).DirectoryName)) {
+                            Directory.CreateDirectory(new FileInfo(filename).DirectoryName);
                         }
                         AppendDebug(
                             $"Converting '{asset.Hash.GetFullPath()}' to '{asset.AssociatedName}'");
-                        File.Copy(
-                            _configuration.McDirectory + @"\assets\objects\" + asset.Hash.GetFullPath(),
-                            _configuration.McDirectory + @"\assets\legacy\" + asset.AssociatedName);
+                        File.Copy(_configuration.McDirectory + @"\assets\objects\" + asset.Hash.GetFullPath(),
+                            filename);
                     } catch (Exception ex) {
                         AppendLog(ex.ToString());
                     }
