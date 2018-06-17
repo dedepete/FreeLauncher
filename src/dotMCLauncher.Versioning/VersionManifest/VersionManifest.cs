@@ -194,17 +194,15 @@ namespace dotMCLauncher.Versioning
             }
             VersionManifest manifest = InheritableVersionManifest;
             while (true) {
-                if (manifest.InheritsFrom == null) {
-                    if (manifest.AssetsIndex != null) {
+                if (manifest?.InheritsFrom == null) {
+                    if (manifest?.AssetsIndex != null) {
                         return manifest.AssetsIndex;
                     }
                     break;
                 }
                 manifest = manifest.InheritableVersionManifest;
             }
-            throw new VersionCorrupted("Can't get assets index.") {
-                Version = VersionId
-            };
+            return "legacy";
         }
 
         public string GetBaseJar()
