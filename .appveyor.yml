@@ -28,6 +28,9 @@ before_deploy:
       Get-ChildItem .\src\FreeLauncher\bin\$(CONFIGURATION)\*.zip | % { Push-AppveyorArtifact $_.FullName -DeploymentName deployment }
     }
 
+artifacts:
+- path: \src\FreeLauncher\bin\$(CONFIGURATION)\FreeLauncher.exe
+
 deploy:
   provider: GitHub
   auth_token:
