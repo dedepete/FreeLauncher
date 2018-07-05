@@ -1,8 +1,6 @@
 version: '{build}'
 
-image:
-- Visual Studio 2015
-- Visual Studio 2017
+image: Visual Studio 2015
 
 platform: Any CPU
 
@@ -18,14 +16,13 @@ before_build:
     }
 
 build:
-  parallel: true
   verbosity: normal
 
 before_deploy:
 - ps: >-
-    Push-AppveyorArtifact .\src\FreeLauncher\bin\$(CONFIGURATION)\FreeLauncher.exe -DeploymentName deployment
     if ($env:APPVEYOR_REPO_TAG -eq "true") {
-      Push-AppveyorArtifact .\src\FreeLauncher\bin\$(CONFIGURATION)\FreeLauncher.zip -DeploymentName deployment
+      Push-AppveyorArtifact .\src\FreeLauncher\bin\$env:CONFIGURATION\FreeLauncher.exe -DeploymentName deployment
+      Push-AppveyorArtifact .\src\FreeLauncher\bin\$env:CONFIGURATION\FreeLauncher.zip -DeploymentName deployment
     }
 
 artifacts:
