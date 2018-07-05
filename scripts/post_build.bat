@@ -31,7 +31,7 @@ IF %ERRORLEVEL% NEQ 0 (
 	ECHO 7z not found being installed.
 	GOTO FINISH
 )
-7z a "%TARGETDIR%\zip\FreeLauncher.zip" "%TARGETDIR%\FreeLauncher.exe" "%TARGETDIR%\freelauncher-langs\" -r
+7z a "%TARGETDIR%\FreeLauncher.zip" "%TARGETDIR%\FreeLauncher.exe" "%TARGETDIR%\freelauncher-langs\" -r
 IF NOT DEFINED DLLS (
 	GOTO FINISH
 )
