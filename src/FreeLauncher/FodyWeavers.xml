@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml
+    version="1.0"
+    encoding="utf-8" ?>
 <Weavers>
-  <Stamp />
+    <Costura
+        IncludeAssemblies='CommandLine|DotNetZip|Newtonsoft.Json|Telerik.WinControls|Telerik.WinControls.Themes.VisualStudio2012Dark|Telerik.WinControls.UI|TelerikCommon|dotMCLauncher|dotMCLauncher.Profiling|dotMCLauncher.Resourcing|dotMCLauncher.Versioning|dotMCLauncher.Yggdrasil'/>
 </Weavers>

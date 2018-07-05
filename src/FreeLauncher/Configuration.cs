@@ -18,21 +18,21 @@ namespace FreeLauncher
         public ApplicationArguments Arguments { get; private set; }
 
         public ApplicationLocalization Localization { get; private set; }
-        public Dictionary<string, ApplicationLocalization> LocalizationsList { get; private set; }
+        public Dictionary<string, ApplicationLocalization> LocalizationsList { get; }
 
-        public string McDirectory { get; private set; }
-        public string McLauncher { get; private set; }
-        public string McVersions { get; private set; }
-        public string McLibs { get; private set; }
+        public string McDirectory { get; }
+        public string McLauncher { get; }
+        public string McVersions { get; }
+        public string McLibs { get; }
 
-        public ApplicationConfiguration ApplicationConfiguration { get; private set; }
+        public ApplicationConfiguration ApplicationConfiguration { get; }
 
-        public Configuration(string[] args)
+        public Configuration(IEnumerable<string> args)
         {
             Arguments = new ApplicationArguments();
             Localization = new ApplicationLocalization();
             LocalizationsList = new Dictionary<string, ApplicationLocalization>();
-            Parser.Default.ParseArguments(args, Arguments);
+            Parser.Default.ParseArguments<ApplicationArguments>(args).WithParsed(arguments => Arguments = arguments);
             McDirectory = Arguments.WorkingDirectory ??
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     ".minecraft");

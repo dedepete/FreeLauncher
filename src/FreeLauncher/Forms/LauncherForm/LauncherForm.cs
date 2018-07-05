@@ -143,12 +143,6 @@ namespace FreeLauncher.Forms
                 Directory.CreateDirectory(_configuration.McLauncher);
             }
 
-            CheckLauncherUpdates();
-
-            if (!_configuration.Arguments.NotAStandalone) {
-                UpdateVersions();
-            }
-
             if (_configuration.Arguments.OfflineMode) {
                 newsBrowser.DocumentText = $@"<html><body>
 <h1>OFFLINE-MODE ENABLED</h1>
@@ -162,7 +156,10 @@ Please, check for your Internet configuration and restart the launcher.
                 Text += " [OFFLINE]";
             } else {
                 newsBrowser.Navigate("http://dedepete.github.io/FreeLauncher");
+                CheckLauncherUpdates();
             }
+
+            UpdateVersions();
 
             UpdateProfileList();
             UpdateVersionListView();
@@ -1267,9 +1264,6 @@ Please, check for your Internet configuration and restart the launcher.
                 return;
             }
             AppendLog("Checking for launcher updates...");
-            if (_configuration.Arguments.OfflineMode) {
-                AppendLog("Unable to check for launcher updates. Internet connection is not established or OFFLINE mode was force enabled.");
-            }
             try {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 WebClient wc = new WebClient();

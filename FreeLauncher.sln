@@ -61,6 +61,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2AE1C310-EEF2-4741-9940-9206D8762459}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\post_build.bat = scripts\post_build.bat
+		scripts\pre_build.bat = scripts\pre_build.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9213DE3D-1749-434B-8804-6849D5165884}"

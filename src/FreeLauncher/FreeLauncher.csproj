@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,18 +10,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FreeLauncher</RootNamespace>
     <AssemblyName>FreeLauncher</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>
-    </AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>
-    </AssemblyFileVersionSettings>
+    <AssemblyVersionSettings>None.None.None.Increment</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>None.None.None.Increment</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>
     </AssemblyInfoVersionSettings>
     <NuGetPackageImportStamp>
@@ -46,6 +44,8 @@
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+    <AssemblyInfoVersionSemVerSettings>
+    </AssemblyInfoVersionSemVerSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -95,8 +95,12 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Costura, Version=3.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Costura.Fody.3.1.0\lib\net46\Costura.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -190,7 +194,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -217,7 +223,9 @@
     <None Include="Resources\edit.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FodyWeavers.xml" />
+    <None Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -235,10 +243,6 @@
     <ProjectReference Include="..\dotMCLauncher.Resourcing\dotMCLauncher.Resourcing.csproj">
       <Project>{98ced877-cfe5-4dbc-a54e-1d98c3d44095}</Project>
       <Name>dotMCLauncher.Resourcing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\dotMCLauncher.Profiling.V2\dotMCLauncher.Profiling.V2.csproj">
-      <Project>{55a338d8-496a-4a25-a8fc-2c55238188c5}</Project>
-      <Name>dotMCLauncher.Profiling.V2</Name>
     </ProjectReference>
     <ProjectReference Include="..\dotMCLauncher.Profiling\dotMCLauncher.Profiling.csproj">
       <Project>{e0f782f2-153e-4285-862c-1279a32b1141}</Project>
@@ -266,23 +270,42 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="BeforeBuild">
+  <Message Text=" --=== Before Build ==--"></Message>
+    <ReadLinesFromFile File=".\Properties\AssemblyInfo.cs">
+        <Output TaskParameter="Lines"
+                ItemName="AssemblyInfoContent"/>
+    </ReadLinesFromFile>
+    <PropertyGroup>
+        <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
+        <In>@(AssemblyInfoContent)</In>
+        <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
+    </PropertyGroup>
+    <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\pre_build.bat $(Out.Remove(0, 28))" />
+  </Target>
   <Target Name="AfterBuild">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="Targets" />
-    </GetAssemblyIdentity>
-    <ItemGroup>
-      <VersionNumber Include="@(Targets->'%(Version)')" />
-    </ItemGroup>
-    <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\post_build.bat $(Configuration) @(VersionNumber)" />
+  <Message Text=" --=== After Build ==--"></Message>
+    <ReadLinesFromFile File=".\Properties\AssemblyInfo.cs">
+        <Output TaskParameter="Lines"
+                ItemName="AssemblyInfoContent"/>
+    </ReadLinesFromFile>
+    <PropertyGroup>
+        <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
+        <In>@(AssemblyInfoContent)</In>
+        <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
+    </PropertyGroup>
+    <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\post_build.bat $(Configuration) $(Out.Remove(0, 28))" />
     <Exec Condition="$(OS) != 'Windows_NT'" Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" />
   </Target>
+  <Import Project="..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets" Condition="Exists('..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Fody.2.5.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.2.5.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Fody.3.1.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.3.1.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets'))" />
   </Target>
-  <Import Project="..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets" Condition="Exists('..\..\packages\EmptyLicensesLicx.1.1.0\build\EmptyLicensesLicx.targets')" />
-  <Import Project="..\..\packages\Fody.2.5.0\build\Fody.targets" Condition="Exists('..\..\packages\Fody.2.5.0\build\Fody.targets')" />
+  <Import Project="..\..\packages\Fody.3.1.3\build\Fody.targets" Condition="Exists('..\..\packages\Fody.3.1.3\build\Fody.targets')" />
+  <Import Project="..\..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets" Condition="Exists('..\..\packages\Costura.Fody.3.1.0\build\Costura.Fody.targets')" />
 </Project>
