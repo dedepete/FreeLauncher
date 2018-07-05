@@ -1,10 +1,8 @@
-version: '{build}-{branch}'
+version: '{build}'
 
 image:
 - Visual Studio 2015
 - Visual Studio 2017
-
-configuration: Debug
 
 platform: Any CPU
 
@@ -12,14 +10,31 @@ cache: packages\
 
 before_build:
 - cmd: nuget restore
+- ps: >-
+    if ($env:APPVEYOR_REPO_TAG -ne "true") {
+      $env:CONFIGURATION="Debug"
+    } else {
+      $env:CONFIGURATION="Release"
+    }
 
 build:
   parallel: true
   verbosity: normal
 
-test: off
+before_deploy:
+- ps: >-
+    Push-AppveyorArtifact .\src\FreeLauncher\bin\$(CONFIGURATION)\FreeLauncher.exe -DeploymentName deployment
+    if ($env:APPVEYOR_REPO_TAG -eq "true") {
+      Get-ChildItem .\src\FreeLauncher\bin\$(CONFIGURATION)\*.zip | % { Push-AppveyorArtifact $_.FullName -DeploymentName deployment }
+    }
 
-artifacts:
-- path: src\FreeLauncher\bin\$(configuration)
-
-deploy: off
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: 7cnsqpVwcTuOaXbhv/wDjIFz/4J/9otXf3TqbI3ExgoRU5kwB1JUuqrCrYmkJFXO
+  artifact: deployment
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
