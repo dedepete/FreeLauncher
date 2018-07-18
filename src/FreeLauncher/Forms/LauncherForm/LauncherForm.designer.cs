@@ -738,7 +738,7 @@ namespace FreeLauncher.Forms
             this.FreeLauncherLicenseText.TabIndex = 2;
             this.FreeLauncherLicenseText.Text = resources.GetString("FreeLauncherLicenseText.Text");
             this.FreeLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.FreeLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("FreeLauncherLicenseText.Text");
+            ((Telerik.WinControls.UI.RadLabelElement)(this.FreeLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("resource.Text");
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.FreeLauncherLicenseText.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // dotMCLauncherLicense
@@ -759,7 +759,7 @@ namespace FreeLauncher.Forms
             this.dotMCLauncherLicenseText.TabIndex = 1;
             this.dotMCLauncherLicenseText.Text = resources.GetString("dotMCLauncherLicenseText.Text");
             this.dotMCLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.dotMCLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("dotMCLauncherLicenseText.Text");
+            ((Telerik.WinControls.UI.RadLabelElement)(this.dotMCLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("resource.Text1");
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.dotMCLauncherLicenseText.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // StatusBar

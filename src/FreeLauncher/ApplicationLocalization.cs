@@ -13,6 +13,7 @@
         public string NewsTabText { get; set; } = "НОВОСТИ";
         public string ConsoleTabText { get; set; } = "КОНСОЛЬ";
         public string ManageVersionsTabText { get; set; } = "УПРАВЛЕНИЕ СБОРКАМИ";
+        public string ManageProfilesTabText { get; set; } = "УПРАВЛЕНИЕ ПРОФИЛЯМИ";
         public string AboutTabText { get; set; } = "О ЛАУНЧЕРЕ";
         public string LicensesTabText { get; set; } = "ЛИЦЕНЗИИ";
         public string SettingsTabText { get; set; } = "НАСТРОЙКИ";

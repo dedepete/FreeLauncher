@@ -1068,6 +1068,7 @@ Please, check for your Internet configuration and restart the launcher.
             News.Text = localization.NewsTabText;
             ConsolePage.Text = localization.ConsoleTabText;
             EditVersions.Text = localization.ManageVersionsTabText;
+            EditProfiles.Text = localization.ManageProfilesTabText;
             AboutPage.Text = localization.AboutTabText;
             AboutPageViewPage.Text = localization.AboutTabText;
             LicensesPage.Text = localization.LicensesTabText;

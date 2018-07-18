@@ -48,16 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "home", "home", "{1287194F-0
 		.github\assets\wiki\home\header.jpg = .github\assets\wiki\home\header.jpg
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "screenshots", "screenshots", "{92CEFE79-96B0-4653-B423-EE4A539D5BAE}"
-	ProjectSection(SolutionItems) = preProject
-		.github\assets\wiki\screenshots\scr_015_01.png = .github\assets\wiki\screenshots\scr_015_01.png
-		.github\assets\wiki\screenshots\scr_015_02.png = .github\assets\wiki\screenshots\scr_015_02.png
-		.github\assets\wiki\screenshots\scr_015_03.png = .github\assets\wiki\screenshots\scr_015_03.png
-		.github\assets\wiki\screenshots\scr_015_04.png = .github\assets\wiki\screenshots\scr_015_04.png
-		.github\assets\wiki\screenshots\scr_015_05.png = .github\assets\wiki\screenshots\scr_015_05.png
-		.github\assets\wiki\screenshots\scr_015_06.png = .github\assets\wiki\screenshots\scr_015_06.png
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2AE1C310-EEF2-4741-9940-9206D8762459}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\post_build.bat = scripts\post_build.bat
@@ -189,7 +179,6 @@ Global
 		{68CAA24B-D44E-4A65-8100-E358C73BAF82} = {478FD4B4-1BD7-4028-B142-F1C2505BC21F}
 		{A4748344-C88A-4690-ACBB-91D1C73E3DE8} = {68CAA24B-D44E-4A65-8100-E358C73BAF82}
 		{1287194F-03E2-4144-8C1A-20C760AF7693} = {A4748344-C88A-4690-ACBB-91D1C73E3DE8}
-		{92CEFE79-96B0-4653-B423-EE4A539D5BAE} = {A4748344-C88A-4690-ACBB-91D1C73E3DE8}
 		{2AE1C310-EEF2-4741-9940-9206D8762459} = {FE424D60-EAE8-4843-A970-F35DDFFE81C5}
 		{9213DE3D-1749-434B-8804-6849D5165884} = {FE424D60-EAE8-4843-A970-F35DDFFE81C5}
 		{E41644A8-2949-4CC3-B1B1-CEBF32B055A2} = {E42ABFDD-4269-48E1-8139-FD2FC6CAAC2F}
