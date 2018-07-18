@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
             this.changelogBox = new System.Windows.Forms.RichTextBox();
             this.goButton = new Telerik.WinControls.UI.RadButton();
             this.cancelButton = new Telerik.WinControls.UI.RadButton();
@@ -99,6 +100,7 @@
             this.Controls.Add(this.goButton);
             this.Controls.Add(this.changelogBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpdateForm";

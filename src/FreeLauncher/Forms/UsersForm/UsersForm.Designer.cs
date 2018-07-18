@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UsersForm));
             this.label1 = new System.Windows.Forms.Label();
             this.UsersListControl = new Telerik.WinControls.UI.RadListControl();
             this.DeleteUserButton = new Telerik.WinControls.UI.RadButton();
@@ -61,7 +62,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label1.Location = new System.Drawing.Point(1, 222);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(201, 13);
+            this.label1.Size = new System.Drawing.Size(216, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Powered by dotMCLauncher.Networking";
             // 
@@ -188,6 +189,7 @@
             this.Controls.Add(this.UsersListControl);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UsersForm";

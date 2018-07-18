@@ -3,7 +3,7 @@
     public class ApplicationLocalization
     {
         public string Name { get; set; } = "Русский";
-        public string LanguageTag { get; set; } = "ru-RU";
+        public string LanguageTag { get; set; } = "ru_RU";
         public string Authors { get; set; } = "dedepete";
 
         #region LauncherForm
@@ -36,7 +36,19 @@
         public string LastUpdatedHeader { get; set; } = "Последнее обновление";
         public string AssetsIndexHeader { get; set; } = "Индекс ресурсов";
         public string DependencyHeader { get; set; } = "Зависит от";
+        
+        public string Restore { get; set; } = "Восстановить";
+        public string OpenLocation { get; set; } = "Открыть расположение";
+        public string DeleteVersion { get; set; } = "Удалить сборку";
+        public string DeleteConfirmationTitle { get; set; } = "Подтверждение удаления";
+        public string DeleteConfirmationText { get; set; } = "Вы действительно хотите удалить сборку '{0}'?";
 
+        #endregion
+
+        #region Profile Managment Tab
+
+        public string MoveUp { get; set; } = "Переместить вверх";
+        public string MoveDown { get; set; } = "Переместить вниз";
         #endregion
 
         #region About Tab
@@ -66,11 +78,7 @@
         #endregion
 
         public string Launch { get; set; } = "Запустить";
-        public string Restore { get; set; } = "Восстановить";
-        public string OpenLocation { get; set; } = "Открыть расположение";
-        public string DeleteVersion { get; set; } = "Удалить сборку";
-        public string DeleteConfirmationTitle { get; set; } = "Подтверждение удаления";
-        public string DeleteConfirmationText { get; set; } = "Вы действительно хотите удалить сборку '{0}'?";
+        public string Delete { get; set; } = "Удалить";
         public string ReadyToLaunch { get; set; } = "Готов к запуску сборки {0}";
         public string ReadyToDownload { get; set; } = "Готов к загрузке сборки {0}";
         public string EditingProfileTitle { get; set; } = "Редактирование профиля";

@@ -1212,13 +1212,13 @@ Please, check for your Internet configuration and restart the launcher.
             profilesDropDownBox.SelectedItem = profilesDropDownBox.FindItemExact(profilesListView.SelectedItem[0].ToString(), true);
             RadContextMenu contextMenu = new RadContextMenu();
             RadMenuItem launchButton = new RadMenuItem {
-                Text = "Launch"
+                Text = _configuration.Localization.Launch
             };
             launchButton.Click += delegate {
                 LaunchButton.PerformClick();
             };
             RadMenuItem moveUpButton = new RadMenuItem {
-                Text = "Move up",
+                Text = _configuration.Localization.MoveUp,
                 Enabled = profilesListView.SelectedIndex != 0
             };
             moveUpButton.Click += delegate {
@@ -1227,7 +1227,7 @@ Please, check for your Internet configuration and restart the launcher.
                 UpdateProfileList();
             };
             RadMenuItem moveDownButton = new RadMenuItem {
-                Text = "Move down",
+                Text = _configuration.Localization.MoveDown,
                 Enabled = profilesListView.SelectedIndex != profilesListView.Items.Count - 1
             };
             moveDownButton.Click += delegate {
@@ -1236,14 +1236,14 @@ Please, check for your Internet configuration and restart the launcher.
                 UpdateProfileList();
             };
             RadMenuItem deleteButton = new RadMenuItem {
-                Text = "Delete",
+                Text = _configuration.Localization.Delete,
                 Enabled = profilesListView.Items.Count > 1
             };
             deleteButton.Click += delegate {
                 DeleteProfileButton.PerformClick();
             };
             RadMenuItem editButton = new RadMenuItem {
-                Text = "Edit"
+                Text = _configuration.Localization.EditProfileButtonText
             };
             editButton.Click += delegate {
                 EditProfileButton.PerformClick();

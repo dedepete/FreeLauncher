@@ -34,12 +34,18 @@ namespace FreeLauncher.Forms
             Telerik.WinControls.UI.RadListDataItem radListDataItem1 = new Telerik.WinControls.UI.RadListDataItem();
             Telerik.WinControls.UI.RadListDataItem radListDataItem2 = new Telerik.WinControls.UI.RadListDataItem();
             Telerik.WinControls.UI.RadListDataItem radListDataItem3 = new Telerik.WinControls.UI.RadListDataItem();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileForm));
             this.JavaSettingsGroupBox = new Telerik.WinControls.UI.RadGroupBox();
             this.javaExecutableBox = new Telerik.WinControls.UI.RadTextBox();
             this.JavaExecutableCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.javaArgumentsBox = new Telerik.WinControls.UI.RadTextBox();
             this.JavaArgumentsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.VersionSettingsGroupBox = new Telerik.WinControls.UI.RadGroupBox();
+            this.snapshotsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.otherCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.betaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
+            this.versionsDropDownList = new Telerik.WinControls.UI.RadDropDownList();
+            this.alphaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             this.MainProfileSettingsGroupBox = new Telerik.WinControls.UI.RadGroupBox();
             this.radButton1 = new Telerik.WinControls.UI.RadButton();
             this.portTextBox = new Telerik.WinControls.UI.RadTextBox();
@@ -58,11 +64,6 @@ namespace FreeLauncher.Forms
             this.cancelButton = new Telerik.WinControls.UI.RadButton();
             this.openGameDirectoryButton = new Telerik.WinControls.UI.RadButton();
             this.saveProfileButton = new Telerik.WinControls.UI.RadButton();
-            this.snapshotsCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.otherCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.betaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
-            this.versionsDropDownList = new Telerik.WinControls.UI.RadDropDownList();
-            this.alphaCheckBox = new Telerik.WinControls.UI.RadCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.JavaSettingsGroupBox)).BeginInit();
             this.JavaSettingsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.javaExecutableBox)).BeginInit();
@@ -71,6 +72,11 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.JavaArgumentsCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VersionSettingsGroupBox)).BeginInit();
             this.VersionSettingsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainProfileSettingsGroupBox)).BeginInit();
             this.MainProfileSettingsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radButton1)).BeginInit();
@@ -90,11 +96,6 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.openGameDirectoryButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.saveProfileButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
@@ -172,6 +173,65 @@ namespace FreeLauncher.Forms
             this.VersionSettingsGroupBox.TabIndex = 6;
             this.VersionSettingsGroupBox.Text = "Выбор версии";
             this.VersionSettingsGroupBox.ThemeName = "VisualStudio2012Dark";
+            // 
+            // snapshotsCheckBox
+            // 
+            this.snapshotsCheckBox.Location = new System.Drawing.Point(10, 30);
+            this.snapshotsCheckBox.Name = "snapshotsCheckBox";
+            this.snapshotsCheckBox.Size = new System.Drawing.Size(304, 18);
+            this.snapshotsCheckBox.TabIndex = 8;
+            this.snapshotsCheckBox.Text = "Отображать экспериментальные сборки (\"snapshots\")";
+            this.snapshotsCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.snapshotsCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.snapshotsCheckBox.GetChildAt(0))).Text = "Отображать экспериментальные сборки (\"snapshots\")";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.snapshotsCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // otherCheckBox
+            // 
+            this.otherCheckBox.Location = new System.Drawing.Point(10, 102);
+            this.otherCheckBox.Name = "otherCheckBox";
+            this.otherCheckBox.Size = new System.Drawing.Size(301, 18);
+            this.otherCheckBox.TabIndex = 12;
+            this.otherCheckBox.Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
+            this.otherCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.otherCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.otherCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // betaCheckBox
+            // 
+            this.betaCheckBox.Location = new System.Drawing.Point(10, 54);
+            this.betaCheckBox.Name = "betaCheckBox";
+            this.betaCheckBox.Size = new System.Drawing.Size(261, 18);
+            this.betaCheckBox.TabIndex = 9;
+            this.betaCheckBox.Text = "Отображать старые \"Beta\" сборки(2010-2011)";
+            this.betaCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.betaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.betaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Beta\" сборки(2010-2011)";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.betaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
+            // 
+            // versionsDropDownList
+            // 
+            this.versionsDropDownList.AutoCompleteDisplayMember = null;
+            this.versionsDropDownList.AutoCompleteValueMember = null;
+            this.versionsDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
+            this.versionsDropDownList.Location = new System.Drawing.Point(10, 126);
+            this.versionsDropDownList.Name = "versionsDropDownList";
+            this.versionsDropDownList.Size = new System.Drawing.Size(310, 24);
+            this.versionsDropDownList.TabIndex = 11;
+            this.versionsDropDownList.ThemeName = "VisualStudio2012Dark";
+            // 
+            // alphaCheckBox
+            // 
+            this.alphaCheckBox.Location = new System.Drawing.Point(10, 78);
+            this.alphaCheckBox.Name = "alphaCheckBox";
+            this.alphaCheckBox.Size = new System.Drawing.Size(253, 18);
+            this.alphaCheckBox.TabIndex = 10;
+            this.alphaCheckBox.Text = "Отображать старые \"Alpha\" сборки(от 2010)";
+            this.alphaCheckBox.ThemeName = "VisualStudio2012Dark";
+            this.alphaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
+            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.alphaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Alpha\" сборки(от 2010)";
+            ((Telerik.WinControls.Primitives.FillPrimitive)(this.alphaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
             // 
             // MainProfileSettingsGroupBox
             // 
@@ -390,65 +450,6 @@ namespace FreeLauncher.Forms
             this.saveProfileButton.ThemeName = "VisualStudio2012Dark";
             this.saveProfileButton.Click += new System.EventHandler(this.saveProfileButton_Click);
             // 
-            // snapshotsCheckBox
-            // 
-            this.snapshotsCheckBox.Location = new System.Drawing.Point(10, 30);
-            this.snapshotsCheckBox.Name = "snapshotsCheckBox";
-            this.snapshotsCheckBox.Size = new System.Drawing.Size(304, 18);
-            this.snapshotsCheckBox.TabIndex = 8;
-            this.snapshotsCheckBox.Text = "Отображать экспериментальные сборки (\"snapshots\")";
-            this.snapshotsCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.snapshotsCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.snapshotsCheckBox.GetChildAt(0))).Text = "Отображать экспериментальные сборки (\"snapshots\")";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.snapshotsCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // otherCheckBox
-            // 
-            this.otherCheckBox.Location = new System.Drawing.Point(10, 102);
-            this.otherCheckBox.Name = "otherCheckBox";
-            this.otherCheckBox.Size = new System.Drawing.Size(301, 18);
-            this.otherCheckBox.TabIndex = 12;
-            this.otherCheckBox.Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
-            this.otherCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.otherCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.otherCheckBox.GetChildAt(0))).Text = "Отображать сторонние версии(Forge, LiteLoader, etc.)";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.otherCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // betaCheckBox
-            // 
-            this.betaCheckBox.Location = new System.Drawing.Point(10, 54);
-            this.betaCheckBox.Name = "betaCheckBox";
-            this.betaCheckBox.Size = new System.Drawing.Size(261, 18);
-            this.betaCheckBox.TabIndex = 9;
-            this.betaCheckBox.Text = "Отображать старые \"Beta\" сборки(2010-2011)";
-            this.betaCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.betaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.betaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Beta\" сборки(2010-2011)";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.betaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
-            // versionsDropDownList
-            // 
-            this.versionsDropDownList.AutoCompleteDisplayMember = null;
-            this.versionsDropDownList.AutoCompleteValueMember = null;
-            this.versionsDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            this.versionsDropDownList.Location = new System.Drawing.Point(10, 126);
-            this.versionsDropDownList.Name = "versionsDropDownList";
-            this.versionsDropDownList.Size = new System.Drawing.Size(310, 24);
-            this.versionsDropDownList.TabIndex = 11;
-            this.versionsDropDownList.ThemeName = "VisualStudio2012Dark";
-            // 
-            // alphaCheckBox
-            // 
-            this.alphaCheckBox.Location = new System.Drawing.Point(10, 78);
-            this.alphaCheckBox.Name = "alphaCheckBox";
-            this.alphaCheckBox.Size = new System.Drawing.Size(253, 18);
-            this.alphaCheckBox.TabIndex = 10;
-            this.alphaCheckBox.Text = "Отображать старые \"Alpha\" сборки(от 2010)";
-            this.alphaCheckBox.ThemeName = "VisualStudio2012Dark";
-            this.alphaCheckBox.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.versionCheckBoxes_ToggleStateChanged);
-            ((Telerik.WinControls.UI.RadCheckBoxElement)(this.alphaCheckBox.GetChildAt(0))).Text = "Отображать старые \"Alpha\" сборки(от 2010)";
-            ((Telerik.WinControls.Primitives.FillPrimitive)(this.alphaCheckBox.GetChildAt(0).GetChildAt(0))).Visibility = Telerik.WinControls.ElementVisibility.Collapsed;
-            // 
             // ProfileForm
             // 
             this.AcceptButton = this.saveProfileButton;
@@ -463,6 +464,7 @@ namespace FreeLauncher.Forms
             this.Controls.Add(this.VersionSettingsGroupBox);
             this.Controls.Add(this.MainProfileSettingsGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProfileForm";
@@ -483,6 +485,11 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.VersionSettingsGroupBox)).EndInit();
             this.VersionSettingsGroupBox.ResumeLayout(false);
             this.VersionSettingsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MainProfileSettingsGroupBox)).EndInit();
             this.MainProfileSettingsGroupBox.ResumeLayout(false);
             this.MainProfileSettingsGroupBox.PerformLayout();
@@ -503,11 +510,6 @@ namespace FreeLauncher.Forms
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.openGameDirectoryButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.saveProfileButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapshotsCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.otherCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.betaCheckBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.versionsDropDownList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alphaCheckBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
 

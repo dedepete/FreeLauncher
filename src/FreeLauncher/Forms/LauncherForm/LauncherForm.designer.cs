@@ -537,8 +537,8 @@ namespace FreeLauncher.Forms
             this.LangDropDownList.AutoCompleteDisplayMember = null;
             this.LangDropDownList.AutoCompleteValueMember = null;
             this.LangDropDownList.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList;
-            radListDataItem1.Tag = "ru-RU";
-            radListDataItem1.Text = "Русский (ru-default)";
+            radListDataItem1.Tag = "ru_RU";
+            radListDataItem1.Text = "Русский (default)";
             this.LangDropDownList.Items.Add(radListDataItem1);
             this.LangDropDownList.Location = new System.Drawing.Point(150, 21);
             this.LangDropDownList.Name = "LangDropDownList";
@@ -738,7 +738,7 @@ namespace FreeLauncher.Forms
             this.FreeLauncherLicenseText.TabIndex = 2;
             this.FreeLauncherLicenseText.Text = resources.GetString("FreeLauncherLicenseText.Text");
             this.FreeLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.FreeLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("resource.Text");
+            ((Telerik.WinControls.UI.RadLabelElement)(this.FreeLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("FreeLauncherLicenseText.Text");
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.FreeLauncherLicenseText.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // dotMCLauncherLicense
@@ -759,7 +759,7 @@ namespace FreeLauncher.Forms
             this.dotMCLauncherLicenseText.TabIndex = 1;
             this.dotMCLauncherLicenseText.Text = resources.GetString("dotMCLauncherLicenseText.Text");
             this.dotMCLauncherLicenseText.ThemeName = "VisualStudio2012Dark";
-            ((Telerik.WinControls.UI.RadLabelElement)(this.dotMCLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("resource.Text1");
+            ((Telerik.WinControls.UI.RadLabelElement)(this.dotMCLauncherLicenseText.GetChildAt(0))).Text = resources.GetString("dotMCLauncherLicenseText.Text");
             ((Telerik.WinControls.Primitives.FillPrimitive)(this.dotMCLauncherLicenseText.GetChildAt(0).GetChildAt(0))).BackColor = System.Drawing.Color.Transparent;
             // 
             // StatusBar
@@ -926,6 +926,7 @@ namespace FreeLauncher.Forms
             this.Controls.Add(this.mainPageView);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.radPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(712, 446);
             this.Name = "LauncherForm";
             // 

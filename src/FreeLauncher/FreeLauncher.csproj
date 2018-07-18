@@ -94,6 +94,9 @@
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
@@ -208,7 +211,6 @@
     </Compile>
     <EmbeddedResource Include="Translations\en_UK\lang.json" />
     <EmbeddedResource Include="Translations\ru_RU\lang.json" />
-    <Resource Include="Translations\uk_UA\lang.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\minecraft-logo.png" />
@@ -261,6 +263,9 @@
       <Name>dotMCLauncher</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -271,28 +276,28 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Target Name="BeforeBuild">
-  <Message Text=" --=== Before Build ==--"></Message>
+    <Message Text=" --=== Before Build ==--">
+    </Message>
     <ReadLinesFromFile File=".\Properties\AssemblyInfo.cs">
-        <Output TaskParameter="Lines"
-                ItemName="AssemblyInfoContent"/>
+      <Output TaskParameter="Lines" ItemName="AssemblyInfoContent" />
     </ReadLinesFromFile>
     <PropertyGroup>
-        <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
-        <In>@(AssemblyInfoContent)</In>
-        <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
+      <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
+      <In>@(AssemblyInfoContent)</In>
+      <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
     </PropertyGroup>
     <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\pre_build.bat $(Out.Remove(0, 28))" />
   </Target>
   <Target Name="AfterBuild">
-  <Message Text=" --=== After Build ==--"></Message>
+    <Message Text=" --=== After Build ==--">
+    </Message>
     <ReadLinesFromFile File=".\Properties\AssemblyInfo.cs">
-        <Output TaskParameter="Lines"
-                ItemName="AssemblyInfoContent"/>
+      <Output TaskParameter="Lines" ItemName="AssemblyInfoContent" />
     </ReadLinesFromFile>
     <PropertyGroup>
-        <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
-        <In>@(AssemblyInfoContent)</In>
-        <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
+      <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+).(\d+)</Pattern>
+      <In>@(AssemblyInfoContent)</In>
+      <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
     </PropertyGroup>
     <Exec Condition="$(OS) == 'Windows_NT'" Command="..\..\scripts\post_build.bat $(Configuration) $(Out.Remove(0, 28))" />
     <Exec Condition="$(OS) != 'Windows_NT'" Command="cp -v -a &quot;$(ProjectDir)Translations\.&quot; &quot;$(TargetDir)freelauncher-langs\&quot;" />

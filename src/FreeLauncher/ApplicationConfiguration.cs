@@ -6,6 +6,6 @@
         public bool SkipAssetsDownload { get; set; }
         public bool EnableGameLogging { get; set; }
         public bool CloseTabAfterSuccessfulExitCode { get; set; } = true;
-        public string SelectedLanguage { get; set; } = "ru-RU";
+        public string SelectedLanguage { get; set; } = "ru_RU";
     }
 }
