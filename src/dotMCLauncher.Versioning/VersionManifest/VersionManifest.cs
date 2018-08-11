@@ -129,8 +129,8 @@ namespace dotMCLauncher.Versioning
         [JsonIgnore]
         public string GetClientDownloadUrl
             =>
-            DownloadInfo?.Client.Url ??
-            $@"https://s3.amazonaws.com/Minecraft.Download/versions/{VersionId}/{VersionId}.jar";
+                DownloadInfo?.Client.Url ??
+                $@"https://s3.amazonaws.com/Minecraft.Download/versions/{VersionId}/{VersionId}.jar";
 
         /// <summary>
         /// Parses build's JSON file.
@@ -213,13 +213,12 @@ namespace dotMCLauncher.Versioning
 
         public string BuildArgumentsByGroup(ArgumentsGroupType group, Dictionary<string, string> jvmArgumentDictionary, IEnumerable<Rule> rulesFilter)
         {
-            string toReturn = string.Empty;
-            toReturn = ArgGroups.FirstOrDefault(
+            IEnumerable<Rule> rules = rulesFilter as Rule[] ?? rulesFilter.ToArray();
+            string toReturn = ArgGroups.FirstOrDefault(
                     ag => ag.Type == group)?
-                .ToString(jvmArgumentDictionary, rulesFilter.ToArray()) ?? string.Empty;
-            if (InheritableVersionManifest != null && InheritableVersionManifest.Type == VersionManifestType.V2)
-            {
-                toReturn = (toReturn == string.Empty ? string.Empty : toReturn + " ") + InheritableVersionManifest.BuildArgumentsByGroup(group, jvmArgumentDictionary, rulesFilter);
+                .ToString(jvmArgumentDictionary, rules.ToArray()) ?? string.Empty;
+            if (InheritableVersionManifest != null && InheritableVersionManifest.Type == VersionManifestType.V2) {
+                toReturn = (toReturn == string.Empty ? string.Empty : toReturn + " ") + InheritableVersionManifest.BuildArgumentsByGroup(group, jvmArgumentDictionary, rules);
             }
             return toReturn;
         }
