@@ -431,7 +431,8 @@ Please, check for your Internet configuration and restart the launcher.
                         if (selectedVersionManifest.Type == VersionManifestType.V2) {
                             List<Rule> requiredRules = new List<Rule> {
                                 new Rule {
-                                    Action = "allow", Os = new Os {
+                                    Action = "allow",
+                                    Os = new Os {
                                         Name = "windows"
                                     }
                                 }
@@ -440,7 +441,8 @@ Please, check for your Internet configuration and restart the launcher.
                                 requiredRules.Add(new Rule {
                                     Action = "allow",
                                     Os = new Os {
-                                        Name = "windows", Version = "^10\\."
+                                        Name = "windows",
+                                        Version = "^10\\."
                                     }
                                 });
                             }
@@ -457,12 +459,8 @@ Please, check for your Internet configuration and restart the launcher.
                                     _selectedProfile.WindowInfo?.Height.ToString());
                             }
                             gameArguments =
-                                selectedVersionManifest.ArgGroups.FirstOrDefault(
-                                        ag => ag.Type == ArgumentsGroupType.GAME)
-                                    .ToString(gameArgumentDictionary, requiredRules.ToArray());
-                            jvmArguments = selectedVersionManifest.ArgGroups.FirstOrDefault(
-                                    ag => ag.Type == ArgumentsGroupType.JVM)
-                                .ToString(jvmArgumentDictionary, requiredRules.ToArray());
+                                selectedVersionManifest.BuildArgumentsByGroup(ArgumentsGroupType.GAME, gameArgumentDictionary, requiredRules.ToArray());
+                            jvmArguments = selectedVersionManifest.BuildArgumentsByGroup(ArgumentsGroupType.JVM, jvmArgumentDictionary, requiredRules.ToArray());
                         } else {
                             string nativesPath = _configuration.McDirectory + @"\natives\";
                             nativesPath = nativesPath.Contains(' ') ? $@"""{nativesPath}""" : nativesPath;

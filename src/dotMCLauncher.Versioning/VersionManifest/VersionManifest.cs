@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -208,6 +209,19 @@ namespace dotMCLauncher.Versioning
         public string GetBaseJar()
         {
             return InheritsFrom == null ? VersionId : InheritableVersionManifest.GetBaseJar();
+        }
+
+        public string BuildArgumentsByGroup(ArgumentsGroupType group, Dictionary<string, string> jvmArgumentDictionary, IEnumerable<Rule> rulesFilter)
+        {
+            string toReturn = string.Empty;
+            toReturn = ArgGroups.FirstOrDefault(
+                    ag => ag.Type == group)?
+                .ToString(jvmArgumentDictionary, rulesFilter.ToArray()) ?? string.Empty;
+            if (InheritableVersionManifest != null && InheritableVersionManifest.Type == VersionManifestType.V2)
+            {
+                toReturn = (toReturn == string.Empty ? string.Empty : toReturn + " ") + InheritableVersionManifest.BuildArgumentsByGroup(group, jvmArgumentDictionary, rulesFilter);
+            }
+            return toReturn;
         }
     }
 
