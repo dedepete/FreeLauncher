@@ -945,9 +945,7 @@ Please, check for your Internet configuration and restart the launcher.
                 if (!Directory.Exists(Path.GetDirectoryName(file))) {
                     Directory.CreateDirectory(Path.GetDirectoryName(file));
                 }
-                new WebClient().DownloadFile(
-                    string.Format("https://s3.amazonaws.com/Minecraft.Download/indexes/{0}.json",
-                        selectedVersionManifest.AssetsIndex ?? "legacy"), file);
+                new WebClient().DownloadFile(selectedVersionManifest.GetAssetIndexDownloadUrl(), file);
             }
             AssetsManifest manifest = AssetsManifest.Parse(file);
             StatusBarValue = 0;

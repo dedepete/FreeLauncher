@@ -53,6 +53,7 @@
     <Compile Include="Argument\ArgumentType.cs" />
     <Compile Include="Argument\ExtendedArgument.cs" />
     <Compile Include="Argument\SingleArgument.cs" />
+    <Compile Include="AssetsInfo.cs" />
     <Compile Include="DownloadEntry.cs" />
     <Compile Include="Lib\Lib.cs" />
     <Compile Include="Lib\LibDownloadInfo.cs" />

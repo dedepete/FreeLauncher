@@ -63,6 +63,12 @@ namespace dotMCLauncher.Versioning
             }
         }
 
+        // <summary>
+        // Assets index info
+        // </summary>
+        [JsonProperty("assetIndex")]
+        public AssetsInfo AssetInfo { get; set; }
+
         /// <summary>
         /// Assets ID.
         /// </summary>
@@ -221,6 +227,12 @@ namespace dotMCLauncher.Versioning
                 toReturn = (toReturn == string.Empty ? string.Empty : toReturn + " ") + InheritableVersionManifest.BuildArgumentsByGroup(group, jvmArgumentDictionary, rules);
             }
             return toReturn;
+        }
+
+        public string GetAssetIndexDownloadUrl()
+        {
+            return AssetInfo?.Url ?? string.Format("https://s3.amazonaws.com/Minecraft.Download/indexes/{0}.json",
+                AssetsIndex ?? "legacy");
         }
     }
 
