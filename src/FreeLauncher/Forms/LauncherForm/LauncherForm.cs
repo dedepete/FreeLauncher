@@ -1141,7 +1141,7 @@ Please, check for your Internet configuration and restart the launcher.
         {
             try {
                 using (WebClient client = new WebClient()) {
-                    using (client.OpenRead("https://captive.apple.com/generate_204")) {
+                    using (client.OpenRead("http://captive.apple.com/generate_204")) {
                         return true;
                     }
                 }
