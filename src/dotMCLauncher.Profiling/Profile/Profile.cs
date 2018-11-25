@@ -69,6 +69,8 @@ namespace dotMCLauncher.Profiling
         {
             get {
                 switch (_launcherVisibilityOnGameClose) {
+                    case null:
+                        return LauncherVisibility.NULL;
                     case "hide launcher and re-open when game closes":
                         return LauncherVisibility.HIDDEN;
                     case "close launcher when game starts":
@@ -78,7 +80,11 @@ namespace dotMCLauncher.Profiling
                 }
             }
             set {
+                // ReSharper disable once SwitchStatementMissingSomeCases
                 switch (value) {
+                    case LauncherVisibility.NULL:
+                        _launcherVisibilityOnGameClose = null;
+                        break;
                     case LauncherVisibility.HIDDEN:
                         _launcherVisibilityOnGameClose = "hide launcher and re-open when game closes";
                         break;
@@ -107,7 +113,12 @@ namespace dotMCLauncher.Profiling
             /// <summary>
             /// Close launcher when game starts
             /// </summary>
-            CLOSED
+            CLOSED,
+
+            /// <summary>
+            /// Use launcher's defaults
+            /// </summary>
+            NULL
         }
 
         /// <summary>

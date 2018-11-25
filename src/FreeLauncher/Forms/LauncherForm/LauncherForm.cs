@@ -292,7 +292,7 @@ Please, check for your Internet configuration and restart the launcher.
                     };
                     bgw2.RunWorkerCompleted += delegate {
                         if (_restoreVersion) {
-                            AppendLog($"Successfully restored \"{_versionToLaunch}\" version.");
+                            AppendLog($@"Successfully restored ""{_versionToLaunch}"" version.");
                             _restoreVersion = false;
                             SetControlBlockState(false);
                             UpdateVersionListView();
@@ -338,7 +338,7 @@ Please, check for your Internet configuration and restart the launcher.
                         SaveUsers();
                         UpdateUserList();
                         VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
-                            new DirectoryInfo(_configuration.McVersions + @"\" + (_versionToLaunch ?? (
+                            new DirectoryInfo(Path.Combine(_configuration.McVersions, _versionToLaunch ?? (
                                 _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
                         JObject properties = new JObject {
                             new JProperty("freelauncher", new JArray("cheeki_breeki_iv_damke"))
@@ -393,11 +393,11 @@ Please, check for your Internet configuration and restart the launcher.
                                 "version_name", _selectedProfile.ProfileName
                             }, {
                                 "game_directory",
-                                _selectedProfile.WorkingDirectory ?? _configuration.McDirectory + @"\"
+                                _selectedProfile.WorkingDirectory ?? _configuration.McDirectory
                             }, {
-                                "assets_root", _configuration.McDirectory + @"\assets\"
+                                "assets_root", Path.Combine(_configuration.McDirectory, "assets")
                             }, {
-                                "game_assets", _configuration.McDirectory + @"\assets\virtual\legacy\"
+                                "game_assets", Path.Combine(_configuration.McDirectory, "assets", "virtual", "legacy")
                             }, {
                                 "assets_index_name", selectedVersionManifest.GetAssetsIndex()
                             }, {
@@ -418,7 +418,7 @@ Please, check for your Internet configuration and restart the launcher.
                         };
                         Dictionary<string, string> jvmArgumentDictionary = new Dictionary<string, string> {
                             {
-                                "natives_directory", _configuration.McDirectory + @"\natives\"
+                                "natives_directory", Path.Combine(_configuration.McDirectory, "natives")
                             }, {
                                 "launcher_name", Application.ProductName
                             }, {
@@ -462,7 +462,7 @@ Please, check for your Internet configuration and restart the launcher.
                                 selectedVersionManifest.BuildArgumentsByGroup(ArgumentsGroupType.GAME, gameArgumentDictionary, requiredRules.ToArray());
                             jvmArguments = selectedVersionManifest.BuildArgumentsByGroup(ArgumentsGroupType.JVM, jvmArgumentDictionary, requiredRules.ToArray());
                         } else {
-                            string nativesPath = _configuration.McDirectory + @"\natives\";
+                            string nativesPath = Path.Combine(_configuration.McDirectory, "natives");
                             nativesPath = nativesPath.Contains(' ') ? $@"""{nativesPath}""" : nativesPath;
                             gameArguments = selectedVersionManifest.ArgCollection.ToString(gameArgumentDictionary);
                             jvmArguments = javaArguments +
@@ -476,13 +476,14 @@ Please, check for your Internet configuration and restart the launcher.
                             CreateNoWindow = true,
                             FileName = _selectedProfile.JavaExecutable ?? Java.JavaExecutable,
                             StandardErrorEncoding = Encoding.UTF8,
-                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? _configuration.McDirectory + @"\",
+                            WorkingDirectory = _selectedProfile.WorkingDirectory ?? _configuration.McDirectory,
                             Arguments =
                                 $"{jvmArguments} {selectedVersionManifest.MainClass} {gameArguments}"
                         };
                         AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {
-                                StartInfo = proc, EnableRaisingEvents = true
+                                StartInfo = proc,
+                                EnableRaisingEvents = true
                             }, this,
                             _selectedProfile).Launch();
                         AppendLog($"Version {selectedVersionManifest.VersionId} successfuly executed.");
@@ -548,7 +549,7 @@ Please, check for your Internet configuration and restart the launcher.
             VersionManifest ver =
                 VersionManifest.ParseVersion(
                     new DirectoryInfo(Path.Combine(_configuration.McVersions,
-                        versionsListView.SelectedItem[0] + @"\")), false);
+                        versionsListView.SelectedItem[0].ToString())), false);
             RadMenuItem launchVerButton = new RadMenuItem {
                 Text = _configuration.Localization.Launch
             };
@@ -560,10 +561,11 @@ Please, check for your Internet configuration and restart the launcher.
                 LaunchButton.PerformClick();
             };
             bool enableRestoreButton = !_configuration.Arguments.OfflineMode &&
-            (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
-                ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
+                (ver.ReleaseType == "release" || ver.ReleaseType == "snapshot" ||
+                    ver.ReleaseType == "old_beta" || ver.ReleaseType == "old_alpha");
             RadMenuItem restoreVerButton = new RadMenuItem {
-                Text = _configuration.Localization.Restore, Enabled = enableRestoreButton
+                Text = _configuration.Localization.Restore,
+                Enabled = enableRestoreButton
             };
             restoreVerButton.Click += delegate {
                 _restoreVersion = true;
@@ -597,7 +599,7 @@ Please, check for your Internet configuration and restart the launcher.
                 }
                 try {
                     Directory.Delete(
-                        Path.Combine(_configuration.McVersions, versionsListView.SelectedItem[0] + @"\"), true);
+                        Path.Combine(_configuration.McVersions, versionsListView.SelectedItem[0].ToString()), true);
                     AppendLog($"Version '{versionsListView.SelectedItem[0]}' has been deleted successfuly.");
                     UpdateVersionListView();
                 } catch (Exception ex) {
@@ -647,10 +649,11 @@ Please, check for your Internet configuration and restart the launcher.
 
         private void UpdateVersions()
         {
+            string versionsManifestPath = Path.Combine(_configuration.McVersions, @"\versions.json");
             if (_configuration.Arguments.OfflineMode) {
                 AppendLog("Unable to get new version list: offline-mode enabled.");
-                if (File.Exists(_configuration.McVersions + @"\versions.json")) {
-                    _versionList = RawVersionListManifest.ParseList(File.ReadAllText(_configuration.McVersions + @"\versions.json"));
+                if (File.Exists(versionsManifestPath)) {
+                    _versionList = RawVersionListManifest.ParseList(File.ReadAllText(versionsManifestPath));
                     return;
                 }
                 MessageBox.Show(_configuration.Localization.SomeFilesMissingMessage);
@@ -662,15 +665,15 @@ Please, check for your Internet configuration and restart the launcher.
             if (!Directory.Exists(_configuration.McVersions)) {
                 Directory.CreateDirectory(_configuration.McVersions);
             }
-            if (!File.Exists(_configuration.McVersions + @"\versions.json")) {
-                File.WriteAllText(_configuration.McVersions + @"\versions.json", remoteManifest.ToString());
+            if (!File.Exists(versionsManifestPath)) {
+                File.WriteAllText(versionsManifestPath, remoteManifest.ToString());
                 _versionList = remoteManifest;
                 return;
             }
             AppendLog("Latest snapshot: " + remoteManifest.LatestVersions.Snapshot);
             AppendLog("Latest release: " + remoteManifest.LatestVersions.Release);
             RawVersionListManifest localManifest =
-                RawVersionListManifest.ParseList(File.ReadAllText(_configuration.McVersions + @"\versions.json"));
+                RawVersionListManifest.ParseList(File.ReadAllText(versionsManifestPath));
             AppendLog($"Local versions: {localManifest.Versions.Count}. "
                 + $"Remote versions: {remoteManifest.Versions.Count}");
             if (remoteManifest.Versions.Count == localManifest.Versions.Count &&
@@ -681,7 +684,7 @@ Please, check for your Internet configuration and restart the launcher.
                 return;
             }
             AppendLog("Writting new list...");
-            File.WriteAllText(_configuration.McVersions + @"\versions.json", remoteManifest.ToString());
+            File.WriteAllText(versionsManifestPath, remoteManifest.ToString());
             _versionList = remoteManifest;
         }
 
@@ -689,21 +692,22 @@ Please, check for your Internet configuration and restart the launcher.
         {
             profilesDropDownBox.Items.Clear();
             profilesListView.Items.Clear();
+            string profilesPath = Path.Combine(_configuration.McDirectory, @"\launcher_profiles.json");
             try {
                 _profileManager =
-                    ProfileManager.ParseProfile(_configuration.McDirectory + @"\launcher_profiles.json");
+                    ProfileManager.ParseProfile(profilesPath);
                 if (!_profileManager.Profiles.Any()) {
                     throw new FileLoadException("File is corrupted or contains no profiles.");
                 }
             } catch (Exception ex) {
                 AppendException($"An exception has occurred while processing profiles:\n{ex.Message}\nA new profile list will be created.");
-                if (File.Exists(_configuration.McDirectory + @"\launcher_profiles.json")) {
+                if (File.Exists(profilesPath)) {
                     string fileName = $"launcher_profiles-{LinuxTimeStamp}.bak.json";
                     AppendLog("A copy of old profile list has been created: " + fileName);
-                    File.Move(_configuration.McDirectory + @"\launcher_profiles.json",
-                        _configuration.McDirectory + @"\" + fileName);
+                    File.Move(profilesPath,
+                        Path.Combine(_configuration.McDirectory, fileName));
                 }
-                File.WriteAllText(_configuration.McDirectory + @"\launcher_profiles.json", new JObject {
+                File.WriteAllText(profilesPath, new JObject {
                     {
                         "profiles", new JObject {
                             {
@@ -744,7 +748,7 @@ Please, check for your Internet configuration and restart the launcher.
                         "selectedProfile", ProductName
                     }
                 }.ToString());
-                _profileManager = ProfileManager.ParseProfile(_configuration.McDirectory + @"\launcher_profiles.json");
+                _profileManager = ProfileManager.ParseProfile(profilesPath);
                 SaveProfiles();
             }
             DeleteProfileButton.Enabled = _profileManager.Profiles.Count > 1;
@@ -850,8 +854,8 @@ Please, check for your Internet configuration and restart the launcher.
             StringBuilder libraries = new StringBuilder();
             VersionManifest selectedVersionManifest = VersionManifest.ParseVersion(
                 new DirectoryInfo(_configuration.McVersions + @"\" +
-                (_versionToLaunch ??
-                    (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
+                    (_versionToLaunch ??
+                        (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)))));
             SetStatusBarVisibility(true);
             StatusBarValue = 0;
             UpdateStatusBarText(_configuration.Localization.CheckingLibraries);
@@ -863,13 +867,21 @@ Please, check for your Internet configuration and restart the launcher.
                 }
                 if (a.DownloadInfo == null) {
                     libsToDownload.Add(new DownloadEntry {
-                        Path = a.GetPath(), Url = a.GetUrl()
+                        Path = a.GetPath(),
+                        Url = a.GetUrl()
                     }, false);
                     continue;
                 }
                 foreach (DownloadEntry entry in a.DownloadInfo?.GetDownloadsEntries(OS.WINDOWS)) {
                     if (entry == null) {
                         continue;
+                    }
+                    if (a.DownloadInfo.Classifiers?.ContainsKey("natives-windows") ?? false) {
+                        entry.Path = a.DownloadInfo.Classifiers["natives-windows"].Path ?? a.GetPath();
+                        entry.Url = a.DownloadInfo.Classifiers["natives-windows"].Url ?? a.GetUrl();
+                    } else {
+                        entry.Path = entry.Path ?? a.GetPath();
+                        entry.Url = entry.Url ?? a.Url;
                     }
                     entry.Path = entry.Path ?? a.GetPath();
                     entry.Url = entry.Url ?? a.Url;
@@ -1027,7 +1039,9 @@ Please, check for your Internet configuration and restart the launcher.
                 Anchor = (AnchorStyles.Right | AnchorStyles.Top)
             };
             RichTextBox reportBox = new RichTextBox {
-                Dock = DockStyle.Fill, ReadOnly = true, Font = logBox.Font
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                Font = logBox.Font
             };
             closeButton.Location = new Point(panel.Size.Width - (closeButton.Size.Width + 5), 5);
             closeButton.Click += delegate {
@@ -1052,7 +1066,7 @@ Please, check for your Internet configuration and restart the launcher.
                 McVersion = _versionToLaunch ?? (
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)),
                 McType = VersionManifest.ParseVersion(
-                    new DirectoryInfo(_configuration.McVersions + @"\" + (_versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))).ReleaseType,
+                    new DirectoryInfo(Path.Combine(_configuration.McVersions, _versionToLaunch ?? (_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile))))).ReleaseType,
                 Panel = panel
             };
         }
@@ -1112,11 +1126,10 @@ Please, check for your Internet configuration and restart the launcher.
                         version.AssetsIndex ?? "null", version.InheritsFrom ?? _configuration.Localization.Independent);
                 }
                 string path = Path.Combine(_configuration.McVersions,
-                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile) + @"\");
+                    _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile));
                 string state = _configuration.Localization.ReadyToLaunch;
                 LaunchButton.Enabled = true;
-                if (!File.Exists(string.Format(@"{0}\{1}.json", path, _selectedProfile.SelectedVersion ??
-                    GetLatestVersion(_selectedProfile)))) {
+                if (!File.Exists(Path.Combine(path, $"{_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)}.json"))) {
                     state = _configuration.Localization.ReadyToDownload;
                     if (_configuration.Arguments.OfflineMode) {
                         LaunchButton.Enabled = false;
@@ -1125,8 +1138,7 @@ Please, check for your Internet configuration and restart the launcher.
                         GetLatestVersion(_selectedProfile));
                     return;
                 }
-                if (!File.Exists(string.Format(@"{0}\{1}.jar", path, _selectedProfile.SelectedVersion ??
-                    GetLatestVersion(_selectedProfile))) && VersionManifest.ParseVersion(new DirectoryInfo(path)).InheritsFrom == null) {
+                if (!File.Exists(Path.Combine(path, $"{_selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile)}.jar")) && VersionManifest.ParseVersion(new DirectoryInfo(path)).InheritsFrom == null) {
                     state = _configuration.Localization.ReadyToDownload;
                     if (_configuration.Arguments.OfflineMode) {
                         LaunchButton.Enabled = false;
@@ -1394,7 +1406,9 @@ Please, check for your Internet configuration and restart the launcher.
             } else {
                 string reason = _minecraftProcess.ExitCode == 0
                     ? "Stable closure"
-                    : _minecraftProcess.ExitCode == -1 ? "Process killed" : "Crashed";
+                    : _minecraftProcess.ExitCode == -1
+                        ? "Process killed"
+                        : "Crashed";
                 _output.Panel.Text = $"Minecraft version: {_output.McVersion}/{_output.McType}" +
                     "\nStatus: Stopped" +
                     $"\nExit code: {_minecraftProcess.ExitCode} (Reason: {reason})" +
